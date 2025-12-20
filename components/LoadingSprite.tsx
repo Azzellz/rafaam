@@ -9,7 +9,7 @@ interface Props {
 export const LoadingSprite: React.FC<Props> = ({ language }) => {
   const t = translations[language];
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 py-12">
+    <div className="flex flex-col items-center justify-center space-y-4 min-h-[60vh] w-full">
       {/* Simple CSS-only animated pixel blob */}
       <div className="relative w-16 h-16 animate-bounce">
          <div className="absolute inset-0 bg-[#3b82f6] shadow-[4px_4px_0_0_#000] border-2 border-black"></div>
