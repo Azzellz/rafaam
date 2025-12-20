@@ -40,7 +40,7 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/rafaam.git
+   git clone https://github.com/Azzellz/rafaam.git
    cd rafaam
    ```
 
