@@ -55,6 +55,12 @@ export interface ConversationSession {
   level: JLPTLevel;
 }
 
+export interface BackgroundConfig {
+  imageData: string | null; // Base64 string
+  blur: number; // 0-20px
+  overlayOpacity: number; // 0.0-1.0
+}
+
 // Discriminated union for the result
 export type GeneratedContent = 
   | { type: ContentType.GRAMMAR; data: GrammarLesson }

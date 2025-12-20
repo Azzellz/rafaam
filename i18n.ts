@@ -53,7 +53,16 @@ export const translations = {
     statusDisconnected: "DISCONNECTED",
     transcriptUser: "YOU",
     transcriptModel: "SENSEI",
-    conversationIntro: "Practice speaking Japanese in real-time!"
+    conversationIntro: "Practice speaking Japanese in real-time!",
+    // Background Settings
+    bgSettings: "THEME SETTINGS",
+    uploadImage: "UPLOAD BACKGROUND",
+    blur: "BLUR",
+    opacity: "OVERLAY OPACITY",
+    reset: "RESET DEFAULT",
+    close: "CLOSE",
+    bgNote: "Note: Large images may not save.",
+    noImage: "No image selected"
   },
   [Language.ZH_CN]: {
     title: "RAFAAM",
@@ -107,7 +116,16 @@ export const translations = {
     statusDisconnected: "已断开",
     transcriptUser: "你",
     transcriptModel: "老师",
-    conversationIntro: "实时练习日语口语！"
+    conversationIntro: "实时练习日语口语！",
+    // Background Settings
+    bgSettings: "主题设置",
+    uploadImage: "上传背景图",
+    blur: "模糊度",
+    opacity: "遮罩浓度",
+    reset: "恢复默认",
+    close: "关闭",
+    bgNote: "注：图片过大可能无法保存。",
+    noImage: "未选择图片"
   },
   [Language.ZH_TW]: {
     title: "RAFAAM",
@@ -161,7 +179,16 @@ export const translations = {
     statusDisconnected: "已斷開",
     transcriptUser: "你",
     transcriptModel: "老師",
-    conversationIntro: "即時練習日語口語！"
+    conversationIntro: "即時練習日語口語！",
+    // Background Settings
+    bgSettings: "主題設置",
+    uploadImage: "上傳背景圖",
+    blur: "模糊度",
+    opacity: "遮罩濃度",
+    reset: "恢復預設",
+    close: "關閉",
+    bgNote: "注：圖片過大可能無法保存。",
+    noImage: "未選擇圖片"
   },
   [Language.JA]: {
     title: "RAFAAM",
@@ -215,6 +242,15 @@ export const translations = {
     statusDisconnected: "切断",
     transcriptUser: "あなた",
     transcriptModel: "先生",
-    conversationIntro: "リアルタイムで日本語会話を練習しよう！"
+    conversationIntro: "リアルタイムで日本語会話を練習しよう！",
+    // Background Settings
+    bgSettings: "テーマ設定",
+    uploadImage: "背景画像をアップロード",
+    blur: "ぼかし",
+    opacity: "オーバーレイ不透明度",
+    reset: "初期化",
+    close: "閉じる",
+    bgNote: "注：画像が大きすぎると保存されない場合があります。",
+    noImage: "画像未選択"
   }
 };

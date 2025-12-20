@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { JLPTLevel, ContentType, GeneratedContent, Language } from './types';
+import React, { useState, useEffect } from 'react';
+import { JLPTLevel, ContentType, GeneratedContent, Language, BackgroundConfig } from './types';
 import { generateLesson } from './services/geminiService';
+import { getBackgroundConfig, saveBackgroundConfig } from './services/storageService';
 import { PixelButton, PixelCard, PixelInput, PixelSelect } from './components/PixelUI';
 import { LoadingSprite } from './components/LoadingSprite';
 import { GrammarView } from './components/GrammarView';
@@ -8,6 +9,7 @@ import { QuizView } from './components/QuizView';
 import { FavoritesView } from './components/FavoritesView';
 import { SelectionReader } from './components/SelectionReader';
 import { ConversationView } from './components/ConversationView';
+import { BackgroundSettings } from './components/BackgroundSettings';
 import { InstallPWA } from './components/InstallPWA';
 import { translations } from './i18n';
 
@@ -26,6 +28,19 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState<GeneratedContent | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Background Settings State
+  const [bgConfig, setBgConfig] = useState<BackgroundConfig>({ imageData: null, blur: 0, overlayOpacity: 0.5 });
+  const [showSettings, setShowSettings] = useState(false);
+
+  useEffect(() => {
+    setBgConfig(getBackgroundConfig());
+  }, []);
+
+  const handleBgConfigChange = (newConfig: BackgroundConfig) => {
+    setBgConfig(newConfig);
+    saveBackgroundConfig(newConfig);
+  };
 
   const t = translations[language];
 
@@ -64,9 +79,35 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-20 relative">
+    <div className="min-h-screen pb-20 relative isolate">
+      {/* Background Layer */}
+      <div 
+        className="fixed inset-0 z-[-1] transition-all duration-300"
+        style={{
+           backgroundColor: '#f0f0f0', // Fallback color
+           backgroundImage: bgConfig.imageData ? `url(${bgConfig.imageData})` : 'none',
+           backgroundSize: 'cover',
+           backgroundPosition: 'center',
+           filter: `blur(${bgConfig.blur}px)`,
+        }}
+      />
+      {/* Background Overlay (Dimmer) */}
+      <div 
+        className="fixed inset-0 z-[-1] pointer-events-none transition-all duration-300 bg-white"
+        style={{ opacity: bgConfig.imageData ? bgConfig.overlayOpacity : 0 }}
+      />
+
       <SelectionReader />
       <InstallPWA />
+      
+      {showSettings && (
+        <BackgroundSettings 
+            language={language}
+            config={bgConfig}
+            onConfigChange={handleBgConfigChange}
+            onClose={() => setShowSettings(false)}
+        />
+      )}
       
       {/* Header */}
       <header className="bg-[#4f46e5] border-b-4 border-black p-3 md:p-4 mb-6 md:mb-10 sticky top-0 z-10 shadow-[0_4px_0_0_rgba(0,0,0,0.2)]">
@@ -92,6 +133,14 @@ const App: React.FC = () => {
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
               </svg>
             </a>
+
+            <button 
+              onClick={() => setShowSettings(true)}
+              className="h-10 w-10 md:h-12 md:w-12 bg-gray-200 border-2 border-black hover:bg-gray-300 shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center flex-shrink-0 p-0"
+              title={t.bgSettings}
+            >
+              <span className="text-xl md:text-2xl leading-none">⚙️</span>
+            </button>
 
             <button 
               onClick={() => setViewMode(viewMode === ViewMode.GENERATOR ? ViewMode.FAVORITES : ViewMode.GENERATOR)}
@@ -140,7 +189,7 @@ const App: React.FC = () => {
                   <form onSubmit={handleGenerate} className="space-y-4 md:space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                       <div>
-                        <label className="block font-['VT323'] text-lg md:text-xl my-2 uppercase font-bold">{t.jlptLevel}</label>
+                        <label className="block font-['VT323'] text-lg md:text-xl mb-2 uppercase font-bold">{t.jlptLevel}</label>
                         <PixelSelect 
                           value={level} 
                           onChange={(e) => setLevel(e.target.value as JLPTLevel)}
@@ -151,7 +200,7 @@ const App: React.FC = () => {
                         </PixelSelect>
                       </div>
                       <div>
-                        <label className="block font-['VT323'] text-lg md:text-xl my-2 uppercase font-bold">{t.questType}</label>
+                        <label className="block font-['VT323'] text-lg md:text-xl mb-2 uppercase font-bold">{t.questType}</label>
                         <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
                           <label className="flex items-center space-x-2 cursor-pointer group">
                             <input 
