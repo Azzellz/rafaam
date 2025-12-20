@@ -45,10 +45,10 @@ export const InstallPWA: React.FC = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 animate-bounce-in">
+    <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 animate-bounce-in">
       <PixelButton 
         onClick={handleInstall}
-        className="flex items-center gap-2 bg-[#facc15] text-black border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all"
+        className="flex items-center gap-2 bg-[#facc15] text-black border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all scale-90 md:scale-100 origin-bottom-right"
       >
         <span>📱</span>
         <span className="font-['VT323'] text-lg">INSTALL APP</span>

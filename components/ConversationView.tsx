@@ -313,17 +313,17 @@ export const ConversationView: React.FC<Props> = ({ data, language, onExit }) =>
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] animate-fade-in">
+    <div className="flex flex-col items-center justify-center min-h-[50vh] md:min-h-[60vh] animate-fade-in w-full">
       
       <div className="mb-4 text-center">
-         <h2 className="text-3xl font-['DotGothic16'] text-[#4f46e5] mb-2">{t.conversation}</h2>
-         <p className="font-['VT323'] text-xl text-gray-600">{t.questTopic}: {data.topic}</p>
+         <h2 className="text-2xl md:text-3xl font-['DotGothic16'] text-[#4f46e5] mb-2">{t.conversation}</h2>
+         <p className="font-['VT323'] text-lg md:text-xl text-gray-600">{t.questTopic}: {data.topic}</p>
       </div>
 
-      <PixelCard className="w-full max-w-lg p-6 flex flex-col items-center relative min-h-[500px]">
+      <PixelCard className="w-full max-w-lg flex flex-col items-center relative h-[60vh] md:h-[600px] overflow-hidden">
         
         {/* Status Header */}
-        <div className="w-full flex justify-between items-center font-['VT323'] text-lg mb-6 border-b-2 border-gray-200 pb-2">
+        <div className="w-full flex justify-between items-center font-['VT323'] text-base md:text-lg mb-4 border-b-2 border-gray-200 pb-2 flex-shrink-0">
            <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${status === 'connected' ? 'bg-green-500 animate-pulse' : status === 'error' ? 'bg-red-500' : 'bg-gray-400'}`}></div>
               <span className="uppercase">
@@ -342,12 +342,12 @@ export const ConversationView: React.FC<Props> = ({ data, language, onExit }) =>
         </div>
 
         {/* Visualizer & Avatar */}
-        <div className="mb-6 flex items-center justify-center">
+        <div className="mb-4 flex-shrink-0 flex items-center justify-center">
             {status === 'connected' ? (
                 <div className="relative">
                      {/* Sensei Avatar / Icon */}
-                    <div className={`w-24 h-24 border-4 border-black transition-all duration-200 ${isTalking ? 'bg-[#facc15] translate-y-[-4px] shadow-[4px_4px_0_0_#000]' : 'bg-gray-200 shadow-none'}`}>
-                        <div className="w-full h-full flex items-center justify-center text-5xl">
+                    <div className={`w-20 h-20 md:w-24 md:h-24 border-4 border-black transition-all duration-200 ${isTalking ? 'bg-[#facc15] translate-y-[-4px] shadow-[4px_4px_0_0_#000]' : 'bg-gray-200 shadow-none'}`}>
+                        <div className="w-full h-full flex items-center justify-center text-4xl md:text-5xl">
                             {isTalking ? "🗣️" : "👂"}
                         </div>
                     </div>
@@ -361,14 +361,14 @@ export const ConversationView: React.FC<Props> = ({ data, language, onExit }) =>
                     )}
                 </div>
             ) : (
-                <div className="w-24 h-24 border-4 border-gray-300 bg-gray-100 flex items-center justify-center text-5xl grayscale opacity-50">
+                <div className="w-20 h-20 md:w-24 md:h-24 border-4 border-gray-300 bg-gray-100 flex items-center justify-center text-4xl md:text-5xl grayscale opacity-50">
                     🤖
                 </div>
             )}
         </div>
 
-        {/* Transcript Area (Subtitles) */}
-        <div className="w-full flex-grow bg-[#f8fafc] border-2 border-black p-3 mb-4 overflow-y-auto max-h-[250px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)]">
+        {/* Transcript Area (Subtitles) - Flexible Height */}
+        <div className="w-full flex-grow bg-[#f8fafc] border-2 border-black p-2 md:p-3 mb-4 overflow-y-auto shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] min-h-0">
             {history.length === 0 && !currentInput && !currentOutput && status === 'connected' && (
                <div className="h-full flex items-center justify-center text-gray-400 font-['VT323']">
                   {t.listening}
@@ -408,28 +408,28 @@ export const ConversationView: React.FC<Props> = ({ data, language, onExit }) =>
             </div>
         </div>
 
-        {/* Instructions (Only when idle) */}
+        {/* Instructions (Only when idle) - Absolutely positioned or conditional overlay might be better on small screens, but flow is okay */}
         {status === 'idle' && (
-            <p className="text-center font-['VT323'] text-gray-500 mb-6 px-4">
+            <p className="text-center font-['VT323'] text-gray-500 mb-4 px-2 text-sm md:text-base">
                 {t.conversationIntro} <br/>
                 <span className="text-xs">{t.micPermission}</span>
             </p>
         )}
 
         {/* Controls */}
-        <div className="w-full flex flex-col gap-3 mt-auto">
+        <div className="w-full flex flex-col gap-3 mt-auto flex-shrink-0">
             {status === 'idle' || status === 'error' || status === 'disconnected' ? (
-                <PixelButton onClick={connect} className="w-full py-3 text-xl">
+                <PixelButton onClick={connect} className="w-full py-2 md:py-3 text-lg md:text-xl">
                     {t.startConversation}
                 </PixelButton>
             ) : (
-                <PixelButton variant="danger" onClick={() => { disconnect(); onExit(); }} className="w-full py-3">
+                <PixelButton variant="danger" onClick={() => { disconnect(); onExit(); }} className="w-full py-2 md:py-3">
                     {t.endConversation}
                 </PixelButton>
             )}
             
             {status === 'error' && (
-                 <p className="text-red-500 font-['VT323'] text-center">{t.connectionError}</p>
+                 <p className="text-red-500 font-['VT323'] text-center text-sm">{t.connectionError}</p>
             )}
         </div>
 
