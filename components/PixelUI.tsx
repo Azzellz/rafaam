@@ -58,7 +58,7 @@ export const PixelSelect: React.FC<React.SelectHTMLAttributes<HTMLSelectElement>
   return (
     <div className="relative">
       <select 
-        className={`font-['VT323'] text-lg md:text-xl appearance-none w-full bg-white border-2 border-black p-2 md:p-3 pr-8 focus:outline-none focus:shadow-[4px_4px_0_0_#000] cursor-pointer ${className}`}
+        className={`font-['VT323'] text-lg md:text-xl appearance-none w-full bg-white border-2 border-black p-2 pr-8 focus:outline-none focus:shadow-[4px_4px_0_0_#000] cursor-pointer ${className}`}
         {...props}
       >
         {children}

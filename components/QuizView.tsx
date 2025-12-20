@@ -69,7 +69,7 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
       </div>
 
       <PixelCard title={t.quizBattleTitle}>
-        <h3 className="text-2xl font-['DotGothic16'] mb-8 text-center leading-relaxed">
+        <h3 className="text-2xl font-['DotGothic16'] mt-4 mb-8 text-center leading-relaxed">
           {question.question}
         </h3>
 
