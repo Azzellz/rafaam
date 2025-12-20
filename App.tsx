@@ -8,6 +8,7 @@ import { QuizView } from './components/QuizView';
 import { FavoritesView } from './components/FavoritesView';
 import { SelectionReader } from './components/SelectionReader';
 import { ConversationView } from './components/ConversationView';
+import { InstallPWA } from './components/InstallPWA';
 import { translations } from './i18n';
 
 enum ViewMode {
@@ -65,6 +66,8 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen pb-20 relative">
       <SelectionReader />
+      <InstallPWA />
+      
       {/* Header */}
       <header className="bg-[#4f46e5] border-b-4 border-black p-4 mb-10 sticky top-0 z-10 shadow-[0_4px_0_0_rgba(0,0,0,0.2)]">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
