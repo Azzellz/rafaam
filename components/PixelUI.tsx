@@ -38,6 +38,7 @@ export const PixelCard: React.FC<{ children: React.ReactNode; className?: string
           <span className="font-['VT323'] text-lg md:text-xl uppercase tracking-wider">{title}</span>
         </div>
       )}
+      <div className="mb-2"></div>
       {children}
     </div>
   );
