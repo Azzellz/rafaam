@@ -15,6 +15,7 @@ export const enTranslation: TranslationContent = {
     conversation: "Voice Chat",
     questTopic: "QUEST TOPIC",
     topicPlaceholder: "e.g. Travel, Ordering at a restaurant, Anime tropes...",
+    randomTopic: "RANDOM",
     startQuest: "START QUEST",
     instantGen: "Instant Gen",
     nativeExamples: "Native Examples",

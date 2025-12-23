@@ -15,6 +15,7 @@ export const zhCNTranslation: TranslationContent = {
     conversation: "口语对话",
     questTopic: "任务主题",
     topicPlaceholder: "例如：旅行，在餐厅点餐，动漫梗...",
+    randomTopic: "随机",
     startQuest: "开始任务",
     instantGen: "即时生成",
     nativeExamples: "地道例句",

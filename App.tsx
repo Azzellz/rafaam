@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
     ContentType,
     GeneratedContent,
@@ -6,7 +6,7 @@ import {
     BackgroundConfig,
     PracticeLanguage,
 } from "@/types";
-import { generateLesson } from "@/services/geminiService";
+import { generateLesson, generateRandomTopic } from "@/services/geminiService";
 import {
     getBackgroundConfig,
     saveBackgroundConfig,
@@ -56,6 +56,8 @@ const App: React.FC = () => {
         resetQuestState,
     } = useAppStore();
 
+    const [isRandomizingTopic, setIsRandomizingTopic] = useState(false);
+
     const location = useLocation();
     const navigate = useNavigate();
     const isFavoritesRoute = location.pathname.startsWith("/favorites");
@@ -70,6 +72,23 @@ const App: React.FC = () => {
     };
 
     const t = translations[language as keyof typeof translations];
+
+    const handleRandomTopic = async () => {
+        if (isRandomizingTopic) return;
+        setIsRandomizingTopic(true);
+        try {
+            const randomTopic = await generateRandomTopic(
+                practiceLanguage,
+                language
+            );
+            setTopic(randomTopic);
+        } catch (err) {
+            console.error(err);
+            alert(t.connectionError);
+        } finally {
+            setIsRandomizingTopic(false);
+        }
+    };
 
     const handleGenerate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -143,6 +162,8 @@ const App: React.FC = () => {
                     practiceLanguage={practiceLanguage}
                     contentType={contentType}
                     onTopicChange={setTopic}
+                    onRandomTopic={handleRandomTopic}
+                    randomTopicLoading={isRandomizingTopic}
                     onLevelChange={setLevel}
                     onPracticeLanguageChange={setPracticeLanguage}
                     onContentTypeChange={setContentType}

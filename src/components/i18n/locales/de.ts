@@ -15,6 +15,7 @@ export const deTranslation: TranslationContent = {
     conversation: "Sprachchat",
     questTopic: "QUEST-THEMA",
     topicPlaceholder: "z. B. Reisen, Im Restaurant bestellen, Anime-Tropen...",
+    randomTopic: "ZUFALL",
     startQuest: "QUEST STARTEN",
     instantGen: "Sofort-Gen",
     nativeExamples: "Native Beispiele",

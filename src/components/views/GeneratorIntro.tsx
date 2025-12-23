@@ -20,6 +20,8 @@ type GeneratorIntroProps = {
     practiceLanguage: PracticeLanguage;
     contentType: ContentType;
     onTopicChange: (value: string) => void;
+    onRandomTopic: () => void;
+    randomTopicLoading: boolean;
     onLevelChange: (value: string) => void;
     onPracticeLanguageChange: (value: PracticeLanguage) => void;
     onContentTypeChange: (value: ContentType) => void;
@@ -33,6 +35,8 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
     practiceLanguage,
     contentType,
     onTopicChange,
+    onRandomTopic,
+    randomTopicLoading,
     onLevelChange,
     onPracticeLanguageChange,
     onContentTypeChange,
@@ -152,14 +156,28 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                         <label className={`block ${pixelFormLabel} mb-2`}>
                             {t.questTopic}
                         </label>
-                        <PixelInput
-                            placeholder={t.topicPlaceholder}
-                            value={topic}
-                            onChange={(event) =>
-                                onTopicChange(event.target.value)
-                            }
-                            required
-                        />
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <PixelInput
+                                className="flex-1"
+                                placeholder={t.topicPlaceholder}
+                                value={topic}
+                                onChange={(event) =>
+                                    onTopicChange(event.target.value)
+                                }
+                                required
+                            />
+                            <PixelButton
+                                type="button"
+                                variant="secondary"
+                                onClick={onRandomTopic}
+                                disabled={randomTopicLoading}
+                                className="w-full sm:w-auto whitespace-nowrap"
+                            >
+                                {randomTopicLoading
+                                    ? t.generating
+                                    : t.randomTopic}
+                            </PixelButton>
+                        </div>
                     </div>
 
                     <div className="pt-2 md:pt-4 text-center">

@@ -15,6 +15,7 @@ export const zhTWTranslation: TranslationContent = {
     conversation: "口語對話",
     questTopic: "任務主題",
     topicPlaceholder: "例如：旅行，在餐廳點餐，動漫梗...",
+    randomTopic: "隨機",
     startQuest: "開始任務",
     instantGen: "即時生成",
     nativeExamples: "道地例句",

@@ -205,6 +205,32 @@ IMPORTANT:
     }
 };
 
+export const generateRandomTopic = async (
+    practiceLanguage: PracticeLanguage,
+    language: Language
+): Promise<string> => {
+    const model = "gemini-2.5-flash";
+    const langName = getLanguageName(language);
+    const practiceConfig =
+        PRACTICE_LANGUAGES[practiceLanguage] ??
+        PRACTICE_LANGUAGES[PracticeLanguage.JAPANESE];
+    const targetLanguage = practiceConfig.targetLanguageName;
+
+    const prompt = `Suggest one imaginative ${langName} keyword or short phrase (max 4 words) that would be an engaging topic for practicing ${targetLanguage}. Return only the keyword without numbering, quotes, or extra text.`;
+
+    const response = await ai.models.generateContent({
+        model,
+        contents: [{ parts: [{ text: prompt }] }],
+    });
+
+    const suggestion = response.text?.trim();
+    if (!suggestion) {
+        throw new Error("No topic generated");
+    }
+
+    return suggestion.replace(/^['"\s]+|['"\s]+$/g, "");
+};
+
 export const generateSpeech = async (
     text: string,
     practiceLanguage: PracticeLanguage = DEFAULT_PRACTICE_LANGUAGE

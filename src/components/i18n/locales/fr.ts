@@ -15,6 +15,7 @@ export const frTranslation: TranslationContent = {
     conversation: "Chat vocal",
     questTopic: "SUJET DE LA QUÊTE",
     topicPlaceholder: "ex. Voyage, Commander au restaurant, Tropes d'anime...",
+    randomTopic: "ALÉATOIRE",
     startQuest: "LANCER LA QUÊTE",
     instantGen: "Génération instantanée",
     nativeExamples: "Exemples natifs",

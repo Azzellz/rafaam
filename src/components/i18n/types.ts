@@ -13,6 +13,7 @@ export interface TranslationContent {
     conversation: string;
     questTopic: string;
     topicPlaceholder: string;
+    randomTopic: string;
     startQuest: string;
     instantGen: string;
     nativeExamples: string;

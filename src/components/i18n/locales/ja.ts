@@ -15,6 +15,7 @@ export const jaTranslation: TranslationContent = {
     conversation: "会話練習",
     questTopic: "クエストのトピック",
     topicPlaceholder: "例：旅行、レストランでの注文、アニメ...",
+    randomTopic: "ランダム",
     startQuest: "クエスト開始",
     instantGen: "即時生成",
     nativeExamples: "自然な例文",

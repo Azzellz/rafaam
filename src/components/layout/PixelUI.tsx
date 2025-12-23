@@ -7,7 +7,7 @@ export const PixelButton: React.FC<
     }
 > = ({ children, className = "", variant = "primary", ...props }) => {
     const baseStyle =
-        "font-['VT323'] text-lg md:text-xl px-4 md:px-6 py-2 border-2 border-black transition-transform active:translate-y-1 active:shadow-none";
+        "font-['VT323'] text-lg md:text-xl px-4 md:px-6 py-2 border-2 border-black transition-transform active:translate-y-1 active:shadow-none disabled:opacity-60 disabled:cursor-not-allowed";
 
     const variants = {
         primary:
