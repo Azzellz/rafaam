@@ -47,7 +47,10 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
         <div className="animate-fade-in">
             <div className="text-center mb-8 md:mb-12">
                 <p className="text-xl md:text-2xl font-['DotGothic16'] text-gray-700 mb-2">
-                    {t.introTitle}
+                    {t.introTitle.replace(
+                        "{lang}",
+                        PRACTICE_LANGUAGES[practiceLanguage].nativeLabel
+                    )}
                 </p>
                 <p className="text-gray-500 font-['VT323'] text-lg">
                     {t.introSubtitle}

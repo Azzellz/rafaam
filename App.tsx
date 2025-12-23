@@ -191,6 +191,7 @@ const App: React.FC = () => {
 
             <AppHeader
                 language={language}
+                practiceLanguage={practiceLanguage}
                 isFavoritesActive={isFavoritesRoute}
                 onLogoClick={handleLogoClick}
                 onToggleFavorites={handleToggleFavorites}

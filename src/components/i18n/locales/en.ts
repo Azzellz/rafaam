@@ -4,7 +4,7 @@ export const enTranslation: TranslationContent = {
     title: "RAFAAM",
     subtitle: "Japanese",
     newQuest: "NEW QUEST",
-    introTitle: "Start your Japanese learning adventure.",
+    introTitle: "Start your {lang} learning adventure.",
     introSubtitle: "Powered by Gemini AI Magic",
     configureQuest: "CONFIGURE QUEST",
     practiceLanguage: "LEARNING LANGUAGE",

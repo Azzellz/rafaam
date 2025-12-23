@@ -4,7 +4,7 @@ export const jaTranslation: TranslationContent = {
     title: "RAFAAM",
     subtitle: "日本語",
     newQuest: "新しいクエスト",
-    introTitle: "日本語学習の冒険を始めましょう。",
+    introTitle: "{lang}学習の冒険を始めましょう。",
     introSubtitle: "Gemini AI 魔法で動作",
     configureQuest: "クエスト設定",
     practiceLanguage: "学習言語",

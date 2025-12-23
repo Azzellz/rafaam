@@ -4,7 +4,7 @@ export const zhCNTranslation: TranslationContent = {
     title: "RAFAAM",
     subtitle: "日本語",
     newQuest: "新任务",
-    introTitle: "开启你的日语学习冒险之旅。",
+    introTitle: "开启你的{lang}学习冒险之旅。",
     introSubtitle: "由 Gemini AI 魔法驱动",
     configureQuest: "配置任务",
     practiceLanguage: "练习语言",

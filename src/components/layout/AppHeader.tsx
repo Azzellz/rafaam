@@ -1,11 +1,13 @@
 import React from "react";
-import { Language } from "@/types";
+import { Language, PracticeLanguage } from "@/types";
 import { TranslationContent } from "@/components/i18n";
 import { LANGUAGE_OPTIONS } from "@/constants/languages";
+import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 import { PixelSelect } from "./PixelUI";
 
 type AppHeaderProps = {
     language: Language;
+    practiceLanguage: PracticeLanguage;
     isFavoritesActive: boolean;
     onLogoClick: () => void;
     onToggleFavorites: () => void;
@@ -16,6 +18,7 @@ type AppHeaderProps = {
 
 export const AppHeader: React.FC<AppHeaderProps> = ({
     language,
+    practiceLanguage,
     isFavoritesActive,
     onLogoClick,
     onToggleFavorites,
@@ -33,7 +36,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 <div className="cursor-pointer" onClick={onLogoClick}>
                     <h1 className="text-2xl md:text-4xl text-white font-['VT323'] tracking-widest drop-shadow-[2px_2px_0_#000]">
                         {t.title}{" "}
-                        <span className="text-[#facc15]">{t.subtitle}</span>
+                        <span className="text-[#facc15]">
+                            {PRACTICE_LANGUAGES[practiceLanguage].nativeLabel}
+                        </span>
                     </h1>
                 </div>
 

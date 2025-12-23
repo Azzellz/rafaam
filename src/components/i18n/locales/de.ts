@@ -4,7 +4,7 @@ export const deTranslation: TranslationContent = {
     title: "RAFAAM",
     subtitle: "Japanisch",
     newQuest: "NEUE QUEST",
-    introTitle: "Starte dein Abenteuer beim Japanischlernen.",
+    introTitle: "Starte dein {lang}-Lernabenteuer.",
     introSubtitle: "Angetrieben von Gemini AI Magie",
     configureQuest: "QUEST KONFIGURIEREN",
     practiceLanguage: "LERNSPRACHE",
