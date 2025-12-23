@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ConversationSession, Language } from "@/types";
 import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
+import { LANGUAGE_CONFIG } from "@/constants/languages";
 import { pixelMutedParagraph } from "@/styles/classNames";
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
@@ -86,14 +87,7 @@ export const ConversationView: React.FC<Props> = ({
             });
             streamRef.current = stream;
 
-            const langName =
-                language === Language.JA
-                    ? "Japanese"
-                    : language === Language.ZH_CN
-                    ? "Simplified Chinese"
-                    : language === Language.ZH_TW
-                    ? "Traditional Chinese"
-                    : "English";
+            const langName = LANGUAGE_CONFIG[language]?.aiName ?? "English";
 
             const systemInstructionText = `You are a helpful Japanese language teacher called 'Sensei'. 
       Your student's JLPT level is ${data.level}. 

@@ -6,6 +6,7 @@ import {
     QuizSession,
     Language,
 } from "../types";
+import { LANGUAGE_CONFIG } from "@/constants/languages";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -100,19 +101,8 @@ const quizSchema: Schema = {
     required: ["title", "questions"],
 };
 
-const getLanguageName = (lang: Language): string => {
-    switch (lang) {
-        case Language.ZH_CN:
-            return "Simplified Chinese";
-        case Language.ZH_TW:
-            return "Traditional Chinese";
-        case Language.JA:
-            return "Japanese";
-        case Language.EN:
-        default:
-            return "English";
-    }
-};
+const getLanguageName = (lang: Language): string =>
+    LANGUAGE_CONFIG[lang]?.aiName ?? LANGUAGE_CONFIG[Language.EN].aiName;
 
 export const generateLesson = async (
     level: JLPTLevel,

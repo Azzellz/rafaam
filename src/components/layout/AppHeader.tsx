@@ -1,6 +1,7 @@
 import React from "react";
 import { Language } from "@/types";
 import { TranslationContent } from "@/components/i18n";
+import { LANGUAGE_OPTIONS } from "@/constants/languages";
 import { PixelSelect } from "./PixelUI";
 
 type AppHeaderProps = {
@@ -84,10 +85,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                             onChange={handleLanguageChange}
                             className="h-10 md:h-12 py-0 pl-3 text-base md:text-lg"
                         >
-                            <option value={Language.EN}>English</option>
-                            <option value={Language.ZH_CN}>简体中文</option>
-                            <option value={Language.ZH_TW}>繁體中文</option>
-                            <option value={Language.JA}>日本語</option>
+                            {LANGUAGE_OPTIONS.map((option) => (
+                                <option key={option.code} value={option.code}>
+                                    {option.nativeLabel}
+                                </option>
+                            ))}
                         </PixelSelect>
                     </div>
                 </div>

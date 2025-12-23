@@ -1,68 +1,70 @@
 export enum JLPTLevel {
-  N5 = "N5",
-  N4 = "N4",
-  N3 = "N3",
-  N2 = "N2",
-  N1 = "N1",
+    N5 = "N5",
+    N4 = "N4",
+    N3 = "N3",
+    N2 = "N2",
+    N1 = "N1",
 }
 
 export enum ContentType {
-  GRAMMAR = "GRAMMAR",
-  QUIZ = "QUIZ",
-  CONVERSATION = "CONVERSATION",
+    GRAMMAR = "GRAMMAR",
+    QUIZ = "QUIZ",
+    CONVERSATION = "CONVERSATION",
 }
 
 export enum Language {
-  EN = "en",
-  ZH_CN = "zh-CN",
-  ZH_TW = "zh-TW",
-  JA = "ja"
+    EN = "en",
+    ZH_CN = "zh-CN",
+    ZH_TW = "zh-TW",
+    JA = "ja",
+    FR = "fr",
+    DE = "de",
 }
 
 export interface ExampleSentence {
-  japanese: string;
-  romaji: string;
-  translation: string;
+    japanese: string;
+    romaji: string;
+    translation: string;
 }
 
 export interface GrammarPoint {
-  pattern: string;
-  meaning: string;
-  explanation: string;
-  examples: ExampleSentence[];
+    pattern: string;
+    meaning: string;
+    explanation: string;
+    examples: ExampleSentence[];
 }
 
 export interface GrammarLesson {
-  title: string;
-  introduction: string;
-  points: GrammarPoint[];
+    title: string;
+    introduction: string;
+    points: GrammarPoint[];
 }
 
 export interface QuizQuestion {
-  question: string;
-  options: string[];
-  correctIndex: number;
-  explanation: string;
+    question: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
 }
 
 export interface QuizSession {
-  title: string;
-  questions: QuizQuestion[];
+    title: string;
+    questions: QuizQuestion[];
 }
 
 export interface ConversationSession {
-  topic: string;
-  level: JLPTLevel;
+    topic: string;
+    level: JLPTLevel;
 }
 
 export interface BackgroundConfig {
-  imageData: string | null; // Base64 string
-  blur: number; // 0-20px
-  overlayOpacity: number; // 0.0-1.0
+    imageData: string | null; // Base64 string
+    blur: number; // 0-20px
+    overlayOpacity: number; // 0.0-1.0
 }
 
 // Discriminated union for the result
-export type GeneratedContent = 
-  | { type: ContentType.GRAMMAR; data: GrammarLesson }
-  | { type: ContentType.QUIZ; data: QuizSession }
-  | { type: ContentType.CONVERSATION; data: ConversationSession };
+export type GeneratedContent =
+    | { type: ContentType.GRAMMAR; data: GrammarLesson }
+    | { type: ContentType.QUIZ; data: QuizSession }
+    | { type: ContentType.CONVERSATION; data: ConversationSession };
