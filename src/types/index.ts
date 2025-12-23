@@ -2,6 +2,7 @@ export enum ContentType {
     GRAMMAR = "GRAMMAR",
     QUIZ = "QUIZ",
     CONVERSATION = "CONVERSATION",
+    WRITING = "WRITING",
 }
 
 export enum Language {
@@ -64,6 +65,21 @@ export interface ConversationSession {
     practiceLanguage: PracticeLanguage;
 }
 
+export interface WritingTask {
+    topic: string;
+    level: string;
+    practiceLanguage: PracticeLanguage;
+    prompt: string;
+    hints?: string[];
+}
+
+export interface WritingEvaluation {
+    correctedText: string;
+    feedback: string;
+    score: number;
+    improvements: string[];
+}
+
 export interface BackgroundConfig {
     imageData: string | null; // Base64 string
     blur: number; // 0-20px
@@ -74,4 +90,5 @@ export interface BackgroundConfig {
 export type GeneratedContent =
     | { type: ContentType.GRAMMAR; data: GrammarLesson }
     | { type: ContentType.QUIZ; data: QuizSession }
-    | { type: ContentType.CONVERSATION; data: ConversationSession };
+    | { type: ContentType.CONVERSATION; data: ConversationSession }
+    | { type: ContentType.WRITING; data: WritingTask };

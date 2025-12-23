@@ -4,6 +4,8 @@ import {
     GrammarLesson,
     GrammarPoint,
     QuizSession,
+    WritingTask,
+    WritingEvaluation,
     Language,
     PracticeLanguage,
 } from "../types";
@@ -115,6 +117,43 @@ const quizSchema: Schema = {
     required: ["title", "questions"],
 };
 
+const writingTaskSchema: Schema = {
+    type: Type.OBJECT,
+    properties: {
+        prompt: {
+            type: Type.STRING,
+            description: "The writing prompt/instruction",
+        },
+        hints: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING },
+            description: "Optional hints or vocabulary to use",
+        },
+    },
+    required: ["prompt"],
+};
+
+const writingEvaluationSchema: Schema = {
+    type: Type.OBJECT,
+    properties: {
+        correctedText: {
+            type: Type.STRING,
+            description: "The corrected version of the user's text",
+        },
+        feedback: {
+            type: Type.STRING,
+            description: "General feedback on the writing",
+        },
+        score: { type: Type.INTEGER, description: "Score from 0 to 100" },
+        improvements: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING },
+            description: "Specific suggestions for improvement",
+        },
+    },
+    required: ["correctedText", "feedback", "score", "improvements"],
+};
+
 const getLanguageName = (lang: Language): string =>
     LANGUAGE_CONFIG[lang]?.aiName ?? LANGUAGE_CONFIG[Language.EN].aiName;
 
@@ -125,13 +164,15 @@ type RawGrammarLesson = Omit<
 
 type RawQuizSession = Omit<QuizSession, "practiceLanguage" | "level" | "topic">;
 
+type RawWritingTask = Omit<WritingTask, "practiceLanguage" | "level" | "topic">;
+
 export const generateLesson = async (
     level: string,
     topic: string,
     contentType: ContentType,
     language: Language,
     practiceLanguage: PracticeLanguage
-): Promise<GrammarLesson | QuizSession> => {
+): Promise<GrammarLesson | QuizSession | WritingTask> => {
     const model = "gemini-2.5-flash";
     const langName = getLanguageName(language);
     const practiceConfig: PracticeLanguageConfig =
@@ -175,7 +216,7 @@ IMPORTANT:
                 practiceLanguage,
             })),
         } as GrammarLesson;
-    } else {
+    } else if (contentType === ContentType.QUIZ) {
         const prompt = `Create a ${targetLanguage} quiz (5 questions) for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
     The questions should test grammar or vocabulary relevant to the topic.
 
@@ -202,6 +243,33 @@ IMPORTANT:
             level,
             topic,
         } as QuizSession;
+    } else {
+        const prompt = `Create a ${targetLanguage} writing task for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
+        Provide a writing prompt and some optional hints or vocabulary.
+
+        IMPORTANT:
+        - Write the 'prompt' in ${langName}.
+        - Write 'hints' in ${targetLanguage} with ${langName} translations if necessary.
+        `;
+
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: writingTaskSchema,
+            },
+        });
+
+        const text = response.text;
+        if (!text) throw new Error("No response from AI");
+        const rawTask = JSON.parse(text) as RawWritingTask;
+        return {
+            ...rawTask,
+            practiceLanguage,
+            level,
+            topic,
+        } as WritingTask;
     }
 };
 
@@ -270,4 +338,42 @@ export const generateSpeech = async (
     }
 
     throw new Error("No audio data returned");
+};
+
+export const evaluateWriting = async (
+    text: string,
+    prompt: string,
+    level: string,
+    language: Language,
+    practiceLanguage: PracticeLanguage
+): Promise<WritingEvaluation> => {
+    const model = "gemini-2.5-flash";
+    const langName = getLanguageName(language);
+    const practiceConfig = PRACTICE_LANGUAGES[practiceLanguage];
+    const targetLanguage = practiceConfig.targetLanguageName;
+    const levelLabel = practiceConfig.levelSystemLabel;
+
+    const evaluationPrompt = `Evaluate the following ${targetLanguage} text written by a ${levelLabel} level ${level} learner based on the prompt: "${prompt}".
+
+User's text: "${text}"
+
+Provide:
+1. A corrected version of the text.
+2. General feedback in ${langName}.
+3. A score from 0 to 100.
+4. A list of specific improvements or corrections in ${langName}.
+`;
+
+    const response = await ai.models.generateContent({
+        model,
+        contents: evaluationPrompt,
+        config: {
+            responseMimeType: "application/json",
+            responseSchema: writingEvaluationSchema,
+        },
+    });
+
+    const responseText = response.text;
+    if (!responseText) throw new Error("No response from AI");
+    return JSON.parse(responseText) as WritingEvaluation;
 };

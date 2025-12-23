@@ -4,6 +4,7 @@ import { PixelButton } from "../layout/PixelUI";
 import { GrammarView } from "./GrammarView";
 import { QuizView } from "./QuizView";
 import { ConversationView } from "./ConversationView";
+import { WritingView } from "./WritingView";
 
 type QuestResultsProps = {
     content: GeneratedContent;
@@ -38,8 +39,14 @@ export const QuestResults: React.FC<QuestResultsProps> = ({
                 onRestart={onClearContent}
                 language={language}
             />
-        ) : (
+        ) : content.type === ContentType.CONVERSATION ? (
             <ConversationView
+                data={content.data}
+                language={language}
+                onExit={onClearContent}
+            />
+        ) : (
+            <WritingView
                 data={content.data}
                 language={language}
                 onExit={onClearContent}

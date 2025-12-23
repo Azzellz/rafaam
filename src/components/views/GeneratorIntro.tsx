@@ -114,6 +114,10 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                                         label: t.voicePractice,
                                         value: ContentType.CONVERSATION,
                                     },
+                                    {
+                                        label: t.writingPractice,
+                                        value: ContentType.WRITING,
+                                    },
                                 ].map((option) => (
                                     <label
                                         key={option.value}

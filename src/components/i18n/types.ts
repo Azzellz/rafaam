@@ -19,6 +19,7 @@ export interface TranslationContent {
     nativeExamples: string;
     battleQuiz: string;
     voicePractice: string;
+    writingPractice: string;
     generating: string;
     errorTitle: string;
     errorDismiss: string;
@@ -48,6 +49,12 @@ export interface TranslationContent {
     speaking: string;
     micPermission: string;
     statusConnecting: string;
+    submitWriting: string;
+    evaluating: string;
+    feedback: string;
+    correctedText: string;
+    improvements: string;
+    yourWriting: string;
     statusConnected: string;
     statusDisconnected: string;
     transcriptUser: string;
