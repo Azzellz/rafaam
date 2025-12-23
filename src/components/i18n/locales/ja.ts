@@ -36,6 +36,8 @@ export const jaTranslation: TranslationContent = {
     goodEffort: "よく頑張った！",
     playAgain: "もう一度遊ぶ",
     connectionError: "霊界 (API) への接続に失敗しました。再試行してください。",
+    storageFallbackWarning:
+        "ご利用のブラウザでは IndexedDB が使えないため、お気に入りはローカルストレージに保存されます。ブラウザのデータを消去すると失われる可能性があります。",
     myFavorites: "お気に入り",
     noFavorites: "お気に入りはまだありません",
     addToFavorites: "お気に入りに追加",

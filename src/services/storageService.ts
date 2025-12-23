@@ -1,47 +1,6 @@
-import axios from "axios";
-import { GrammarPoint, BackgroundConfig } from "../types";
+import { BackgroundConfig } from "../types";
 
-const API_BASE = "http://127.0.0.1:3000/api";
 const BG_STORAGE_KEY = "rafaam_background_config";
-const apiClient = axios.create({ baseURL: API_BASE });
-
-// --- API Implementation for Favorites ---
-
-export const getFavorites = async (): Promise<GrammarPoint[]> => {
-    try {
-        const { data } = await apiClient.get<GrammarPoint[]>("/favorites");
-        return data;
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.status === 404) {
-            return [];
-        }
-        console.error("Failed to load favorites from API", error);
-        // Fallback to empty array if API fails, so app doesn't crash
-        return [];
-    }
-};
-
-export const addFavorite = async (point: GrammarPoint): Promise<boolean> => {
-    try {
-        await apiClient.post("/favorites", point);
-        return true;
-    } catch (error) {
-        console.error("Failed to add favorite", error);
-        return false;
-    }
-};
-
-export const removeFavorite = async (pattern: string): Promise<boolean> => {
-    try {
-        await apiClient.delete("/favorites", { data: { pattern } });
-        return true;
-    } catch (error) {
-        console.error("Failed to remove favorite", error);
-        return false;
-    }
-};
-
-// --- Background Configuration (Stays in LocalStorage) ---
 
 export const getBackgroundConfig = (): BackgroundConfig => {
     const defaultConfig: BackgroundConfig = {

@@ -37,6 +37,8 @@ export const deTranslation: TranslationContent = {
     playAgain: "ERNEUT SPIELEN",
     connectionError:
         "Die Verbindung zum Geisterreich (API) ist fehlgeschlagen. Bitte erneut versuchen.",
+    storageFallbackWarning:
+        "Dein Browser unterstützt IndexedDB nicht. Favoriten werden im Local Storage gespeichert und können beim Löschen der Browserdaten verloren gehen.",
     myFavorites: "MEINE FAVORITEN",
     noFavorites: "NOCH KEINE FAVORITEN",
     addToFavorites: "Zu Favoriten speichern",

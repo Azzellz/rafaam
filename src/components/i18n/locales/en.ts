@@ -37,6 +37,8 @@ export const enTranslation: TranslationContent = {
     playAgain: "PLAY AGAIN",
     connectionError:
         "The connection to the Spirit Realm (API) failed. Please try again.",
+    storageFallbackWarning:
+        "Your browser cannot use IndexedDB. Favorites will fall back to local storage and may reset when browser data is cleared.",
     myFavorites: "MY FAVORITES",
     noFavorites: "NO FAVORITES YET",
     addToFavorites: "Save to Favorites",

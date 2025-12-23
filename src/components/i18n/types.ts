@@ -34,6 +34,7 @@ export interface TranslationContent {
     goodEffort: string;
     playAgain: string;
     connectionError: string;
+    storageFallbackWarning: string;
     myFavorites: string;
     noFavorites: string;
     addToFavorites: string;

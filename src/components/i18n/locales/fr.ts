@@ -37,6 +37,8 @@ export const frTranslation: TranslationContent = {
     playAgain: "REJOUER",
     connectionError:
         "La connexion au Royaume des Esprits (API) a échoué. Réessaie.",
+    storageFallbackWarning:
+        "Ton navigateur ne peut pas utiliser IndexedDB. Les favoris sont stockés dans le local storage et peuvent disparaître si tu effaces les données de navigation.",
     myFavorites: "MES FAVORIS",
     noFavorites: "AUCUN FAVORI POUR LE MOMENT",
     addToFavorites: "Enregistrer dans les favoris",

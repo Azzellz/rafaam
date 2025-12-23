@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { GrammarPoint, Language, PracticeLanguage } from "@/types";
 import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
-import { getFavorites, removeFavorite } from "@/services/storageService";
 import { TTSButton } from "../widgets/TTSButton";
 import { pixelAccentLabel, pixelInfoPanel } from "@/styles/classNames";
 import {
     DEFAULT_PRACTICE_LANGUAGE,
     PRACTICE_LANGUAGES,
 } from "@/constants/practiceLanguages";
+import { useFavoritesStore } from "@/stores/useFavoritesStore";
 
 interface Props {
     language: Language;
@@ -17,34 +17,32 @@ interface Props {
 
 export const FavoritesView: React.FC<Props> = ({ language, onBack }) => {
     const t = translations[language];
-    const [favorites, setFavorites] = useState<GrammarPoint[]>([]);
-    const [loading, setLoading] = useState(true);
+    const favorites = useFavoritesStore((state) => state.favorites);
+    const initFavoritesStore = useFavoritesStore((state) => state.initStore);
+    const removeFavoriteFromStore = useFavoritesStore(
+        (state) => state.removeFavorite
+    );
+    const initialized = useFavoritesStore((state) => state.initialized);
+    const isInitializing = useFavoritesStore((state) => state.isInitializing);
+    const storageStrategy = useFavoritesStore((state) => state.storageStrategy);
 
     const resolvePracticeLanguage = (point: GrammarPoint): PracticeLanguage =>
         point.practiceLanguage ?? DEFAULT_PRACTICE_LANGUAGE;
 
     useEffect(() => {
-        loadFavorites();
-    }, []);
+        initFavoritesStore();
+    }, [initFavoritesStore]);
 
-    const loadFavorites = async () => {
-        setLoading(true);
-        const data = await getFavorites();
-        setFavorites(data);
-        setLoading(false);
-    };
+    const loading = !initialized || isInitializing;
 
     const handleRemove = async (pattern: string) => {
-        // Optimistic update
-        const previous = [...favorites];
-        setFavorites(favorites.filter((p) => p.pattern !== pattern));
-
-        const success = await removeFavorite(pattern);
+        const success = await removeFavoriteFromStore(pattern);
         if (!success) {
-            setFavorites(previous);
             alert(t.connectionError);
         }
     };
+
+    const showFallbackWarning = storageStrategy === "localStorage";
 
     return (
         <div className="space-y-8 animate-fade-in">
@@ -60,6 +58,14 @@ export const FavoritesView: React.FC<Props> = ({ language, onBack }) => {
                     {t.backToGenerator}
                 </PixelButton>
             </div>
+
+            {showFallbackWarning && (
+                <PixelCard className="border-2 border-dashed border-yellow-500 bg-yellow-50 text-gray-800">
+                    <p className="font-['VT323'] text-lg text-[#b45309]">
+                        {t.storageFallbackWarning}
+                    </p>
+                </PixelCard>
+            )}
 
             {loading ? (
                 <div className="flex justify-center py-20">

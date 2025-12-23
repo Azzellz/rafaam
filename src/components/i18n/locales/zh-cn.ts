@@ -36,6 +36,8 @@ export const zhCNTranslation: TranslationContent = {
     goodEffort: "做得好！加油！",
     playAgain: "再玩一次",
     connectionError: "连接灵界 (API) 失败。请重试。",
+    storageFallbackWarning:
+        "当前浏览器不支持 IndexedDB，收藏内容将回退到本地存储，清除浏览数据时可能会丢失。",
     myFavorites: "我的收藏",
     noFavorites: "暂无收藏",
     addToFavorites: "收藏要点",

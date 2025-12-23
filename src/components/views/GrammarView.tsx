@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { GrammarLesson, Language, GrammarPoint } from "@/types";
 import { PixelCard } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
-import {
-    getFavorites,
-    addFavorite,
-    removeFavorite,
-} from "@/services/storageService";
 import { TTSButton } from "@/components/widgets/TTSButton";
 import {
     pixelAccentLabel,
@@ -14,6 +9,7 @@ import {
     pixelMutedParagraph,
 } from "@/styles/classNames";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
+import { useFavoritesStore } from "@/stores/useFavoritesStore";
 
 interface Props {
     data: GrammarLesson;
@@ -23,25 +19,29 @@ interface Props {
 export const GrammarView: React.FC<Props> = ({ data, language }) => {
     const t = translations[language];
     const practiceConfig = PRACTICE_LANGUAGES[data.practiceLanguage];
-    // We store the list of favorite patterns to check existence efficiently
-    const [favoritePatterns, setFavoritePatterns] = useState<Set<string>>(
-        new Set()
+    const favorites = useFavoritesStore((state) => state.favorites);
+    const initFavoritesStore = useFavoritesStore((state) => state.initStore);
+    const addFavoriteToStore = useFavoritesStore((state) => state.addFavorite);
+    const removeFavoriteFromStore = useFavoritesStore(
+        (state) => state.removeFavorite
     );
-    const [isLoadingFavs, setIsLoadingFavs] = useState(false);
+    const favoritesInitializing = useFavoritesStore(
+        (state) => state.isInitializing
+    );
+    const favoritesMutating = useFavoritesStore((state) => state.isMutating);
+    const storageStrategy = useFavoritesStore((state) => state.storageStrategy);
 
-    // Load favorites from API on mount
     useEffect(() => {
-        const fetchFavs = async () => {
-            setIsLoadingFavs(true);
-            const points = await getFavorites();
-            const patterns = new Set(
-                points.map((p: GrammarPoint) => p.pattern)
-            );
-            setFavoritePatterns(patterns);
-            setIsLoadingFavs(false);
-        };
-        fetchFavs();
-    }, []);
+        initFavoritesStore();
+    }, [initFavoritesStore]);
+
+    const favoritePatterns = useMemo(
+        () => new Set(favorites.map((p: GrammarPoint) => p.pattern)),
+        [favorites]
+    );
+
+    const isLoadingFavs = favoritesInitializing || favoritesMutating;
+    const showFallbackWarning = storageStrategy === "localStorage";
 
     const ensurePointLanguage = (point: GrammarPoint): GrammarPoint => ({
         ...point,
@@ -52,31 +52,11 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
         const point = ensurePointLanguage(data.points[index]);
         const isFav = favoritePatterns.has(point.pattern);
 
-        // Optimistic UI update
-        const nextSet = new Set(favoritePatterns);
-        if (isFav) {
-            nextSet.delete(point.pattern);
-        } else {
-            nextSet.add(point.pattern);
-        }
-        setFavoritePatterns(nextSet);
+        const success = isFav
+            ? await removeFavoriteFromStore(point.pattern)
+            : await addFavoriteToStore(point);
 
-        // API Call
-        let success = false;
-        if (isFav) {
-            success = await removeFavorite(point.pattern);
-        } else {
-            success = await addFavorite(point);
-        }
-
-        // Revert if API failed
         if (!success) {
-            setFavoritePatterns((prev) => {
-                const reverted = new Set(prev);
-                if (isFav) reverted.add(point.pattern);
-                else reverted.delete(point.pattern);
-                return reverted;
-            });
             alert(t.connectionError);
         }
     };
@@ -106,6 +86,14 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                     </span>
                 </div>
             </div>
+
+            {showFallbackWarning && (
+                <PixelCard className="border-2 border-dashed border-yellow-500 bg-yellow-50 text-gray-800">
+                    <p className="font-['VT323'] text-lg text-[#b45309]">
+                        {t.storageFallbackWarning}
+                    </p>
+                </PixelCard>
+            )}
 
             {data.points.map((point, index) => {
                 const isFavorite = favoritePatterns.has(point.pattern);
