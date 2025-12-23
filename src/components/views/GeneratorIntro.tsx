@@ -63,18 +63,18 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                             </label>
                             <PixelSelect
                                 value={practiceLanguage}
-                                onChange={(event) =>
+                                onChange={(value) =>
                                     onPracticeLanguageChange(
-                                        event.target.value as PracticeLanguage
+                                        value as PracticeLanguage
                                     )
                                 }
-                            >
-                                {PRACTICE_LANGUAGE_OPTIONS.map((option) => (
-                                    <option key={option.id} value={option.id}>
-                                        {option.nativeLabel}
-                                    </option>
-                                ))}
-                            </PixelSelect>
+                                options={PRACTICE_LANGUAGE_OPTIONS.map(
+                                    (option) => ({
+                                        value: option.id,
+                                        label: option.nativeLabel,
+                                    })
+                                )}
+                            />
                         </div>
                         <div>
                             <label className={`block ${pixelFormLabel} mb-2`}>
@@ -82,16 +82,12 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                             </label>
                             <PixelSelect
                                 value={level}
-                                onChange={(event) =>
-                                    onLevelChange(event.target.value)
-                                }
-                            >
-                                {levelOptions.map((option) => (
-                                    <option key={option.id} value={option.id}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </PixelSelect>
+                                onChange={(value) => onLevelChange(value)}
+                                options={levelOptions.map((option) => ({
+                                    value: option.id,
+                                    label: option.label,
+                                }))}
+                            />
                         </div>
                         <div>
                             <label className={`block ${pixelFormLabel} mb-2`}>

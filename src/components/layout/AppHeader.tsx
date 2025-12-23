@@ -23,10 +23,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     onLanguageChange,
     t,
 }) => {
-    const handleLanguageChange = (
-        event: React.ChangeEvent<HTMLSelectElement>
-    ) => {
-        onLanguageChange(event.target.value as Language);
+    const handleLanguageChange = (value: string) => {
+        onLanguageChange(value as Language);
     };
 
     return (
@@ -83,14 +81,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                         <PixelSelect
                             value={language}
                             onChange={handleLanguageChange}
-                            className="h-10 md:h-12 py-0 pl-3 text-base md:text-lg"
-                        >
-                            {LANGUAGE_OPTIONS.map((option) => (
-                                <option key={option.code} value={option.code}>
-                                    {option.nativeLabel}
-                                </option>
-                            ))}
-                        </PixelSelect>
+                            className="h-10 md:h-12 text-base md:text-lg"
+                            options={LANGUAGE_OPTIONS.map((option) => ({
+                                value: option.code,
+                                label: option.nativeLabel,
+                            }))}
+                        />
                     </div>
                 </div>
             </div>
