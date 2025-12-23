@@ -17,17 +17,22 @@ import { SelectionReader } from "@/components/widgets/SelectionReader";
 import { BackgroundSettings } from "@/components/layout/BackgroundSettings";
 import { InstallPWA } from "@/components/widgets/InstallPWA";
 import { translations } from "@/components/i18n";
-import { useAppStore, ViewMode } from "@/stores/useAppStore";
+import { useAppStore } from "@/stores/useAppStore";
 import { AppBackground } from "@/components/layout/AppBackground";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { GeneratorIntro } from "@/components/views/GeneratorIntro";
 import { QuestResults } from "@/components/views/QuestResults";
 import { ErrorBanner } from "@/components/widgets/ErrorBanner";
+import {
+    Navigate,
+    Route,
+    Routes,
+    useLocation,
+    useNavigate,
+} from "react-router-dom";
 
 const App: React.FC = () => {
     const {
-        viewMode,
-        setViewMode,
         topic,
         setTopic,
         level,
@@ -49,6 +54,10 @@ const App: React.FC = () => {
         resetQuestState,
     } = useAppStore();
 
+    const location = useLocation();
+    const navigate = useNavigate();
+    const isFavoritesRoute = location.pathname.startsWith("/favorites");
+
     useEffect(() => {
         setBgConfig(getBackgroundConfig());
     }, [setBgConfig]);
@@ -58,7 +67,7 @@ const App: React.FC = () => {
         saveBackgroundConfig(newConfig);
     };
 
-    const t = translations[language];
+    const t = translations[language as keyof typeof translations];
 
     const handleGenerate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -98,15 +107,11 @@ const App: React.FC = () => {
     };
 
     const handleToggleFavorites = () => {
-        setViewMode(
-            viewMode === ViewMode.GENERATOR
-                ? ViewMode.FAVORITES
-                : ViewMode.GENERATOR
-        );
+        navigate(isFavoritesRoute ? "/" : "/favorites");
     };
 
     const handleLogoClick = () => {
-        setViewMode(ViewMode.GENERATOR);
+        navigate("/");
     };
 
     const handleLanguageChange = (nextLanguage: Language) => {
@@ -125,7 +130,43 @@ const App: React.FC = () => {
         setShowSettings(visible);
     };
 
-    const isFavoritesView = viewMode === ViewMode.FAVORITES;
+    const generatorView = (
+        <>
+            {!content && !loading && (
+                <GeneratorIntro
+                    t={t}
+                    topic={topic}
+                    level={level}
+                    contentType={contentType}
+                    onTopicChange={setTopic}
+                    onLevelChange={setLevel}
+                    onContentTypeChange={setContentType}
+                    onSubmit={handleGenerate}
+                />
+            )}
+
+            {loading && <LoadingSprite language={language} />}
+
+            {error && (
+                <ErrorBanner
+                    title={t.errorTitle}
+                    message={error}
+                    dismissLabel={t.errorDismiss}
+                    onDismiss={handleDismissError}
+                />
+            )}
+
+            {content && !loading && (
+                <QuestResults
+                    content={content}
+                    language={language}
+                    resetLabel={t.newQuest}
+                    onReset={handleReset}
+                    onClearContent={handleClearContent}
+                />
+            )}
+        </>
+    );
 
     return (
         <div className="min-h-screen pb-20 relative isolate">
@@ -145,7 +186,7 @@ const App: React.FC = () => {
 
             <AppHeader
                 language={language}
-                viewMode={viewMode}
+                isFavoritesActive={isFavoritesRoute}
                 onLogoClick={handleLogoClick}
                 onToggleFavorites={handleToggleFavorites}
                 onOpenSettings={() => handleShowSettings(true)}
@@ -154,48 +195,19 @@ const App: React.FC = () => {
             />
 
             <main className="max-w-4xl mx-auto px-3 md:px-4">
-                {isFavoritesView ? (
-                    <FavoritesView
-                        language={language}
-                        onBack={() => setViewMode(ViewMode.GENERATOR)}
-                    />
-                ) : (
-                    <>
-                        {!content && !loading && (
-                            <GeneratorIntro
-                                t={t}
-                                topic={topic}
-                                level={level}
-                                contentType={contentType}
-                                onTopicChange={setTopic}
-                                onLevelChange={setLevel}
-                                onContentTypeChange={setContentType}
-                                onSubmit={handleGenerate}
-                            />
-                        )}
-
-                        {loading && <LoadingSprite language={language} />}
-
-                        {error && (
-                            <ErrorBanner
-                                title={t.errorTitle}
-                                message={error}
-                                dismissLabel={t.errorDismiss}
-                                onDismiss={handleDismissError}
-                            />
-                        )}
-
-                        {content && !loading && (
-                            <QuestResults
-                                content={content}
+                <Routes>
+                    <Route path="/" element={generatorView} />
+                    <Route
+                        path="/favorites"
+                        element={
+                            <FavoritesView
                                 language={language}
-                                resetLabel={t.newQuest}
-                                onReset={handleReset}
-                                onClearContent={handleClearContent}
+                                onBack={() => navigate("/")}
                             />
-                        )}
-                    </>
-                )}
+                        }
+                    />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
             </main>
         </div>
     );

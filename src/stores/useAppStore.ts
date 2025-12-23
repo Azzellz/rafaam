@@ -7,13 +7,7 @@ import {
     Language,
 } from "../types";
 
-export enum ViewMode {
-    GENERATOR = "GENERATOR",
-    FAVORITES = "FAVORITES",
-}
-
 type AppState = {
-    viewMode: ViewMode;
     topic: string;
     level: JLPTLevel;
     contentType: ContentType;
@@ -23,7 +17,6 @@ type AppState = {
     error: string | null;
     bgConfig: BackgroundConfig;
     showSettings: boolean;
-    setViewMode: (viewMode: ViewMode) => void;
     setTopic: (topic: string) => void;
     setLevel: (level: JLPTLevel) => void;
     setContentType: (contentType: ContentType) => void;
@@ -37,7 +30,6 @@ type AppState = {
 };
 
 export const useAppStore = create<AppState>((set) => ({
-    viewMode: ViewMode.GENERATOR,
     topic: "",
     level: JLPTLevel.N5,
     contentType: ContentType.GRAMMAR,
@@ -47,7 +39,6 @@ export const useAppStore = create<AppState>((set) => ({
     error: null,
     bgConfig: { imageData: null, blur: 0, overlayOpacity: 0.5 },
     showSettings: false,
-    setViewMode: (viewMode) => set({ viewMode }),
     setTopic: (topic) => set({ topic }),
     setLevel: (level) => set({ level }),
     setContentType: (contentType) => set({ contentType }),

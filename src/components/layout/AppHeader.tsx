@@ -1,12 +1,11 @@
 import React from "react";
 import { Language } from "@/types";
 import { TranslationContent } from "@/components/i18n";
-import { ViewMode } from "@/stores/useAppStore";
 import { PixelSelect } from "./PixelUI";
 
 type AppHeaderProps = {
     language: Language;
-    viewMode: ViewMode;
+    isFavoritesActive: boolean;
     onLogoClick: () => void;
     onToggleFavorites: () => void;
     onOpenSettings: () => void;
@@ -16,7 +15,7 @@ type AppHeaderProps = {
 
 export const AppHeader: React.FC<AppHeaderProps> = ({
     language,
-    viewMode,
+    isFavoritesActive,
     onLogoClick,
     onToggleFavorites,
     onOpenSettings,
@@ -72,7 +71,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                         onClick={onToggleFavorites}
                         className="h-10 w-10 md:h-12 md:w-12 bg-[#facc15] border-2 border-black hover:bg-[#eab308] shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center flex-shrink-0 p-0"
                         title={t.myFavorites}
-                        aria-pressed={viewMode === ViewMode.FAVORITES}
+                        aria-pressed={isFavoritesActive}
                     >
                         <span className="text-xl md:text-2xl leading-none pt-1">
                             ★
