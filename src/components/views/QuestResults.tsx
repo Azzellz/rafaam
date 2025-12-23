@@ -1,0 +1,49 @@
+import React from "react";
+import { ContentType, GeneratedContent, Language } from "../../types";
+import { PixelButton } from "../layout/PixelUI";
+import { GrammarView } from "./GrammarView";
+import { QuizView } from "./QuizView";
+import { ConversationView } from "./ConversationView";
+
+type QuestResultsProps = {
+    content: GeneratedContent;
+    language: Language;
+    resetLabel: string;
+    onReset: () => void;
+    onClearContent: () => void;
+};
+
+export const QuestResults: React.FC<QuestResultsProps> = ({
+    content,
+    language,
+    resetLabel,
+    onReset,
+    onClearContent,
+}) => (
+    <div className="animate-fade-in-up relative">
+        <div className="mb-4 flex justify-end">
+            <PixelButton
+                variant="secondary"
+                onClick={onReset}
+                className="text-sm px-4 py-1"
+            >
+                {resetLabel}
+            </PixelButton>
+        </div>
+        {content.type === ContentType.GRAMMAR ? (
+            <GrammarView data={content.data as any} language={language} />
+        ) : content.type === ContentType.QUIZ ? (
+            <QuizView
+                data={content.data as any}
+                onRestart={onClearContent}
+                language={language}
+            />
+        ) : (
+            <ConversationView
+                data={content.data as any}
+                language={language}
+                onExit={onClearContent}
+            />
+        )}
+    </div>
+);

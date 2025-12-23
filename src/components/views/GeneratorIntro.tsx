@@ -1,0 +1,151 @@
+import React from "react";
+import { ContentType, JLPTLevel } from "@/types";
+import { TranslationContent } from "@/components/i18n";
+import {
+    PixelButton,
+    PixelCard,
+    PixelInput,
+    PixelSelect,
+} from "../layout/PixelUI";
+
+type GeneratorIntroProps = {
+    t: TranslationContent;
+    topic: string;
+    level: JLPTLevel;
+    contentType: ContentType;
+    onTopicChange: (value: string) => void;
+    onLevelChange: (value: JLPTLevel) => void;
+    onContentTypeChange: (value: ContentType) => void;
+    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+};
+
+export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
+    t,
+    topic,
+    level,
+    contentType,
+    onTopicChange,
+    onLevelChange,
+    onContentTypeChange,
+    onSubmit,
+}) => (
+    <div className="animate-fade-in">
+        <div className="text-center mb-8 md:mb-12">
+            <p className="text-xl md:text-2xl font-['DotGothic16'] text-gray-700 mb-2">
+                {t.introTitle}
+            </p>
+            <p className="text-gray-500 font-['VT323'] text-lg">
+                {t.introSubtitle}
+            </p>
+        </div>
+
+        <PixelCard title={t.configureQuest}>
+            <form onSubmit={onSubmit} className="space-y-4 md:space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div>
+                        <label className="block font-['VT323'] text-lg md:text-xl mb-2 uppercase font-bold">
+                            {t.jlptLevel}
+                        </label>
+                        <PixelSelect
+                            value={level}
+                            onChange={(event) =>
+                                onLevelChange(event.target.value as JLPTLevel)
+                            }
+                        >
+                            {Object.values(JLPTLevel).map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </PixelSelect>
+                    </div>
+                    <div>
+                        <label className="block font-['VT323'] text-lg md:text-xl mb-2 uppercase font-bold">
+                            {t.questType}
+                        </label>
+                        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                            {[
+                                {
+                                    label: t.grammarLesson,
+                                    value: ContentType.GRAMMAR,
+                                },
+                                {
+                                    label: t.quizBattle,
+                                    value: ContentType.QUIZ,
+                                },
+                                {
+                                    label: t.voicePractice,
+                                    value: ContentType.CONVERSATION,
+                                },
+                            ].map((option) => (
+                                <label
+                                    key={option.value}
+                                    className="flex items-center space-x-2 cursor-pointer group"
+                                >
+                                    <input
+                                        type="radio"
+                                        name="contentType"
+                                        checked={contentType === option.value}
+                                        onChange={() =>
+                                            onContentTypeChange(option.value)
+                                        }
+                                        className="hidden"
+                                    />
+                                    <div
+                                        className={`w-5 h-5 md:w-6 md:h-6 border-2 border-black flex items-center justify-center ${
+                                            contentType === option.value
+                                                ? "bg-[#3b82f6]"
+                                                : "bg-white"
+                                        }`}
+                                    >
+                                        {contentType === option.value && (
+                                            <div className="w-2 h-2 bg-white"></div>
+                                        )}
+                                    </div>
+                                    <span className="font-['VT323'] text-lg md:text-xl group-hover:underline">
+                                        {option.label}
+                                    </span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block font-['VT323'] text-lg md:text-xl mb-2 uppercase font-bold">
+                        {t.questTopic}
+                    </label>
+                    <PixelInput
+                        placeholder={t.topicPlaceholder}
+                        value={topic}
+                        onChange={(event) => onTopicChange(event.target.value)}
+                        required
+                    />
+                </div>
+
+                <div className="pt-2 md:pt-4 text-center">
+                    <PixelButton type="submit" className="w-full md:w-1/2">
+                        {t.startQuest}
+                    </PixelButton>
+                </div>
+            </form>
+        </PixelCard>
+
+        <div className="mt-8 md:mt-12 grid grid-cols-3 gap-2 md:gap-4 opacity-50 text-center font-['VT323']">
+            {[
+                { icon: "⚡", label: t.instantGen },
+                { icon: "🎌", label: t.nativeExamples },
+                { icon: "⚔️", label: t.battleQuiz },
+            ].map((feature) => (
+                <div key={feature.label} className="flex flex-col items-center">
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-300 border-2 border-black mb-2 flex items-center justify-center text-xl md:text-2xl">
+                        {feature.icon}
+                    </div>
+                    <span className="text-sm md:text-base">
+                        {feature.label}
+                    </span>
+                </div>
+            ))}
+        </div>
+    </div>
+);
