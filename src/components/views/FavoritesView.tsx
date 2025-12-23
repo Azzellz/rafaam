@@ -4,6 +4,7 @@ import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
 import { getFavorites, removeFavorite } from "@/services/storageService";
 import { TTSButton } from "../widgets/TTSButton";
+import { pixelAccentLabel, pixelInfoPanel } from "@/styles/classNames";
 
 interface Props {
     language: Language;
@@ -91,8 +92,10 @@ export const FavoritesView: React.FC<Props> = ({ language, onBack }) => {
                                 {point.explanation}
                             </p>
 
-                            <div className="bg-[#f0f9ff] border-2 border-[#bae6fd] p-3">
-                                <h4 className="font-['VT323'] text-[#0ea5e9] mb-2 text-sm uppercase font-bold">
+                            <div className={`${pixelInfoPanel} p-3`}>
+                                <h4
+                                    className={`${pixelAccentLabel} text-sm mb-2`}
+                                >
                                     {t.examples}
                                 </h4>
                                 <ul className="space-y-3">

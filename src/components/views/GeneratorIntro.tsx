@@ -1,6 +1,7 @@
 import React from "react";
 import { ContentType, JLPTLevel } from "@/types";
 import { TranslationContent } from "@/components/i18n";
+import { pixelFormLabel } from "@/styles/classNames";
 import {
     PixelButton,
     PixelCard,
@@ -43,7 +44,7 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
             <form onSubmit={onSubmit} className="space-y-4 md:space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div>
-                        <label className="block font-['VT323'] text-lg md:text-xl mb-2 uppercase font-bold">
+                        <label className={`block ${pixelFormLabel} mb-2`}>
                             {t.jlptLevel}
                         </label>
                         <PixelSelect
@@ -60,7 +61,7 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                         </PixelSelect>
                     </div>
                     <div>
-                        <label className="block font-['VT323'] text-lg md:text-xl mb-2 uppercase font-bold">
+                        <label className={`block ${pixelFormLabel} mb-2`}>
                             {t.questType}
                         </label>
                         <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
@@ -112,7 +113,7 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                 </div>
 
                 <div>
-                    <label className="block font-['VT323'] text-lg md:text-xl mb-2 uppercase font-bold">
+                    <label className={`block ${pixelFormLabel} mb-2`}>
                         {t.questTopic}
                     </label>
                     <PixelInput

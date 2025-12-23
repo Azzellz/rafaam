@@ -8,6 +8,11 @@ import {
     removeFavorite,
 } from "@/services/storageService";
 import { TTSButton } from "@/components/widgets/TTSButton";
+import {
+    pixelAccentLabel,
+    pixelInfoPanel,
+    pixelMutedParagraph,
+} from "@/styles/classNames";
 
 interface Props {
     data: GrammarLesson;
@@ -75,7 +80,9 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                 <h2 className="text-3xl md:text-5xl font-['DotGothic16'] mb-2 text-[#4f46e5] drop-shadow-[2px_2px_0_#000]">
                     {data.title}
                 </h2>
-                <p className="text-lg md:text-xl font-['VT323'] text-gray-600 max-w-2xl mx-auto leading-tight">
+                <p
+                    className={`${pixelMutedParagraph} max-w-2xl mx-auto leading-tight`}
+                >
                     {data.introduction}
                 </p>
             </div>
@@ -125,8 +132,8 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                             {point.explanation}
                         </p>
 
-                        <div className="bg-[#f0f9ff] border-2 border-[#bae6fd] p-3 md:p-4">
-                            <h4 className="font-['VT323'] text-[#0ea5e9] mb-3 text-lg uppercase font-bold">
+                        <div className={`${pixelInfoPanel} p-3 md:p-4`}>
+                            <h4 className={`${pixelAccentLabel} text-lg mb-3`}>
                                 {t.examples}
                             </h4>
                             <ul className="space-y-4">

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ConversationSession, Language } from "@/types";
 import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
+import { pixelMutedParagraph } from "@/styles/classNames";
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
 
@@ -374,7 +375,7 @@ export const ConversationView: React.FC<Props> = ({
                 <h2 className="text-2xl md:text-3xl font-['DotGothic16'] text-[#4f46e5] mb-2">
                     {t.conversation}
                 </h2>
-                <p className="font-['VT323'] text-lg md:text-xl text-gray-600">
+                <p className={pixelMutedParagraph}>
                     {t.questTopic}: {data.topic}
                 </p>
             </div>
