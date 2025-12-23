@@ -68,11 +68,11 @@ export const WritingView: React.FC<WritingViewProps> = ({
                     </div>
 
                     {data.hints && data.hints.length > 0 && (
-                        <div className="bg-yellow-50 p-3 border-2 border-yellow-200 rounded">
-                            <p className="font-bold text-sm text-yellow-800 mb-1">
+                        <div className="bg-yellow-50 p-4 border-2 border-black">
+                            <p className="font-bold text-sm text-black mb-2 font-['VT323'] uppercase">
                                 {t.point}:
                             </p>
-                            <ul className="list-disc list-inside text-sm text-yellow-900">
+                            <ul className="list-disc list-inside text-lg text-gray-800 font-['VT323']">
                                 {data.hints.map((hint, i) => (
                                     <li key={i}>{hint}</li>
                                 ))}
@@ -83,7 +83,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
                     {!evaluation ? (
                         <div className="space-y-4">
                             <textarea
-                                className="w-full h-48 p-4 border-2 border-gray-300 rounded font-['VT323'] text-lg focus:border-blue-500 focus:outline-none resize-none"
+                                className="w-full h-48 p-4 border-2 border-black font-['VT323'] text-xl focus:bg-blue-50 focus:outline-none resize-none"
                                 placeholder="..."
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
@@ -105,41 +105,41 @@ export const WritingView: React.FC<WritingViewProps> = ({
                         </div>
                     ) : (
                         <div className="space-y-6">
-                            <div className="bg-blue-50 p-4 border-2 border-blue-200 rounded">
-                                <div className="flex justify-between items-center mb-4">
-                                    <h3 className="font-bold text-xl text-blue-900">
+                            <div className="bg-blue-50 p-4 border-2 border-black">
+                                <div className="flex justify-between items-center mb-4 border-b-2 border-black pb-2">
+                                    <h3 className="font-bold text-2xl font-['VT323']">
                                         {t.score}: {evaluation.score}
                                     </h3>
                                 </div>
-                                <p className="text-blue-800 mb-4">
+                                <p className="text-lg font-['VT323'] mb-6">
                                     {evaluation.feedback}
                                 </p>
 
-                                <div className="grid md:grid-cols-2 gap-4">
+                                <div className="grid md:grid-cols-2 gap-6">
                                     <div>
-                                        <h4 className="font-bold text-blue-900 mb-2">
+                                        <h4 className="font-bold font-['VT323'] text-xl mb-2">
                                             {t.yourWriting}
                                         </h4>
-                                        <p className="whitespace-pre-wrap text-gray-700 bg-white p-3 border border-blue-100 rounded h-full">
+                                        <div className="bg-white p-4 border-2 border-black h-full font-['VT323'] text-lg whitespace-pre-wrap">
                                             {text}
-                                        </p>
+                                        </div>
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-blue-900 mb-2">
+                                        <h4 className="font-bold font-['VT323'] text-xl mb-2">
                                             {t.correctedText}
                                         </h4>
-                                        <p className="whitespace-pre-wrap text-gray-700 bg-white p-3 border border-blue-100 rounded h-full">
+                                        <div className="bg-white p-4 border-2 border-black h-full font-['VT323'] text-lg whitespace-pre-wrap">
                                             {evaluation.correctedText}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {evaluation.improvements.length > 0 && (
-                                    <div className="mt-4">
-                                        <h4 className="font-bold text-blue-900 mb-2">
+                                    <div className="mt-6">
+                                        <h4 className="font-bold font-['VT323'] text-xl mb-2">
                                             {t.improvements}
                                         </h4>
-                                        <ul className="list-disc list-inside text-blue-800 space-y-1">
+                                        <ul className="list-disc list-inside font-['VT323'] text-lg space-y-1">
                                             {evaluation.improvements.map(
                                                 (imp, i) => (
                                                     <li key={i}>{imp}</li>
