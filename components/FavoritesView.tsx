@@ -13,14 +13,29 @@ interface Props {
 export const FavoritesView: React.FC<Props> = ({ language, onBack }) => {
   const t = translations[language];
   const [favorites, setFavorites] = useState<GrammarPoint[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setFavorites(getFavorites());
+    loadFavorites();
   }, []);
 
-  const handleRemove = (pattern: string) => {
-    removeFavorite(pattern);
-    setFavorites(getFavorites());
+  const loadFavorites = async () => {
+    setLoading(true);
+    const data = await getFavorites();
+    setFavorites(data);
+    setLoading(false);
+  };
+
+  const handleRemove = async (pattern: string) => {
+    // Optimistic update
+    const previous = [...favorites];
+    setFavorites(favorites.filter(p => p.pattern !== pattern));
+
+    const success = await removeFavorite(pattern);
+    if (!success) {
+      setFavorites(previous);
+      alert(t.connectionError);
+    }
   };
 
   return (
@@ -34,7 +49,11 @@ export const FavoritesView: React.FC<Props> = ({ language, onBack }) => {
         </PixelButton>
       </div>
 
-      {favorites.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center py-20">
+          <div className="w-12 h-12 border-4 border-gray-300 border-t-[#3b82f6] rounded-full animate-spin"></div>
+        </div>
+      ) : favorites.length === 0 ? (
         <PixelCard className="text-center py-12">
           <div className="text-6xl mb-4">📜</div>
           <p className="text-2xl font-['VT323'] text-gray-500">{t.noFavorites}</p>

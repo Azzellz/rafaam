@@ -1,50 +1,54 @@
 import { GrammarPoint, BackgroundConfig } from "../types";
 
-const STORAGE_KEY = "rafaam_favorites";
+const API_BASE = "http://127.0.0.1:3000/api";
 const BG_STORAGE_KEY = "rafaam_background_config";
 
-export const getFavorites = (): GrammarPoint[] => {
+// --- API Implementation for Favorites ---
+
+export const getFavorites = async (): Promise<GrammarPoint[]> => {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    const response = await fetch(API_BASE + "/favorites");
+    if (!response.ok) {
+      if (response.status === 404) return []; // Handle no backend gracefully
+      throw new Error(`Error fetching favorites: ${response.statusText}`);
+    }
+    return await response.json();
   } catch (error) {
-    console.error("Failed to load favorites", error);
+    console.error("Failed to load favorites from API", error);
+    // Fallback to empty array if API fails, so app doesn't crash
     return [];
   }
 };
 
-export const isFavorite = (pattern: string): boolean => {
-  const favorites = getFavorites();
-  return favorites.some((p) => p.pattern === pattern);
-};
-
-export const toggleFavorite = (point: GrammarPoint): boolean => {
-  const favorites = getFavorites();
-  const exists = favorites.some((p) => p.pattern === point.pattern);
-
-  let newFavorites;
-  if (exists) {
-    newFavorites = favorites.filter((p) => p.pattern !== point.pattern);
-  } else {
-    newFavorites = [point, ...favorites];
-  }
-
+export const addFavorite = async (point: GrammarPoint): Promise<boolean> => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newFavorites));
-    return !exists; // Returns true if added, false if removed
+    const response = await fetch(API_BASE + "/favorites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(point),
+    });
+    return response.ok;
   } catch (error) {
-    console.error("Failed to save favorites", error);
+    console.error("Failed to add favorite", error);
     return false;
   }
 };
 
-export const removeFavorite = (pattern: string): void => {
-  const favorites = getFavorites();
-  const newFavorites = favorites.filter((p) => p.pattern !== pattern);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(newFavorites));
+export const removeFavorite = async (pattern: string): Promise<boolean> => {
+  try {
+    const response = await fetch(API_BASE + "/favorites", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pattern }),
+    });
+    return response.ok;
+  } catch (error) {
+    console.error("Failed to remove favorite", error);
+    return false;
+  }
 };
 
-// --- Background Configuration ---
+// --- Background Configuration (Stays in LocalStorage) ---
 
 export const getBackgroundConfig = (): BackgroundConfig => {
   const defaultConfig: BackgroundConfig = {
