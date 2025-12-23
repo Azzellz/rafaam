@@ -31,16 +31,16 @@ export const QuestResults: React.FC<QuestResultsProps> = ({
             </PixelButton>
         </div>
         {content.type === ContentType.GRAMMAR ? (
-            <GrammarView data={content.data as any} language={language} />
+            <GrammarView data={content.data} language={language} />
         ) : content.type === ContentType.QUIZ ? (
             <QuizView
-                data={content.data as any}
+                data={content.data}
                 onRestart={onClearContent}
                 language={language}
             />
         ) : (
             <ConversationView
-                data={content.data as any}
+                data={content.data}
                 language={language}
                 onExit={onClearContent}
             />

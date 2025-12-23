@@ -13,6 +13,7 @@ import {
     pixelInfoPanel,
     pixelMutedParagraph,
 } from "@/styles/classNames";
+import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 
 interface Props {
     data: GrammarLesson;
@@ -21,6 +22,7 @@ interface Props {
 
 export const GrammarView: React.FC<Props> = ({ data, language }) => {
     const t = translations[language];
+    const practiceConfig = PRACTICE_LANGUAGES[data.practiceLanguage];
     // We store the list of favorite patterns to check existence efficiently
     const [favoritePatterns, setFavoritePatterns] = useState<Set<string>>(
         new Set()
@@ -41,8 +43,13 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
         fetchFavs();
     }, []);
 
+    const ensurePointLanguage = (point: GrammarPoint): GrammarPoint => ({
+        ...point,
+        practiceLanguage: point.practiceLanguage ?? data.practiceLanguage,
+    });
+
     const handleToggleFavorite = async (index: number) => {
-        const point = data.points[index];
+        const point = ensurePointLanguage(data.points[index]);
         const isFav = favoritePatterns.has(point.pattern);
 
         // Optimistic UI update
@@ -85,6 +92,19 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                 >
                     {data.introduction}
                 </p>
+                <div className="mt-4 flex flex-wrap justify-center gap-2 text-sm md:text-base font-['VT323'] text-gray-700">
+                    {practiceConfig && (
+                        <span className="px-3 py-1 border-2 border-black bg-white">
+                            {practiceConfig.nativeLabel}
+                        </span>
+                    )}
+                    <span className="px-3 py-1 border-2 border-dashed border-black bg-[#fdf2f8]">
+                        {practiceConfig?.levelSystemLabel} {data.level}
+                    </span>
+                    <span className="px-3 py-1 border-2 border-black bg-[#ecfccb]">
+                        {t.questTopic}: {data.topic}
+                    </span>
+                </div>
             </div>
 
             {data.points.map((point, index) => {
@@ -107,7 +127,13 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                             </div>
 
                             <div className="flex gap-2 self-end md:self-start w-full md:w-auto justify-end">
-                                <TTSButton text={point.pattern} />
+                                <TTSButton
+                                    text={point.pattern}
+                                    practiceLanguage={
+                                        point.practiceLanguage ??
+                                        data.practiceLanguage
+                                    }
+                                />
                                 <button
                                     onClick={() => handleToggleFavorite(index)}
                                     disabled={isLoadingFavs}
@@ -144,18 +170,24 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                                     >
                                         <div className="flex justify-between items-start">
                                             <span className="text-base md:text-lg font-['DotGothic16'] text-black leading-snug">
-                                                {ex.japanese}
+                                                {ex.text}
                                             </span>
                                             <div className="opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity ml-2 flex-shrink-0">
                                                 <TTSButton
-                                                    text={ex.japanese}
+                                                    text={ex.text}
                                                     size="sm"
+                                                    practiceLanguage={
+                                                        point.practiceLanguage ??
+                                                        data.practiceLanguage
+                                                    }
                                                 />
                                             </div>
                                         </div>
-                                        <span className="text-xs md:text-sm font-mono text-gray-500">
-                                            {ex.romaji}
-                                        </span>
+                                        {ex.phonetic && (
+                                            <span className="text-xs md:text-sm font-mono text-gray-500">
+                                                {ex.phonetic}
+                                            </span>
+                                        )}
                                         <span className="text-sm md:text-md font-['VT323'] text-gray-600 italic">
                                             "{ex.translation}"
                                         </span>

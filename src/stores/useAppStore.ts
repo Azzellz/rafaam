@@ -3,13 +3,20 @@ import {
     BackgroundConfig,
     ContentType,
     GeneratedContent,
-    JLPTLevel,
     Language,
+    PracticeLanguage,
 } from "../types";
+import {
+    DEFAULT_PRACTICE_LANGUAGE,
+    getDefaultLevel,
+} from "@/constants/practiceLanguages";
+
+const defaultPracticeLanguage = DEFAULT_PRACTICE_LANGUAGE;
 
 type AppState = {
     topic: string;
-    level: JLPTLevel;
+    level: string;
+    practiceLanguage: PracticeLanguage;
     contentType: ContentType;
     language: Language;
     loading: boolean;
@@ -18,7 +25,8 @@ type AppState = {
     bgConfig: BackgroundConfig;
     showSettings: boolean;
     setTopic: (topic: string) => void;
-    setLevel: (level: JLPTLevel) => void;
+    setLevel: (level: string) => void;
+    setPracticeLanguage: (practiceLanguage: PracticeLanguage) => void;
     setContentType: (contentType: ContentType) => void;
     setLanguage: (language: Language) => void;
     setLoading: (loading: boolean) => void;
@@ -31,7 +39,8 @@ type AppState = {
 
 export const useAppStore = create<AppState>((set) => ({
     topic: "",
-    level: JLPTLevel.N5,
+    practiceLanguage: defaultPracticeLanguage,
+    level: getDefaultLevel(defaultPracticeLanguage),
     contentType: ContentType.GRAMMAR,
     language: Language.EN,
     loading: false,
@@ -41,6 +50,12 @@ export const useAppStore = create<AppState>((set) => ({
     showSettings: false,
     setTopic: (topic) => set({ topic }),
     setLevel: (level) => set({ level }),
+    setPracticeLanguage: (practiceLanguage) =>
+        set(() => ({
+            practiceLanguage,
+            level: getDefaultLevel(practiceLanguage),
+            content: null,
+        })),
     setContentType: (contentType) => set({ contentType }),
     setLanguage: (language) => set({ language }),
     setLoading: (loading) => set({ loading }),

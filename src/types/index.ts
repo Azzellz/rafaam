@@ -1,11 +1,3 @@
-export enum JLPTLevel {
-    N5 = "N5",
-    N4 = "N4",
-    N3 = "N3",
-    N2 = "N2",
-    N1 = "N1",
-}
-
 export enum ContentType {
     GRAMMAR = "GRAMMAR",
     QUIZ = "QUIZ",
@@ -21,9 +13,16 @@ export enum Language {
     DE = "de",
 }
 
+export enum PracticeLanguage {
+    JAPANESE = "japanese",
+    ENGLISH = "english",
+    FRENCH = "french",
+    GERMAN = "german",
+}
+
 export interface ExampleSentence {
-    japanese: string;
-    romaji: string;
+    text: string;
+    phonetic?: string;
     translation: string;
 }
 
@@ -32,12 +31,16 @@ export interface GrammarPoint {
     meaning: string;
     explanation: string;
     examples: ExampleSentence[];
+    practiceLanguage?: PracticeLanguage;
 }
 
 export interface GrammarLesson {
     title: string;
     introduction: string;
     points: GrammarPoint[];
+    practiceLanguage: PracticeLanguage;
+    level: string;
+    topic: string;
 }
 
 export interface QuizQuestion {
@@ -50,11 +53,15 @@ export interface QuizQuestion {
 export interface QuizSession {
     title: string;
     questions: QuizQuestion[];
+    practiceLanguage: PracticeLanguage;
+    level: string;
+    topic: string;
 }
 
 export interface ConversationSession {
     topic: string;
-    level: JLPTLevel;
+    level: string;
+    practiceLanguage: PracticeLanguage;
 }
 
 export interface BackgroundConfig {

@@ -13,75 +13,82 @@ This document outlines the API endpoints required for the Rafaam backend integra
 Manage the user's saved grammar points.
 
 #### GET /favorites
+
 Retrieve all favorite grammar points.
 
-- **Method**: `GET`
-- **Response**: `200 OK`
-- **Content-Type**: `application/json`
-- **Body**: Array of `GrammarPoint` objects.
+-   **Method**: `GET`
+-   **Response**: `200 OK`
+-   **Content-Type**: `application/json`
+-   **Body**: Array of `GrammarPoint` objects.
 
 **Example Response:**
+
 ```json
 [
-  {
-    "pattern": "～てはいけません",
-    "meaning": "Must not...",
-    "explanation": "Used to express prohibition.",
-    "examples": [
-       { 
-         "japanese": "ここで写真を撮ってはいけません。", 
-         "romaji": "Koko de shashin o totte wa ikemasen.", 
-         "translation": "You must not take photos here." 
-       }
-    ]
-  }
+    {
+        "pattern": "～てはいけません",
+        "meaning": "Must not...",
+        "explanation": "Used to express prohibition.",
+        "examples": [
+            {
+                "text": "ここで写真を撮ってはいけません。",
+                "phonetic": "Koko de shashin o totte wa ikemasen.",
+                "translation": "You must not take photos here."
+            }
+        ]
+    }
 ]
 ```
 
 #### POST /favorites
+
 Add a new grammar point to the user's favorites.
 
-- **Method**: `POST`
-- **Content-Type**: `application/json`
-- **Body**: A single `GrammarPoint` object.
+-   **Method**: `POST`
+-   **Content-Type**: `application/json`
+-   **Body**: A single `GrammarPoint` object.
 
 **Request Body:**
+
 ```json
 {
-  "pattern": "～てもいいです",
-  "meaning": "You may...",
-  "explanation": "Used to express permission.",
-  "examples": [
-    {
-      "japanese": "トイレに行ってもいいですか。",
-      "romaji": "Toire ni ittemo ii desu ka.",
-      "translation": "May I go to the bathroom?"
-    }
-  ]
+    "pattern": "～てもいいです",
+    "meaning": "You may...",
+    "explanation": "Used to express permission.",
+    "examples": [
+        {
+            "text": "トイレに行ってもいいですか。",
+            "phonetic": "Toire ni ittemo ii desu ka.",
+            "translation": "May I go to the bathroom?"
+        }
+    ]
 }
 ```
 
-- **Response**: `201 Created` (returns the saved object) or `200 OK`.
+-   **Response**: `201 Created` (returns the saved object) or `200 OK`.
 
 #### DELETE /favorites
+
 Remove a grammar point from favorites based on the grammar pattern string.
 
-- **Method**: `DELETE`
-- **Content-Type**: `application/json`
-- **Body**: Object containing the `pattern` identifier.
+-   **Method**: `DELETE`
+-   **Content-Type**: `application/json`
+-   **Body**: Object containing the `pattern` identifier.
 
 **Request Body:**
+
 ```json
 {
-  "pattern": "～てもいいです"
+    "pattern": "～てもいいです"
 }
 ```
 
-- **Response**: `200 OK`
-- **Body**: 
+-   **Response**: `200 OK`
+-   **Body**:
+
 ```json
-{ 
-  "success": true 
+{
+    "success": true
 }
 ```
 
@@ -91,20 +98,21 @@ Remove a grammar point from favorites based on the grammar pattern string.
 
 ### GrammarPoint
 
-| Field       | Type              | Description                                      |
-|-------------|-------------------|--------------------------------------------------|
-| pattern     | string (Unique)   | The grammar structure (e.g., "～てはいけません") |
-| meaning     | string            | Brief meaning in the user's language             |
-| explanation | string            | Detailed explanation                             |
-| examples    | ExampleSentence[] | List of example sentences                        |
+| Field            | Type              | Description                                                    |
+| ---------------- | ----------------- | -------------------------------------------------------------- |
+| pattern          | string (Unique)   | The grammar structure (e.g., "～てはいけません")               |
+| meaning          | string            | Brief meaning in the user's language                           |
+| explanation      | string            | Detailed explanation                                           |
+| practiceLanguage | string            | Target language id (`japanese`, `english`, `french`, `german`) |
+| examples         | ExampleSentence[] | List of example sentences                                      |
 
 ### ExampleSentence
 
-| Field       | Type   | Description                               |
-|-------------|--------|-------------------------------------------|
-| japanese    | string | The sentence in Japanese (Kanji/Kana)     |
-| romaji      | string | Romanized reading                         |
-| translation | string | Translation in the user's language        |
+| Field       | Type   | Description                                        |
+| ----------- | ------ | -------------------------------------------------- |
+| text        | string | Example sentence in the selected practice language |
+| phonetic    | string | Optional phonetic/romanized reading                |
+| translation | string | Translation in the user's interface language       |
 
 ---
 

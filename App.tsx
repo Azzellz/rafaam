@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import {
-    JLPTLevel,
     ContentType,
     GeneratedContent,
     Language,
     BackgroundConfig,
+    PracticeLanguage,
 } from "@/types";
 import { generateLesson } from "@/services/geminiService";
 import {
@@ -37,6 +37,8 @@ const App: React.FC = () => {
         setTopic,
         level,
         setLevel,
+        practiceLanguage,
+        setPracticeLanguage,
         contentType,
         setContentType,
         language,
@@ -77,7 +79,7 @@ const App: React.FC = () => {
         if (contentType === ContentType.CONVERSATION) {
             setContent({
                 type: ContentType.CONVERSATION,
-                data: { topic, level },
+                data: { topic, level, practiceLanguage },
             });
             return;
         }
@@ -91,7 +93,8 @@ const App: React.FC = () => {
                 level,
                 topic,
                 contentType,
-                language
+                language,
+                practiceLanguage
             );
             setContent({ type: contentType, data: result } as GeneratedContent);
         } catch (err: any) {
@@ -137,9 +140,11 @@ const App: React.FC = () => {
                     t={t}
                     topic={topic}
                     level={level}
+                    practiceLanguage={practiceLanguage}
                     contentType={contentType}
                     onTopicChange={setTopic}
                     onLevelChange={setLevel}
+                    onPracticeLanguageChange={setPracticeLanguage}
                     onContentTypeChange={setContentType}
                     onSubmit={handleGenerate}
                 />

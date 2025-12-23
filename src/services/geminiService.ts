@@ -1,12 +1,18 @@
 import { GoogleGenAI, Type, Schema, Modality } from "@google/genai";
 import {
-    JLPTLevel,
     ContentType,
     GrammarLesson,
+    GrammarPoint,
     QuizSession,
     Language,
+    PracticeLanguage,
 } from "../types";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
+import {
+    PRACTICE_LANGUAGES,
+    PracticeLanguageConfig,
+    DEFAULT_PRACTICE_LANGUAGE,
+} from "@/constants/practiceLanguages";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -42,15 +48,23 @@ const grammarSchema: Schema = {
                         items: {
                             type: Type.OBJECT,
                             properties: {
-                                japanese: { type: Type.STRING },
-                                romaji: { type: Type.STRING },
+                                text: {
+                                    type: Type.STRING,
+                                    description:
+                                        "Example sentence in the target language",
+                                },
+                                phonetic: {
+                                    type: Type.STRING,
+                                    description:
+                                        "Optional phonetic transcription for the sentence",
+                                },
                                 translation: {
                                     type: Type.STRING,
                                     description:
                                         "Translation in the user's language",
                                 },
                             },
-                            required: ["japanese", "romaji", "translation"],
+                            required: ["text", "translation"],
                         },
                     },
                 },
@@ -72,7 +86,7 @@ const quizSchema: Schema = {
                 properties: {
                     question: {
                         type: Type.STRING,
-                        description: "The question text (Japanese)",
+                        description: "The question text in the target language",
                     },
                     options: {
                         type: Type.ARRAY,
@@ -104,23 +118,40 @@ const quizSchema: Schema = {
 const getLanguageName = (lang: Language): string =>
     LANGUAGE_CONFIG[lang]?.aiName ?? LANGUAGE_CONFIG[Language.EN].aiName;
 
+type RawGrammarLesson = Omit<
+    GrammarLesson,
+    "practiceLanguage" | "level" | "topic" | "points"
+> & { points: Omit<GrammarPoint, "practiceLanguage">[] };
+
+type RawQuizSession = Omit<QuizSession, "practiceLanguage" | "level" | "topic">;
+
 export const generateLesson = async (
-    level: JLPTLevel,
+    level: string,
     topic: string,
     contentType: ContentType,
-    language: Language
+    language: Language,
+    practiceLanguage: PracticeLanguage
 ): Promise<GrammarLesson | QuizSession> => {
     const model = "gemini-2.5-flash";
     const langName = getLanguageName(language);
+    const practiceConfig: PracticeLanguageConfig =
+        PRACTICE_LANGUAGES[practiceLanguage] ??
+        PRACTICE_LANGUAGES[PracticeLanguage.JAPANESE];
+    const targetLanguage = practiceConfig.targetLanguageName;
+    const levelLabel = practiceConfig.levelSystemLabel;
 
     if (contentType === ContentType.GRAMMAR) {
-        const prompt = `Create a Japanese grammar lesson for JLPT Level ${level} focused on the topic: "${topic}".
-    Provide 2-3 specific grammar points related to this topic/level.
-    
-    IMPORTANT: 
-    - The 'introduction', 'meaning', and 'explanation' fields must be written in ${langName}.
-    - The 'examples' translation must be in ${langName}.
-    `;
+        const prompt = `Create a ${targetLanguage} grammar lesson for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
+Provide 2-3 grammar points relevant to this topic and level.
+
+IMPORTANT:
+- Write the 'introduction', 'meaning', and 'explanation' fields in ${langName}.
+- Each example must include:
+  * 'text' in ${targetLanguage}.
+  * 'phonetic' (use an empty string if not applicable).
+  * 'translation' in ${langName}.
+- Keep the JSON structure exactly as specified by the schema.
+`;
 
         const response = await ai.models.generateContent({
             model,
@@ -133,13 +164,24 @@ export const generateLesson = async (
 
         const text = response.text;
         if (!text) throw new Error("No response from AI");
-        return JSON.parse(text) as GrammarLesson;
+        const rawLesson = JSON.parse(text) as RawGrammarLesson;
+        return {
+            ...rawLesson,
+            practiceLanguage,
+            level,
+            topic,
+            points: rawLesson.points.map((point) => ({
+                ...point,
+                practiceLanguage,
+            })),
+        } as GrammarLesson;
     } else {
-        const prompt = `Create a Japanese quiz (5 questions) for JLPT Level ${level} focused on the topic: "${topic}".
+        const prompt = `Create a ${targetLanguage} quiz (5 questions) for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
     The questions should test grammar or vocabulary relevant to the topic.
-    
+
     IMPORTANT:
-    - The 'explanation' for the answer must be written in ${langName}.
+    - Write every question and option in ${targetLanguage}.
+    - Write the explanation for each correct answer in ${langName}.
     `;
 
         const response = await ai.models.generateContent({
@@ -153,14 +195,27 @@ export const generateLesson = async (
 
         const text = response.text;
         if (!text) throw new Error("No response from AI");
-        return JSON.parse(text) as QuizSession;
+        const rawQuiz = JSON.parse(text) as RawQuizSession;
+        return {
+            ...rawQuiz,
+            practiceLanguage,
+            level,
+            topic,
+        } as QuizSession;
     }
 };
 
-export const generateSpeech = async (text: string): Promise<string> => {
+export const generateSpeech = async (
+    text: string,
+    practiceLanguage: PracticeLanguage = DEFAULT_PRACTICE_LANGUAGE
+): Promise<string> => {
     if (!text || !text.trim()) {
         throw new Error("Text is empty");
     }
+
+    const voiceName =
+        PRACTICE_LANGUAGES[practiceLanguage]?.ttsVoice ||
+        PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE].ttsVoice;
 
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash-preview-tts",
@@ -170,7 +225,7 @@ export const generateSpeech = async (text: string): Promise<string> => {
             responseModalities: ["AUDIO" as Modality],
             speechConfig: {
                 voiceConfig: {
-                    prebuiltVoiceConfig: { voiceName: "Kore" },
+                    prebuiltVoiceConfig: { voiceName },
                 },
             },
         },

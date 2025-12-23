@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { QuizSession, Language } from "@/types";
 import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
+import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 
 interface Props {
     data: QuizSession;
@@ -11,6 +12,7 @@ interface Props {
 
 export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
     const t = translations[language];
+    const practiceConfig = PRACTICE_LANGUAGES[data.practiceLanguage];
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [isAnswered, setIsAnswered] = useState(false);
@@ -60,6 +62,25 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
 
     return (
         <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-8">
+                <h2 className="text-3xl md:text-4xl font-['DotGothic16'] text-[#ec4899] drop-shadow-[2px_2px_0_#000]">
+                    {data.title}
+                </h2>
+                <div className="mt-3 flex flex-wrap justify-center gap-2 font-['VT323'] text-base text-gray-700">
+                    {practiceConfig && (
+                        <span className="px-3 py-1 border-2 border-black bg-white">
+                            {practiceConfig.nativeLabel}
+                        </span>
+                    )}
+                    <span className="px-3 py-1 border-2 border-dashed border-black bg-[#fef08a]">
+                        {practiceConfig?.levelSystemLabel} {data.level}
+                    </span>
+                    <span className="px-3 py-1 border-2 border-black bg-[#dbeafe]">
+                        {t.questTopic}: {data.topic}
+                    </span>
+                </div>
+            </div>
+
             <div className="mb-4 flex justify-between items-end font-['VT323'] text-xl text-gray-500">
                 <span>
                     {t.question} {currentQuestionIndex + 1} /{" "}
@@ -75,7 +96,9 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
                     className="bg-[#3b82f6] h-full transition-all duration-300"
                     style={{
                         width: `${
-                            (currentQuestionIndex / data.questions.length) * 100
+                            ((currentQuestionIndex + (isAnswered ? 1 : 0)) /
+                                data.questions.length) *
+                            100
                         }%`,
                     }}
                 ></div>

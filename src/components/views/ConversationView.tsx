@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ConversationSession, Language } from "@/types";
+import { ConversationSession, Language, PracticeLanguage } from "@/types";
 import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
+import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 import { pixelMutedParagraph } from "@/styles/classNames";
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
@@ -24,6 +25,9 @@ export const ConversationView: React.FC<Props> = ({
     onExit,
 }) => {
     const t = translations[language];
+    const practiceLanguageConfig =
+        PRACTICE_LANGUAGES[data.practiceLanguage] ??
+        PRACTICE_LANGUAGES[PracticeLanguage.JAPANESE];
     const [status, setStatus] = useState<
         "idle" | "connecting" | "connected" | "disconnected" | "error"
     >("idle");
@@ -88,15 +92,18 @@ export const ConversationView: React.FC<Props> = ({
             streamRef.current = stream;
 
             const langName = LANGUAGE_CONFIG[language]?.aiName ?? "English";
+            const targetLanguage = practiceLanguageConfig.targetLanguageName;
+            const teacherTitle = practiceLanguageConfig.teacherTitle;
+            const levelLabel = practiceLanguageConfig.levelSystemLabel;
 
-            const systemInstructionText = `You are a helpful Japanese language teacher called 'Sensei'. 
-      Your student's JLPT level is ${data.level}. 
+            const systemInstructionText = `You are a helpful ${targetLanguage} language teacher called '${teacherTitle}'. 
+        Your student's ${levelLabel} level is ${data.level}. 
       The conversation topic is: "${data.topic}".
       
       Instructions:
-      1. Conduct a roleplay conversation about the topic.
-      2. Speak naturally in Japanese.
-      3. If the user makes a mistake, briefly correct them in ${langName}, then continue the conversation.
+        1. Conduct a roleplay conversation about the topic.
+        2. Speak naturally in ${targetLanguage}.
+        3. If the user makes a mistake, briefly correct them in ${langName}, then continue the conversation.
       4. Keep your responses concise (under 20 seconds).
       5. Start by greeting the user and asking a question about the topic.
       `;
@@ -372,6 +379,14 @@ export const ConversationView: React.FC<Props> = ({
                 <p className={pixelMutedParagraph}>
                     {t.questTopic}: {data.topic}
                 </p>
+                <div className="mt-2 flex flex-wrap justify-center gap-2 text-sm font-['VT323'] text-gray-600">
+                    <span className="px-3 py-1 border-2 border-black bg-white">
+                        {practiceLanguageConfig.nativeLabel}
+                    </span>
+                    <span className="px-3 py-1 border-2 border-dashed border-black bg-[#fefce8]">
+                        {practiceLanguageConfig.levelSystemLabel} {data.level}
+                    </span>
+                </div>
             </div>
 
             <PixelCard className="w-full max-w-lg flex flex-col items-center relative h-[60vh] md:h-[600px] overflow-hidden">
