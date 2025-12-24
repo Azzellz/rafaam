@@ -97,4 +97,13 @@ export const jaTranslation: TranslationContent = {
     bytes: "バイト",
     kb: "KB",
     mb: "MB",
+
+    // Stats
+    statistics: "統計",
+    totalSessions: "総セッション数",
+    totalDuration: "総練習時間",
+    lastSession: "前回のセッション",
+    noRecords: "練習記録はまだありません。",
+    minutes: "分",
+    seconds: "秒",
 };

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { QuizSession, Language } from "@/types";
+import React, { useState, useEffect } from "react";
+import { QuizSession, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
+import { useStatsStore } from "@/stores/useStatsStore";
 
 interface Props {
     data: QuizSession;
@@ -18,6 +19,19 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
     const [isAnswered, setIsAnswered] = useState(false);
     const [score, setScore] = useState(0);
     const [showResults, setShowResults] = useState(false);
+    const addRecord = useStatsStore((state) => state.addRecord);
+
+    useEffect(() => {
+        if (showResults) {
+            addRecord({
+                type: ContentType.QUIZ,
+                language: data.practiceLanguage,
+                topic: data.topic,
+                score: score,
+                maxScore: data.questions.length,
+            });
+        }
+    }, [showResults]);
 
     const question = data.questions[currentQuestionIndex];
 

@@ -96,4 +96,13 @@ export const zhCNTranslation: TranslationContent = {
     bytes: "字节",
     kb: "KB",
     mb: "MB",
+
+    // Stats
+    statistics: "统计数据",
+    totalSessions: "总练习次数",
+    totalDuration: "总练习时长",
+    lastSession: "最近练习",
+    noRecords: "暂无练习记录。",
+    minutes: "分",
+    seconds: "秒",
 };

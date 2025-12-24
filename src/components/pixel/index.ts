@@ -3,3 +3,4 @@ export * from "./PixelCard";
 export * from "./PixelInput";
 export * from "./PixelSelect";
 export * from "./PixelTooltip";
+export * from "./PixelModal";

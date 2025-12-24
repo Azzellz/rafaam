@@ -93,4 +93,13 @@ export interface TranslationContent {
     bytes: string;
     kb: string;
     mb: string;
+
+    // Stats
+    statistics: string;
+    totalSessions: string;
+    totalDuration: string;
+    lastSession: string;
+    noRecords: string;
+    minutes: string;
+    seconds: string;
 }

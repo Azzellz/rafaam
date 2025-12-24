@@ -96,4 +96,13 @@ export const zhTWTranslation: TranslationContent = {
     bytes: "字節",
     kb: "KB",
     mb: "MB",
+
+    // Stats
+    statistics: "統計數據",
+    totalSessions: "總練習次數",
+    totalDuration: "總練習時長",
+    lastSession: "最近練習",
+    noRecords: "暫無練習記錄。",
+    minutes: "分",
+    seconds: "秒",
 };

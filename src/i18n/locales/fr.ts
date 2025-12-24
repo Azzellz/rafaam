@@ -100,4 +100,13 @@ export const frTranslation: TranslationContent = {
     bytes: "Bytes",
     kb: "KB",
     mb: "MB",
+
+    // Stats
+    statistics: "Statistiques",
+    totalSessions: "Sessions totales",
+    totalDuration: "Durée totale",
+    lastSession: "Dernière session",
+    noRecords: "Aucun enregistrement de pratique pour le moment.",
+    minutes: "min",
+    seconds: "sec",
 };

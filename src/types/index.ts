@@ -101,3 +101,14 @@ export type GeneratedContent =
     | { type: ContentType.CONVERSATION; data: ConversationSession }
     | { type: ContentType.WRITING; data: WritingTask }
     | { type: ContentType.CHAT; data: ChatSession };
+
+export interface PracticeRecord {
+    id: string;
+    timestamp: number;
+    type: ContentType;
+    language: PracticeLanguage;
+    topic: string;
+    score?: number; // For quiz and writing
+    maxScore?: number; // For quiz
+    duration?: number; // In seconds
+}

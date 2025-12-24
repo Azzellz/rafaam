@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from "react";
-import { GrammarLesson, Language, GrammarPoint } from "@/types";
+import React, { useEffect, useMemo, useRef } from "react";
+import { GrammarLesson, Language, GrammarPoint, ContentType } from "@/types";
 import { PixelCard } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
@@ -10,6 +10,7 @@ import {
 } from "@/constants/style";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 import { useFavoritesStore } from "@/stores/useFavoritesStore";
+import { useStatsStore } from "@/stores/useStatsStore";
 
 interface Props {
     data: GrammarLesson;
@@ -30,9 +31,25 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
     );
     const favoritesMutating = useFavoritesStore((state) => state.isMutating);
     const storageStrategy = useFavoritesStore((state) => state.storageStrategy);
+    const addRecord = useStatsStore((state) => state.addRecord);
+    const startTimeRef = useRef<number>(Date.now());
 
     useEffect(() => {
         initFavoritesStore();
+        startTimeRef.current = Date.now();
+        return () => {
+            const duration = Math.round(
+                (Date.now() - startTimeRef.current) / 1000
+            );
+            if (duration > 5) {
+                addRecord({
+                    type: ContentType.GRAMMAR,
+                    language: data.practiceLanguage,
+                    topic: data.topic,
+                    duration: duration,
+                });
+            }
+        };
     }, [initFavoritesStore]);
 
     const favoritePatterns = useMemo(

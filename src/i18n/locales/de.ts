@@ -99,4 +99,13 @@ export const deTranslation: TranslationContent = {
     bytes: "Bytes",
     kb: "KB",
     mb: "MB",
+
+    // Stats
+    statistics: "Statistiken",
+    totalSessions: "Gesamtsitzungen",
+    totalDuration: "Gesamtdauer",
+    lastSession: "Letzte Sitzung",
+    noRecords: "Noch keine Übungsaufzeichnungen.",
+    minutes: "Min",
+    seconds: "Sek",
 };

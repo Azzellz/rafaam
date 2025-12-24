@@ -98,4 +98,13 @@ export const enTranslation: TranslationContent = {
     bytes: "Bytes",
     kb: "KB",
     mb: "MB",
+
+    // Stats
+    statistics: "Statistics",
+    totalSessions: "Total Sessions",
+    totalDuration: "Total Duration",
+    lastSession: "Last Session",
+    noRecords: "No practice records yet.",
+    minutes: "min",
+    seconds: "sec",
 };

@@ -14,6 +14,7 @@ import {
 import { LoadingSprite } from "@/components/widgets/LoadingSprite";
 import { FavoritesView } from "@/components/views/FavoritesView";
 import { SettingsView } from "@/components/views/SettingsView";
+import { StatsView } from "@/components/views/StatsView";
 import { SelectionReader } from "@/components/widgets/SelectionReader";
 import { InstallPWA } from "@/components/widgets/InstallPWA";
 import { translations } from "@/i18n";
@@ -57,6 +58,7 @@ const App: React.FC = () => {
     } = useAppStore();
 
     const [isRandomizingTopic, setIsRandomizingTopic] = useState(false);
+    const [showStats, setShowStats] = useState(false);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -217,9 +219,17 @@ const App: React.FC = () => {
                 onLogoClick={handleLogoClick}
                 onToggleFavorites={handleToggleFavorites}
                 onOpenSettings={() => navigate("/settings")}
+                onOpenStats={() => setShowStats(true)}
                 onLanguageChange={handleLanguageChange}
                 t={t}
             />
+
+            {showStats && (
+                <StatsView
+                    language={language}
+                    onClose={() => setShowStats(false)}
+                />
+            )}
 
             <main className="max-w-4xl mx-auto px-3 md:px-4">
                 <Routes>

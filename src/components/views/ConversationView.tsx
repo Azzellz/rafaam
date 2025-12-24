@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ConversationSession, Language, PracticeLanguage } from "@/types";
+import {
+    ConversationSession,
+    Language,
+    PracticeLanguage,
+    ContentType,
+} from "@/types";
 import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
@@ -10,6 +15,7 @@ import {
 import { pixelMutedParagraph } from "@/constants/style";
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
+import { useStatsStore } from "@/stores/useStatsStore";
 
 interface Props {
     data: ConversationSession;
@@ -52,6 +58,8 @@ export const ConversationView: React.FC<Props> = ({
     const processorRef = useRef<ScriptProcessorNode | null>(null);
     const sourceNodeRef = useRef<MediaStreamAudioSourceNode | null>(null);
     const mountedRef = useRef(true);
+    const startTimeRef = useRef<number>(Date.now());
+    const addRecord = useStatsStore((state) => state.addRecord);
 
     // Accumulation refs for transcription to avoid closure staleness
     const inputBufferRef = useRef("");
@@ -59,9 +67,22 @@ export const ConversationView: React.FC<Props> = ({
 
     useEffect(() => {
         mountedRef.current = true;
+        startTimeRef.current = Date.now();
         return () => {
             mountedRef.current = false;
             disconnect();
+            const duration = Math.round(
+                (Date.now() - startTimeRef.current) / 1000
+            );
+            if (duration > 5) {
+                // Only record if longer than 5 seconds
+                addRecord({
+                    type: ContentType.CONVERSATION,
+                    language: data.practiceLanguage,
+                    topic: data.topic,
+                    duration: duration,
+                });
+            }
         };
     }, []);
 

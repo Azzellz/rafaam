@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Language, WritingTask, WritingEvaluation } from "@/types";
+import { Language, WritingTask, WritingEvaluation, ContentType } from "@/types";
 import { PixelButton, PixelCard } from "../pixel";
 import { translations } from "@/i18n";
 import { evaluateWriting } from "@/services/geminiService";
 import { LoadingSprite } from "../widgets/LoadingSprite";
+import { useStatsStore } from "@/stores/useStatsStore";
 
 type WritingViewProps = {
     data: WritingTask;
@@ -22,6 +23,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
         null
     );
     const [loading, setLoading] = useState(false);
+    const addRecord = useStatsStore((state) => state.addRecord);
 
     const handleSubmit = async () => {
         if (!text.trim()) return;
@@ -35,6 +37,13 @@ export const WritingView: React.FC<WritingViewProps> = ({
                 data.practiceLanguage
             );
             setEvaluation(result);
+            addRecord({
+                type: ContentType.WRITING,
+                language: data.practiceLanguage,
+                topic: data.topic,
+                score: result.score,
+                maxScore: 100,
+            });
         } catch (error) {
             console.error(error);
             alert(t.connectionError);

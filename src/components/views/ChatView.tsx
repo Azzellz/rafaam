@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ChatSession, Language } from "@/types";
+import { ChatSession, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
@@ -9,6 +9,7 @@ import {
     DEFAULT_PRACTICE_LANGUAGE,
 } from "@/constants/practiceLanguages";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
+import { useStatsStore } from "@/stores/useStatsStore";
 
 interface Props {
     data: ChatSession;
@@ -28,10 +29,29 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
     const [isLoading, setIsLoading] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
     const systemInstructionRef = useRef<string>("");
+    const startTimeRef = useRef<number>(Date.now());
+    const addRecord = useStatsStore((state) => state.addRecord);
 
     const practiceLanguageConfig =
         PRACTICE_LANGUAGES[data.practiceLanguage] ??
         PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE];
+
+    useEffect(() => {
+        startTimeRef.current = Date.now();
+        return () => {
+            const duration = Math.round(
+                (Date.now() - startTimeRef.current) / 1000
+            );
+            if (duration > 5) {
+                addRecord({
+                    type: ContentType.CHAT,
+                    language: data.practiceLanguage,
+                    topic: data.topic,
+                    duration: duration,
+                });
+            }
+        };
+    }, []);
 
     useEffect(() => {
         const initChat = async () => {
