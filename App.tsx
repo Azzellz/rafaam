@@ -229,6 +229,7 @@ const App: React.FC = () => {
                         element={
                             <FavoritesView
                                 language={language}
+                                practiceLanguage={practiceLanguage}
                                 onBack={() => navigate("/")}
                             />
                         }

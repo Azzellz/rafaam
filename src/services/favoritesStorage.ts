@@ -1,11 +1,13 @@
-import { GrammarPoint } from "@/types";
+import { GrammarPoint, PracticeLanguage } from "@/types";
+import { DEFAULT_PRACTICE_LANGUAGE } from "@/constants/practiceLanguages";
 
 export type FavoriteStorageStrategy = "indexedDB" | "localStorage";
 
 const DB_NAME = "rafaam_client_store";
-const DB_VERSION = 1;
-const STORE_NAME = "favorites";
-const LOCAL_STORAGE_KEY = "rafaam_favorites_fallback";
+const DB_VERSION = 2; // Upgraded version
+const STORE_NAME_V1 = "favorites";
+const STORE_NAME_V2 = "favorites_v2";
+const LOCAL_STORAGE_PREFIX = "rafaam_favorites_";
 const FALLBACK_LOG =
     "IndexedDB is unavailable; falling back to localStorage for favorites.";
 
@@ -17,12 +19,15 @@ const hasIndexedDBSupport = (): boolean =>
 const hasLocalStorageSupport = (): boolean =>
     hasWindow && typeof window.localStorage !== "undefined";
 
-const readLocalFavorites = (): GrammarPoint[] => {
+const getLocalStorageKey = (language: PracticeLanguage) =>
+    `${LOCAL_STORAGE_PREFIX}${language}`;
+
+const readLocalFavorites = (language: PracticeLanguage): GrammarPoint[] => {
     if (!hasLocalStorageSupport()) {
         return [];
     }
     try {
-        const raw = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+        const raw = window.localStorage.getItem(getLocalStorageKey(language));
         return raw ? (JSON.parse(raw) as GrammarPoint[]) : [];
     } catch (error) {
         console.error("Failed to read favorites from localStorage", error);
@@ -30,13 +35,16 @@ const readLocalFavorites = (): GrammarPoint[] => {
     }
 };
 
-const writeLocalFavorites = (favorites: GrammarPoint[]): void => {
+const writeLocalFavorites = (
+    language: PracticeLanguage,
+    favorites: GrammarPoint[]
+): void => {
     if (!hasLocalStorageSupport()) {
         return;
     }
     try {
         window.localStorage.setItem(
-            LOCAL_STORAGE_KEY,
+            getLocalStorageKey(language),
             JSON.stringify(favorites)
         );
     } catch (error) {
@@ -45,7 +53,8 @@ const writeLocalFavorites = (favorites: GrammarPoint[]): void => {
 };
 
 const upsertLocalFavorite = (point: GrammarPoint): void => {
-    const favorites = readLocalFavorites();
+    const lang = point.practiceLanguage ?? DEFAULT_PRACTICE_LANGUAGE;
+    const favorites = readLocalFavorites(lang);
     const existingIndex = favorites.findIndex(
         (item) => item.pattern === point.pattern
     );
@@ -54,14 +63,17 @@ const upsertLocalFavorite = (point: GrammarPoint): void => {
     } else {
         favorites.push(point);
     }
-    writeLocalFavorites(favorites);
+    writeLocalFavorites(lang, favorites);
 };
 
-const removeLocalFavorite = (pattern: string): void => {
-    const favorites = readLocalFavorites().filter(
+const removeLocalFavorite = (
+    pattern: string,
+    language: PracticeLanguage
+): void => {
+    const favorites = readLocalFavorites(language).filter(
         (item) => item.pattern !== pattern
     );
-    writeLocalFavorites(favorites);
+    writeLocalFavorites(language, favorites);
 };
 
 class FavoritesStorageManager {
@@ -77,10 +89,53 @@ class FavoritesStorageManager {
 
             const request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
-            request.onupgradeneeded = () => {
+            request.onupgradeneeded = (event) => {
                 const db = request.result;
-                if (!db.objectStoreNames.contains(STORE_NAME)) {
-                    db.createObjectStore(STORE_NAME, { keyPath: "pattern" });
+                const transaction = request.transaction;
+
+                // Migration from V1 to V2
+                if (event.oldVersion < 2) {
+                    // Create V2 store with composite key
+                    if (!db.objectStoreNames.contains(STORE_NAME_V2)) {
+                        const storeV2 = db.createObjectStore(STORE_NAME_V2, {
+                            keyPath: ["practiceLanguage", "pattern"],
+                        });
+                        storeV2.createIndex(
+                            "practiceLanguage",
+                            "practiceLanguage",
+                            {
+                                unique: false,
+                            }
+                        );
+                    }
+
+                    // Migrate data if V1 exists
+                    if (
+                        db.objectStoreNames.contains(STORE_NAME_V1) &&
+                        transaction
+                    ) {
+                        const storeV1 = transaction.objectStore(STORE_NAME_V1);
+                        const getAllRequest = storeV1.getAll();
+
+                        getAllRequest.onsuccess = () => {
+                            const items =
+                                getAllRequest.result as GrammarPoint[];
+                            const storeV2 =
+                                transaction.objectStore(STORE_NAME_V2);
+                            items.forEach((item) => {
+                                // Assign default language if missing (migration strategy)
+                                const migratedItem = {
+                                    ...item,
+                                    practiceLanguage:
+                                        item.practiceLanguage ??
+                                        DEFAULT_PRACTICE_LANGUAGE,
+                                };
+                                storeV2.put(migratedItem);
+                            });
+                            // Optional: db.deleteObjectStore(STORE_NAME_V1);
+                            // Keeping it for safety or deleting it later
+                        };
+                    }
                 }
             };
 
@@ -114,11 +169,22 @@ class FavoritesStorageManager {
         }
     }
 
-    private getAllFromIndexedDB(db: IDBDatabase): Promise<GrammarPoint[]> {
+    private getAllFromIndexedDB(
+        db: IDBDatabase,
+        language?: PracticeLanguage
+    ): Promise<GrammarPoint[]> {
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction(STORE_NAME, "readonly");
-            const store = transaction.objectStore(STORE_NAME);
-            const request = store.getAll();
+            const transaction = db.transaction(STORE_NAME_V2, "readonly");
+            const store = transaction.objectStore(STORE_NAME_V2);
+
+            let request: IDBRequest;
+
+            if (language) {
+                const index = store.index("practiceLanguage");
+                request = index.getAll(IDBKeyRange.only(language));
+            } else {
+                request = store.getAll();
+            }
 
             request.onsuccess = () => resolve(request.result as GrammarPoint[]);
             request.onerror = () => reject(request.error);
@@ -130,9 +196,17 @@ class FavoritesStorageManager {
         point: GrammarPoint
     ): Promise<void> {
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction(STORE_NAME, "readwrite");
-            const store = transaction.objectStore(STORE_NAME);
-            store.put(point);
+            const transaction = db.transaction(STORE_NAME_V2, "readwrite");
+            const store = transaction.objectStore(STORE_NAME_V2);
+
+            // Ensure practiceLanguage is set
+            const itemToSave = {
+                ...point,
+                practiceLanguage:
+                    point.practiceLanguage ?? DEFAULT_PRACTICE_LANGUAGE,
+            };
+
+            store.put(itemToSave);
 
             transaction.oncomplete = () => resolve();
             transaction.onerror = () => reject(transaction.error);
@@ -141,29 +215,41 @@ class FavoritesStorageManager {
 
     private removeFromIndexedDB(
         db: IDBDatabase,
-        pattern: string
+        pattern: string,
+        language: PracticeLanguage
     ): Promise<void> {
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction(STORE_NAME, "readwrite");
-            const store = transaction.objectStore(STORE_NAME);
-            store.delete(pattern);
+            const transaction = db.transaction(STORE_NAME_V2, "readwrite");
+            const store = transaction.objectStore(STORE_NAME_V2);
+            // Key is composite: [language, pattern]
+            store.delete([language, pattern]);
 
             transaction.oncomplete = () => resolve();
             transaction.onerror = () => reject(transaction.error);
         });
     }
 
-    public async getAll(): Promise<GrammarPoint[]> {
+    public async getAll(language?: PracticeLanguage): Promise<GrammarPoint[]> {
         const db = await this.ensureDB();
         if (db) {
             try {
-                return await this.getAllFromIndexedDB(db);
+                return await this.getAllFromIndexedDB(db, language);
             } catch (error) {
                 console.error("Failed to read favorites from IndexedDB", error);
                 this.strategy = "localStorage";
             }
         }
-        return readLocalFavorites();
+
+        if (language) {
+            return readLocalFavorites(language);
+        } else {
+            // If no language specified, we might want to aggregate all local storage keys
+            // But for simplicity and current requirements, we might just return empty or handle it if needed.
+            // For now, let's just return the default language ones or implement aggregation if requested.
+            // Given the requirement "independent storage space", aggregation might be expensive.
+            // Let's return default language as fallback or empty.
+            return readLocalFavorites(DEFAULT_PRACTICE_LANGUAGE);
+        }
     }
 
     public async add(point: GrammarPoint): Promise<void> {
@@ -180,11 +266,14 @@ class FavoritesStorageManager {
         upsertLocalFavorite(point);
     }
 
-    public async remove(pattern: string): Promise<void> {
+    public async remove(
+        pattern: string,
+        language: PracticeLanguage
+    ): Promise<void> {
         const db = await this.ensureDB();
         if (db) {
             try {
-                await this.removeFromIndexedDB(db, pattern);
+                await this.removeFromIndexedDB(db, pattern, language);
                 return;
             } catch (error) {
                 console.error(
@@ -194,7 +283,7 @@ class FavoritesStorageManager {
                 this.strategy = "localStorage";
             }
         }
-        removeLocalFavorite(pattern);
+        removeLocalFavorite(pattern, language);
     }
 }
 

@@ -53,7 +53,10 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
         const isFav = favoritePatterns.has(point.pattern);
 
         const success = isFav
-            ? await removeFavoriteFromStore(point.pattern)
+            ? await removeFavoriteFromStore(
+                  point.pattern,
+                  point.practiceLanguage
+              )
             : await addFavoriteToStore(point);
 
         if (!success) {

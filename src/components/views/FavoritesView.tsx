@@ -1,24 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GrammarPoint, Language, PracticeLanguage } from "@/types";
-import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
+import { PixelCard, PixelButton, PixelSelect } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
 import { TTSButton } from "../widgets/TTSButton";
 import { pixelAccentLabel, pixelInfoPanel } from "@/styles/classNames";
 import {
     DEFAULT_PRACTICE_LANGUAGE,
     PRACTICE_LANGUAGES,
+    PRACTICE_LANGUAGE_OPTIONS,
 } from "@/constants/practiceLanguages";
 import { useFavoritesStore } from "@/stores/useFavoritesStore";
 
 interface Props {
     language: Language;
+    practiceLanguage: PracticeLanguage;
     onBack: () => void;
 }
 
-export const FavoritesView: React.FC<Props> = ({ language, onBack }) => {
+export const FavoritesView: React.FC<Props> = ({
+    language,
+    practiceLanguage,
+    onBack,
+}) => {
     const t = translations[language];
+    const [selectedLanguage, setSelectedLanguage] =
+        useState<PracticeLanguage>(practiceLanguage);
     const favorites = useFavoritesStore((state) => state.favorites);
-    const initFavoritesStore = useFavoritesStore((state) => state.initStore);
+    const initStore = useFavoritesStore((state) => state.initStore);
     const removeFavoriteFromStore = useFavoritesStore(
         (state) => state.removeFavorite
     );
@@ -30,13 +38,13 @@ export const FavoritesView: React.FC<Props> = ({ language, onBack }) => {
         point.practiceLanguage ?? DEFAULT_PRACTICE_LANGUAGE;
 
     useEffect(() => {
-        initFavoritesStore();
-    }, [initFavoritesStore]);
+        initStore(selectedLanguage);
+    }, [initStore, selectedLanguage]);
 
     const loading = !initialized || isInitializing;
 
-    const handleRemove = async (pattern: string) => {
-        const success = await removeFavoriteFromStore(pattern);
+    const handleRemove = async (pattern: string, lang: PracticeLanguage) => {
+        const success = await removeFavoriteFromStore(pattern, lang);
         if (!success) {
             alert(t.connectionError);
         }
@@ -46,17 +54,31 @@ export const FavoritesView: React.FC<Props> = ({ language, onBack }) => {
 
     return (
         <div className="space-y-8 animate-fade-in">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <h2 className="text-4xl font-['DotGothic16'] text-[#facc15] drop-shadow-[2px_2px_0_#000] text-stroke-black">
                     {t.myFavorites}
                 </h2>
-                <PixelButton
-                    onClick={onBack}
-                    variant="secondary"
-                    className="text-sm"
-                >
-                    {t.backToGenerator}
-                </PixelButton>
+                <div className="flex items-center gap-4 w-full md:w-auto">
+                    <div className="w-full md:w-48">
+                        <PixelSelect
+                            value={selectedLanguage}
+                            onChange={(val) =>
+                                setSelectedLanguage(val as PracticeLanguage)
+                            }
+                            options={PRACTICE_LANGUAGE_OPTIONS.map((opt) => ({
+                                value: opt.id,
+                                label: opt.nativeLabel,
+                            }))}
+                        />
+                    </div>
+                    <PixelButton
+                        onClick={onBack}
+                        variant="secondary"
+                        className="text-sm whitespace-nowrap"
+                    >
+                        {t.backToGenerator}
+                    </PixelButton>
+                </div>
             </div>
 
             {showFallbackWarning && (
@@ -94,7 +116,10 @@ export const FavoritesView: React.FC<Props> = ({ language, onBack }) => {
                                     />
                                     <button
                                         onClick={() =>
-                                            handleRemove(point.pattern)
+                                            handleRemove(
+                                                point.pattern,
+                                                pointLanguage
+                                            )
                                         }
                                         className="font-['VT323'] text-red-500 hover:text-red-700 bg-white border-2 border-red-500 px-2 py-0 hover:bg-red-50 h-[32px]"
                                     >
