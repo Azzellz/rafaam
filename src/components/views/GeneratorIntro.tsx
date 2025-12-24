@@ -11,6 +11,7 @@ import {
     PixelCard,
     PixelInput,
     PixelSelect,
+    PixelTooltip,
 } from "../layout/PixelUI";
 
 type GeneratorIntroProps = {
@@ -103,56 +104,64 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                                     {
                                         label: t.grammarLesson,
                                         value: ContentType.GRAMMAR,
+                                        desc: t.grammarLessonDesc,
                                     },
                                     {
                                         label: t.quizBattle,
                                         value: ContentType.QUIZ,
+                                        desc: t.quizBattleDesc,
                                     },
                                     {
                                         label: t.voicePractice,
                                         value: ContentType.CONVERSATION,
+                                        desc: t.voicePracticeDesc,
                                     },
                                     {
                                         label: t.chatPractice,
                                         value: ContentType.CHAT,
+                                        desc: t.chatPracticeDesc,
                                     },
                                     {
                                         label: t.writingPractice,
                                         value: ContentType.WRITING,
+                                        desc: t.writingPracticeDesc,
                                     },
                                 ].map((option) => (
-                                    <label
+                                    <PixelTooltip
                                         key={option.value}
-                                        className="flex items-center space-x-2 cursor-pointer group"
+                                        content={option.desc}
                                     >
-                                        <input
-                                            type="radio"
-                                            name="contentType"
-                                            checked={
-                                                contentType === option.value
-                                            }
-                                            onChange={() =>
-                                                onContentTypeChange(
-                                                    option.value
-                                                )
-                                            }
-                                            className="hidden"
-                                        />
-                                        <div
-                                            className={`w-5 h-5 md:w-6 md:h-6 border-2 border-black flex items-center justify-center ${
-                                                contentType === option.value
-                                                    ? "bg-theme"
-                                                    : "bg-white"
-                                            }`}
-                                        >
-                                            {contentType === option.value && (
-                                                <div className="w-2 h-2 bg-white"></div>
-                                            )}
-                                        </div>
-                                        <span className="text-lg md:text-xl group-hover:underline">
-                                            {option.label}
-                                        </span>
-                                    </label>
+                                        <label className="flex items-center space-x-2 cursor-pointer group">
+                                            <input
+                                                type="radio"
+                                                name="contentType"
+                                                checked={
+                                                    contentType === option.value
+                                                }
+                                                onChange={() =>
+                                                    onContentTypeChange(
+                                                        option.value
+                                                    )
+                                                }
+                                                className="hidden"
+                                            />
+                                            <div
+                                                className={`w-5 h-5 md:w-6 md:h-6 border-2 border-black flex items-center justify-center ${
+                                                    contentType === option.value
+                                                        ? "bg-theme"
+                                                        : "bg-white"
+                                                }`}
+                                            >
+                                                {contentType ===
+                                                    option.value && (
+                                                    <div className="w-2 h-2 bg-white"></div>
+                                                )}
+                                            </div>
+                                            <span className="text-lg md:text-xl group-hover:underline">
+                                                {option.label}
+                                            </span>
+                                        </label>
+                                    </PixelTooltip>
                                 ))}
                             </div>
                         </div>

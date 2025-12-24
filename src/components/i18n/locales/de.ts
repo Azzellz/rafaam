@@ -13,6 +13,12 @@ export const deTranslation: TranslationContent = {
     grammarLesson: "Grammatiklektion",
     quizBattle: "Quiz-Schlacht",
     conversation: "Sprachchat",
+    grammarLessonDesc: "Lerne Grammatikregeln mit Beispielen und Übungen.",
+    quizBattleDesc: "Teste dein Wissen in einem spielerischen Quiz-Kampf.",
+    voicePracticeDesc: "Übe Sprechen und Hören mit KI.",
+    chatPracticeDesc:
+        "Chatte frei mit KI, um Konversationsfähigkeiten zu verbessern.",
+    writingPracticeDesc: "Übe das Schreiben von Aufsätzen oder kurzen Texten.",
     questTopic: "QUEST-THEMA",
     topicPlaceholder: "z. B. Reisen, Im Restaurant bestellen, Anime-Tropen...",
     randomTopic: "ZUFALL",

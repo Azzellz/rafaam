@@ -11,6 +11,11 @@ export interface TranslationContent {
     grammarLesson: string;
     quizBattle: string;
     conversation: string;
+    grammarLessonDesc: string;
+    quizBattleDesc: string;
+    voicePracticeDesc: string;
+    chatPracticeDesc: string;
+    writingPracticeDesc: string;
     questTopic: string;
     topicPlaceholder: string;
     randomTopic: string;

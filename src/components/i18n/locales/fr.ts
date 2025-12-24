@@ -13,6 +13,13 @@ export const frTranslation: TranslationContent = {
     grammarLesson: "Leçon de grammaire",
     quizBattle: "Quiz combat",
     conversation: "Chat vocal",
+    grammarLessonDesc:
+        "Apprenez les règles de grammaire avec des exemples et des exercices.",
+    quizBattleDesc: "Testez vos connaissances dans un quiz ludique.",
+    voicePracticeDesc: "Pratiquez l'expression orale et l'écoute avec l'IA.",
+    chatPracticeDesc:
+        "Discutez librement avec l'IA pour améliorer vos compétences conversationnelles.",
+    writingPracticeDesc: "Pratiquez la rédaction d'essais ou de textes courts.",
     questTopic: "SUJET DE LA QUÊTE",
     topicPlaceholder: "ex. Voyage, Commander au restaurant, Tropes d'anime...",
     randomTopic: "ALÉATOIRE",
