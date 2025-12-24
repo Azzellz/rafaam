@@ -85,9 +85,7 @@ export const TTSButton: React.FC<Props> = ({
                     />
                 </svg>
             )}
-            {label && (
-                <span className="ml-2 font-['VT323'] text-lg">{label}</span>
-            )}
+            {label && <span className="ml-2 text-lg">{label}</span>}
         </button>
     );
 };

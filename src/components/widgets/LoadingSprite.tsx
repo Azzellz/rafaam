@@ -18,7 +18,7 @@ export const LoadingSprite: React.FC<Props> = ({ language, text }) => {
                 <div className="absolute top-2 right-2 w-4 h-4 bg-white border border-black"></div>
                 <div className="absolute bottom-3 left-4 right-4 h-2 bg-black"></div>
             </div>
-            <p className="font-['VT323'] text-2xl text-slate-600 animate-pulse">
+            <p className="text-2xl text-slate-600 animate-pulse">
                 {text || t.generating}
             </p>
         </div>

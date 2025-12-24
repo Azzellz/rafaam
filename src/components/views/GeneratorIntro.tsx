@@ -50,15 +50,13 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
     return (
         <div className="animate-fade-in">
             <div className="text-center mb-8 md:mb-12">
-                <p className="text-xl md:text-2xl font-['DotGothic16'] text-gray-700 mb-2">
+                <p className="text-xl md:text-2xl text-gray-700 mb-2">
                     {t.introTitle.replace(
                         "{lang}",
                         PRACTICE_LANGUAGES[practiceLanguage].nativeLabel
                     )}
                 </p>
-                <p className="text-gray-500 font-['VT323'] text-lg">
-                    {t.introSubtitle}
-                </p>
+                <p className="text-gray-500 text-lg">{t.introSubtitle}</p>
             </div>
 
             <PixelCard title={t.configureQuest}>
@@ -151,7 +149,7 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                                                 <div className="w-2 h-2 bg-white"></div>
                                             )}
                                         </div>
-                                        <span className="font-['VT323'] text-lg md:text-xl group-hover:underline">
+                                        <span className="text-lg md:text-xl group-hover:underline">
                                             {option.label}
                                         </span>
                                     </label>
@@ -196,7 +194,7 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                 </form>
             </PixelCard>
 
-            <div className="mt-8 md:mt-12 grid grid-cols-3 gap-2 md:gap-4 opacity-50 text-center font-['VT323']">
+            <div className="mt-8 md:mt-12 grid grid-cols-3 gap-2 md:gap-4 opacity-50 text-center">
                 {[
                     { icon: "⚡", label: t.instantGen },
                     { icon: "✨", label: t.nativeExamples },

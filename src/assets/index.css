@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "zpix";
+    src: url("./font/zpix.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 @layer base {
     :root {
         background-color: #f1f5f9;
@@ -14,12 +22,30 @@
     html,
     body {
         min-height: 100%;
-        font-family: "VT323", monospace;
+        font-family: "VT323", "zpix", "DotGothic16", "NSimSun", monospace;
         background-color: #f1f5f9;
     }
 
     body {
         margin: 0;
         -webkit-font-smoothing: antialiased;
+        image-rendering: pixelated;
+        /* Prevent pull-to-refresh on mobile which looks weird in standalone apps */
+        overscroll-behavior-y: none;
+    }
+
+    /* Custom Scrollbar for retro feel */
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #e2e8f0;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #475569;
+        border: 2px solid #e2e8f0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #1e293b;
     }
 }

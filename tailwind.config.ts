@@ -17,8 +17,8 @@ const config: Config = {
     theme: {
         extend: {
             fontFamily: {
-                vt323: ["VT323", "monospace"],
-                dot: ["DotGothic16", "sans-serif"],
+                vt323: ["VT323", "zpix", "DotGothic16", "NSimSun", "monospace"],
+                dot: ["DotGothic16", "zpix", "NSimSun", "sans-serif"],
             },
             boxShadow: {
                 pixel: "4px 4px 0 0 rgba(0,0,0,0.8)",

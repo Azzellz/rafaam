@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { GrammarPoint, Language, PracticeLanguage } from "@/types";
-import { PixelCard, PixelButton, PixelSelect } from "@/components/layout/PixelUI";
+import {
+    PixelCard,
+    PixelButton,
+    PixelSelect,
+} from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
 import { TTSButton } from "../widgets/TTSButton";
 import { pixelAccentLabel, pixelInfoPanel } from "@/styles/classNames";
@@ -55,7 +59,7 @@ export const FavoritesView: React.FC<Props> = ({
     return (
         <div className="space-y-8 animate-fade-in">
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                <h2 className="text-4xl font-['DotGothic16'] text-[#facc15] drop-shadow-[2px_2px_0_#000] text-stroke-black">
+                <h2 className="text-4xl text-[#facc15] drop-shadow-[2px_2px_0_#000] text-stroke-black">
                     {t.myFavorites}
                 </h2>
                 <div className="flex items-center gap-4 w-full md:w-auto">
@@ -83,7 +87,7 @@ export const FavoritesView: React.FC<Props> = ({
 
             {showFallbackWarning && (
                 <PixelCard className="border-2 border-dashed border-yellow-500 bg-yellow-50 text-gray-800">
-                    <p className="font-['VT323'] text-lg text-[#b45309]">
+                    <p className="text-lg text-[#b45309]">
                         {t.storageFallbackWarning}
                     </p>
                 </PixelCard>
@@ -96,9 +100,7 @@ export const FavoritesView: React.FC<Props> = ({
             ) : favorites.length === 0 ? (
                 <PixelCard className="text-center py-12">
                     <div className="text-6xl mb-4">📜</div>
-                    <p className="text-2xl font-['VT323'] text-gray-500">
-                        {t.noFavorites}
-                    </p>
+                    <p className="text-2xl text-gray-500">{t.noFavorites}</p>
                 </PixelCard>
             ) : (
                 <div className="grid grid-cols-1 gap-6">
@@ -121,27 +123,27 @@ export const FavoritesView: React.FC<Props> = ({
                                                 pointLanguage
                                             )
                                         }
-                                        className="font-['VT323'] text-red-500 hover:text-red-700 bg-white border-2 border-red-500 px-2 py-0 hover:bg-red-50 h-[32px]"
+                                        className="text-red-500 hover:text-red-700 bg-white border-2 border-red-500 px-2 py-0 hover:bg-red-50 h-[32px]"
                                     >
                                         X {t.removeFromFavorites}
                                     </button>
                                 </div>
 
                                 <div className="mb-2 border-b-2 border-dashed border-gray-300 pb-2 pr-32">
-                                    <h3 className="text-xl font-['DotGothic16'] text-[#dc2626] inline-block mr-4">
+                                    <h3 className="text-xl text-[#dc2626] inline-block mr-4">
                                         {point.pattern}
                                     </h3>
-                                    <span className="text-md font-bold text-gray-800 font-['VT323'] uppercase">
+                                    <span className="text-md font-bold text-gray-800 uppercase">
                                         {point.meaning}
                                     </span>
                                     {practiceConfig && (
-                                        <span className="ml-2 inline-flex items-center px-2 py-0.5 text-xs font-['VT323'] border-2 border-black bg-[#ecfccb]">
+                                        <span className="ml-2 inline-flex items-center px-2 py-0.5 text-xs border-2 border-black bg-[#ecfccb]">
                                             {practiceConfig.nativeLabel}
                                         </span>
                                     )}
                                 </div>
 
-                                <p className="mb-4 text-sm text-gray-700 font-['DotGothic16']">
+                                <p className="mb-4 text-sm text-gray-700">
                                     {point.explanation}
                                 </p>
 
@@ -158,7 +160,7 @@ export const FavoritesView: React.FC<Props> = ({
                                                 className="flex flex-col group relative"
                                             >
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-md font-['DotGothic16'] text-black">
+                                                    <span className="text-md text-black">
                                                         {ex.text}
                                                     </span>
                                                     <div className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -177,7 +179,7 @@ export const FavoritesView: React.FC<Props> = ({
                                                         {ex.phonetic}
                                                     </span>
                                                 )}
-                                                <span className="text-xs font-['VT323'] text-gray-500 italic">
+                                                <span className="text-xs text-gray-500 italic">
                                                     "{ex.translation}"
                                                 </span>
                                             </li>

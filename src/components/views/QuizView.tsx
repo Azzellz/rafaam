@@ -44,10 +44,8 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
     if (showResults) {
         return (
             <PixelCard className="text-center py-12">
-                <h2 className="text-4xl font-['VT323'] mb-6">
-                    {t.questComplete}
-                </h2>
-                <div className="text-6xl mb-6 font-['DotGothic16'] text-theme">
+                <h2 className="text-4xl mb-6">{t.questComplete}</h2>
+                <div className="text-6xl mb-6 text-theme">
                     {score} / {data.questions.length}
                 </div>
                 <p className="text-xl mb-8 text-gray-600">
@@ -63,10 +61,10 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
     return (
         <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8">
-                <h2 className="text-3xl md:text-4xl font-['DotGothic16'] text-theme drop-shadow-[2px_2px_0_#000]">
+                <h2 className="text-3xl md:text-4xl text-theme drop-shadow-[2px_2px_0_#000]">
                     {data.title}
                 </h2>
-                <div className="mt-3 flex flex-wrap justify-center gap-2 font-['VT323'] text-base text-gray-700">
+                <div className="mt-3 flex flex-wrap justify-center gap-2 text-base text-gray-700">
                     {practiceConfig && (
                         <span className="px-3 py-1 border-2 border-black bg-white">
                             {practiceConfig.nativeLabel}
@@ -81,7 +79,7 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
                 </div>
             </div>
 
-            <div className="mb-4 flex justify-between items-end font-['VT323'] text-xl text-gray-500">
+            <div className="mb-4 flex justify-between items-end text-xl text-gray-500">
                 <span>
                     {t.question} {currentQuestionIndex + 1} /{" "}
                     {data.questions.length}
@@ -105,7 +103,7 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
             </div>
 
             <PixelCard title={t.quizBattleTitle}>
-                <h3 className="text-2xl font-['DotGothic16'] mt-4 mb-8 text-center leading-relaxed">
+                <h3 className="text-2xl mt-4 mb-8 text-center leading-relaxed">
                     {question.question}
                 </h3>
 
@@ -130,7 +128,7 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
                                 onClick={() => handleOptionClick(index)}
                                 disabled={isAnswered}
                                 className={`
-                  w-full text-left p-4 border-2 border-black font-['DotGothic16'] text-lg transition-all
+                  w-full text-left p-4 border-2 border-black text-lg transition-all
                   ${buttonStyle}
                   ${
                       !isAnswered &&
@@ -138,7 +136,7 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
                   }
                 `}
                             >
-                                <span className="font-['VT323'] mr-3 text-xl font-bold">
+                                <span className="mr-3 text-xl font-bold">
                                     {String.fromCharCode(65 + index)}.
                                 </span>
                                 {option}
@@ -149,12 +147,10 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
 
                 {isAnswered && (
                     <div className="animate-fade-in bg-[#fff7ed] border-2 border-[#fdba74] p-4 mb-6">
-                        <p className="font-bold text-[#ea580c] font-['VT323'] mb-1">
+                        <p className="font-bold text-[#ea580c] mb-1">
                             {t.explanation}
                         </p>
-                        <p className="font-['DotGothic16'] text-gray-700">
-                            {question.explanation}
-                        </p>
+                        <p className="text-gray-700">{question.explanation}</p>
                     </div>
                 )}
 

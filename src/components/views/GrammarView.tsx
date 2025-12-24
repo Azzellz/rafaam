@@ -67,7 +67,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
     return (
         <div className="space-y-8 animate-fade-in">
             <div className="text-center mb-6 md:mb-8">
-                <h2 className="text-3xl md:text-5xl font-['DotGothic16'] mb-2 text-theme drop-shadow-[2px_2px_0_#000]">
+                <h2 className="text-3xl md:text-5xl mb-2 text-theme drop-shadow-[2px_2px_0_#000]">
                     {data.title}
                 </h2>
                 <p
@@ -75,7 +75,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                 >
                     {data.introduction}
                 </p>
-                <div className="mt-4 flex flex-wrap justify-center gap-2 text-sm md:text-base font-['VT323'] text-gray-700">
+                <div className="mt-4 flex flex-wrap justify-center gap-2 text-sm md:text-base text-gray-700">
                     {practiceConfig && (
                         <span className="px-3 py-1 border-2 border-black bg-white">
                             {practiceConfig.nativeLabel}
@@ -92,7 +92,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
 
             {showFallbackWarning && (
                 <PixelCard className="border-2 border-dashed border-yellow-500 bg-yellow-50 text-gray-800">
-                    <p className="font-['VT323'] text-lg text-[#b45309]">
+                    <p className="text-lg text-[#b45309]">
                         {t.storageFallbackWarning}
                     </p>
                 </PixelCard>
@@ -109,10 +109,10 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                     >
                         <div className="flex flex-col-reverse md:flex-row justify-between items-start gap-4 mb-4 pb-4 border-b-2 border-dashed border-gray-300">
                             <div className="flex-1">
-                                <h3 className="text-2xl font-['DotGothic16'] text-[#dc2626] mb-1 leading-snug break-words">
+                                <h3 className="text-2xl text-[#dc2626] mb-1 leading-snug break-words">
                                     {point.pattern}
                                 </h3>
-                                <p className="text-lg font-bold text-gray-800 font-['VT323'] uppercase tracking-wide">
+                                <p className="text-lg font-bold text-gray-800 uppercase tracking-wide">
                                     {point.meaning}
                                 </p>
                             </div>
@@ -129,7 +129,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                                     onClick={() => handleToggleFavorite(index)}
                                     disabled={isLoadingFavs}
                                     className={`
-                     font-['VT323'] text-lg px-3 py-1 border-2 border-black transition-all h-[44px] whitespace-nowrap
+                     text-lg px-3 py-1 border-2 border-black transition-all h-[44px] whitespace-nowrap
                      ${
                          isFavorite
                              ? "bg-[#facc15] text-black shadow-[2px_2px_0_0_#000]"
@@ -145,7 +145,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                             </div>
                         </div>
 
-                        <p className="mb-6 text-gray-700 leading-relaxed font-['DotGothic16'] text-base md:text-lg">
+                        <p className="mb-6 text-gray-700 leading-relaxed text-base md:text-lg">
                             {point.explanation}
                         </p>
 
@@ -160,7 +160,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                                         className="flex flex-col gap-1 relative pl-2 border-l-4 border-gray-200 hover:border-theme transition-colors group p-1 md:p-2"
                                     >
                                         <div className="flex justify-between items-start">
-                                            <span className="text-base md:text-lg font-['DotGothic16'] text-black leading-snug">
+                                            <span className="text-base md:text-lg text-black leading-snug">
                                                 {ex.text}
                                             </span>
                                             <div className="opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity ml-2 flex-shrink-0">
@@ -179,7 +179,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                                                 {ex.phonetic}
                                             </span>
                                         )}
-                                        <span className="text-sm md:text-md font-['VT323'] text-gray-600 italic">
+                                        <span className="text-sm md:text-md text-gray-600 italic">
                                             "{ex.translation}"
                                         </span>
                                     </li>

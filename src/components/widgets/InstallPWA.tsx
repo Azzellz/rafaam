@@ -51,7 +51,7 @@ export const InstallPWA: React.FC = () => {
                 className="flex items-center gap-2 bg-[#facc15] text-black border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all scale-90 md:scale-100 origin-bottom-right"
             >
                 <span>📱</span>
-                <span className="font-['VT323'] text-lg">INSTALL APP</span>
+                <span className="text-lg">INSTALL APP</span>
             </PixelButton>
         </div>
     );

@@ -22,7 +22,7 @@ export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
     return (
         <div className="space-y-8 animate-fade-in">
             <div className="flex justify-between items-center mb-8">
-                <h2 className="text-4xl font-['DotGothic16'] text-[#facc15] drop-shadow-[2px_2px_0_#000] text-stroke-black">
+                <h2 className="text-4xl text-[#facc15] drop-shadow-[2px_2px_0_#000] text-stroke-black">
                     {t.settings}
                 </h2>
                 <PixelButton
@@ -41,7 +41,7 @@ export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`w-full text-left px-4 py-3 font-['VT323'] text-xl border-2 transition-all ${
+                            className={`w-full text-left px-4 py-3 text-xl border-2 transition-all ${
                                 activeTab === tab.id
                                     ? "bg-theme text-white border-black shadow-[2px_2px_0_#000]"
                                     : "bg-white text-gray-600 border-transparent hover:bg-gray-50 hover:border-gray-200"

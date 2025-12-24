@@ -160,10 +160,10 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
     return (
         <div className="animate-fade-in w-full max-w-2xl mx-auto">
             <div className="mb-4 text-center">
-                <h2 className="text-2xl md:text-3xl font-['DotGothic16'] text-theme mb-2">
+                <h2 className="text-2xl md:text-3xl text-theme mb-2">
                     {t.chatPractice}
                 </h2>
-                <p className="text-gray-500 font-['VT323']">
+                <p className="text-gray-500">
                     {t.questTopic}: {data.topic}
                 </p>
             </div>
@@ -198,7 +198,7 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
                                         : {}
                                 }
                             >
-                                <p className="font-['DotGothic16'] text-lg whitespace-pre-wrap">
+                                <p className="text-lg whitespace-pre-wrap">
                                     {msg.text}
                                 </p>
                                 {msg.role === "model" && (
@@ -238,7 +238,7 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleSend()}
                             placeholder={t.typeMessage}
-                            className="flex-1 font-['VT323'] text-xl border-2 border-black px-3 py-2 focus:outline-none focus:ring-2 focus:ring-theme"
+                            className="flex-1 text-xl border-2 border-black px-3 py-2 focus:outline-none focus:ring-2 focus:ring-theme"
                             disabled={isLoading}
                         />
                         <PixelButton

@@ -58,9 +58,7 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
         <div className="space-y-6">
             {/* Theme Color */}
             <div>
-                <label className="block font-['VT323'] text-xl mb-2">
-                    Theme Color
-                </label>
+                <label className="block text-xl mb-2">Theme Color</label>
                 <div className="flex flex-wrap gap-3 mb-3">
                     {THEME_PRESETS.map((color) => (
                         <button
@@ -82,7 +80,7 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
                     ))}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="font-['VT323']">Custom:</span>
+                    <span className="">Custom:</span>
                     <input
                         type="color"
                         value={bgConfig.themeColor || "#4f46e5"}
@@ -99,9 +97,7 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
 
             {/* Image Upload */}
             <div>
-                <label className="block font-['VT323'] text-xl mb-2">
-                    {t.uploadImage}
-                </label>
+                <label className="block text-xl mb-2">{t.uploadImage}</label>
                 <div className="flex items-center gap-2">
                     <label className="flex-1 cursor-pointer">
                         <input
@@ -111,21 +107,19 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
                             onChange={handleFileChange}
                             className="hidden"
                         />
-                        <div className="border-2 border-black border-dashed bg-gray-50 hover:bg-gray-100 p-3 text-center font-['DotGothic16'] text-gray-600 truncate">
+                        <div className="border-2 border-black border-dashed bg-gray-50 hover:bg-gray-100 p-3 text-center text-gray-600 truncate">
                             {bgConfig.imageData
                                 ? "🖼️ Image Selected"
                                 : t.noImage}
                         </div>
                     </label>
                 </div>
-                <p className="text-xs text-gray-500 font-['VT323'] mt-1">
-                    {t.bgNote}
-                </p>
+                <p className="text-xs text-gray-500 mt-1">{t.bgNote}</p>
             </div>
 
             {/* Blur Slider */}
             <div>
-                <div className="flex justify-between font-['VT323'] text-xl mb-1">
+                <div className="flex justify-between text-xl mb-1">
                     <label>{t.blur}</label>
                     <span>{bgConfig.blur}px</span>
                 </div>
@@ -147,7 +141,7 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
 
             {/* Opacity Slider */}
             <div>
-                <div className="flex justify-between font-['VT323'] text-xl mb-1">
+                <div className="flex justify-between text-xl mb-1">
                     <label>{t.opacity}</label>
                     <span>{Math.round(bgConfig.overlayOpacity * 100)}%</span>
                 </div>

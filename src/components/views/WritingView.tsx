@@ -62,10 +62,10 @@ export const WritingView: React.FC<WritingViewProps> = ({
 
                     {data.hints && data.hints.length > 0 && (
                         <div className="bg-yellow-50 p-4 border-2 border-black">
-                            <p className="font-bold text-sm text-black mb-2 font-['VT323'] uppercase">
+                            <p className="font-bold text-sm text-black mb-2 uppercase">
                                 {t.point}:
                             </p>
-                            <ul className="list-disc list-inside text-lg text-gray-800 font-['VT323']">
+                            <ul className="list-disc list-inside text-lg text-gray-800">
                                 {data.hints.map((hint, i) => (
                                     <li key={i}>{hint}</li>
                                 ))}
@@ -76,7 +76,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
                     {!evaluation ? (
                         <div className="space-y-4">
                             <textarea
-                                className="w-full h-48 p-4 border-2 border-black font-['VT323'] text-xl focus:bg-blue-50 focus:outline-none resize-none"
+                                className="w-full h-48 p-4 border-2 border-black text-xl focus:bg-blue-50 focus:outline-none resize-none"
                                 placeholder="..."
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
@@ -100,28 +100,28 @@ export const WritingView: React.FC<WritingViewProps> = ({
                         <div className="space-y-6">
                             <div className="bg-blue-50 p-4 border-2 border-black">
                                 <div className="flex justify-between items-center mb-4 border-b-2 border-black pb-2">
-                                    <h3 className="font-bold text-2xl font-['VT323']">
+                                    <h3 className="font-bold text-2xl">
                                         {t.score}: {evaluation.score}
                                     </h3>
                                 </div>
-                                <p className="text-lg font-['VT323'] mb-6">
+                                <p className="text-lg mb-6">
                                     {evaluation.feedback}
                                 </p>
 
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div>
-                                        <h4 className="font-bold font-['VT323'] text-xl mb-2">
+                                        <h4 className="font-bold text-xl mb-2">
                                             {t.yourWriting}
                                         </h4>
-                                        <div className="bg-white p-4 border-2 border-black h-full font-['VT323'] text-lg whitespace-pre-wrap">
+                                        <div className="bg-white p-4 border-2 border-black h-full text-lg whitespace-pre-wrap">
                                             {text}
                                         </div>
                                     </div>
                                     <div>
-                                        <h4 className="font-bold font-['VT323'] text-xl mb-2">
+                                        <h4 className="font-bold text-xl mb-2">
                                             {t.correctedText}
                                         </h4>
-                                        <div className="bg-white p-4 border-2 border-black h-full font-['VT323'] text-lg whitespace-pre-wrap">
+                                        <div className="bg-white p-4 border-2 border-black h-full text-lg whitespace-pre-wrap">
                                             {evaluation.correctedText}
                                         </div>
                                     </div>
@@ -129,10 +129,10 @@ export const WritingView: React.FC<WritingViewProps> = ({
 
                                 {evaluation.improvements.length > 0 && (
                                     <div className="mt-12">
-                                        <h4 className="font-bold font-['VT323'] text-xl mb-2">
+                                        <h4 className="font-bold text-xl mb-2">
                                             {t.improvements}
                                         </h4>
-                                        <ul className="list-disc list-inside font-['VT323'] text-lg space-y-1">
+                                        <ul className="list-disc list-inside text-lg space-y-1">
                                             {evaluation.improvements.map(
                                                 (imp, i) => (
                                                     <li key={i}>{imp}</li>

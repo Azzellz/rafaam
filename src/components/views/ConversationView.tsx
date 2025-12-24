@@ -376,13 +376,13 @@ export const ConversationView: React.FC<Props> = ({
     return (
         <div className="flex flex-col items-center justify-center min-h-[50vh] md:min-h-[60vh] animate-fade-in w-full">
             <div className="mb-4 text-center">
-                <h2 className="text-2xl md:text-3xl font-['DotGothic16'] text-theme mb-2">
+                <h2 className="text-2xl md:text-3xl text-theme mb-2">
                     {t.conversation}
                 </h2>
                 <p className={pixelMutedParagraph}>
                     {t.questTopic}: {data.topic}
                 </p>
-                <div className="mt-2 flex flex-wrap justify-center gap-2 text-sm font-['VT323'] text-gray-600">
+                <div className="mt-2 flex flex-wrap justify-center gap-2 text-sm text-gray-600">
                     <span className="px-3 py-1 border-2 border-black bg-white">
                         {practiceLanguageConfig.nativeLabel}
                     </span>
@@ -394,7 +394,7 @@ export const ConversationView: React.FC<Props> = ({
 
             <PixelCard className="w-full max-w-lg flex flex-col items-center relative h-[60vh] md:h-[600px] overflow-hidden">
                 {/* Status Header */}
-                <div className="w-full flex justify-between items-center font-['VT323'] text-base md:text-lg mb-4 border-b-2 border-gray-200 pb-2 flex-shrink-0">
+                <div className="w-full flex justify-between items-center text-base md:text-lg mb-4 border-b-2 border-gray-200 pb-2 flex-shrink-0">
                     <div className="flex items-center gap-2">
                         <div
                             className={`w-3 h-3 rounded-full ${
@@ -458,12 +458,12 @@ export const ConversationView: React.FC<Props> = ({
                         !currentInput &&
                         !currentOutput &&
                         status === "connected" && (
-                            <div className="h-full flex items-center justify-center text-gray-400 font-['VT323']">
+                            <div className="h-full flex items-center justify-center text-gray-400">
                                 {t.listening}
                             </div>
                         )}
 
-                    <div className="space-y-3 font-['DotGothic16']">
+                    <div className="space-y-3">
                         {history.map((msg, i) => (
                             <div
                                 key={i}
@@ -473,7 +473,7 @@ export const ConversationView: React.FC<Props> = ({
                                         : "items-start"
                                 }`}
                             >
-                                <span className="text-xs text-gray-500 mb-1 font-['VT323'] tracking-wider">
+                                <span className="text-xs text-gray-500 mb-1 tracking-wider">
                                     {msg.role === "user"
                                         ? t.transcriptUser
                                         : t.transcriptModel}
@@ -493,7 +493,7 @@ export const ConversationView: React.FC<Props> = ({
                         {/* Real-time Streaming */}
                         {currentInput && (
                             <div className="flex flex-col items-end opacity-80">
-                                <span className="text-xs text-gray-500 mb-1 font-['VT323']">
+                                <span className="text-xs text-gray-500 mb-1">
                                     {t.transcriptUser}
                                 </span>
                                 <div className="px-3 py-2 text-sm bg-[#dbeafe] border-2 border-[#1e40af] border-dashed text-[#1e3a8a] rounded-tr-none">
@@ -503,7 +503,7 @@ export const ConversationView: React.FC<Props> = ({
                         )}
                         {currentOutput && (
                             <div className="flex flex-col items-start opacity-80">
-                                <span className="text-xs text-gray-500 mb-1 font-['VT323']">
+                                <span className="text-xs text-gray-500 mb-1">
                                     {t.transcriptModel}
                                 </span>
                                 <div className="px-3 py-2 text-sm bg-white border-2 border-black border-dashed rounded-tl-none">
@@ -517,7 +517,7 @@ export const ConversationView: React.FC<Props> = ({
 
                 {/* Instructions (Only when idle) - Absolutely positioned or conditional overlay might be better on small screens, but flow is okay */}
                 {status === "idle" && (
-                    <p className="text-center font-['VT323'] text-gray-500 mb-4 px-2 text-sm md:text-base">
+                    <p className="text-center text-gray-500 mb-4 px-2 text-sm md:text-base">
                         {t.conversationIntro} <br />
                         <span className="text-xs">{t.micPermission}</span>
                     </p>
@@ -548,7 +548,7 @@ export const ConversationView: React.FC<Props> = ({
                     )}
 
                     {status === "error" && (
-                        <p className="text-red-500 font-['VT323'] text-center text-sm">
+                        <p className="text-red-500 text-center text-sm">
                             {t.connectionError}
                         </p>
                     )}

@@ -7,7 +7,7 @@ export const PixelButton: React.FC<
     }
 > = ({ children, className = "", variant = "primary", ...props }) => {
     const baseStyle =
-        "font-['VT323'] text-lg md:text-xl px-4 md:px-6 py-2 border-2 border-black transition-transform active:translate-y-1 active:shadow-none disabled:opacity-60 disabled:cursor-not-allowed";
+        "text-lg md:text-xl px-4 md:px-6 py-2 border-2 border-black transition-transform active:translate-y-1 active:shadow-none disabled:opacity-60 disabled:cursor-not-allowed";
 
     const variants = {
         primary:
@@ -39,7 +39,7 @@ export const PixelCard: React.FC<{
         >
             {title && (
                 <div className="absolute -top-4 md:-top-5 left-2 md:left-4 bg-[var(--theme-color)] text-white px-3 py-0.5 md:px-4 md:py-1 border-2 border-black shadow-[2px_2px_0_0_#000]">
-                    <span className="font-['VT323'] text-lg md:text-xl uppercase tracking-wider">
+                    <span className="text-lg md:text-xl uppercase tracking-wider">
                         {title}
                     </span>
                 </div>
@@ -56,7 +56,7 @@ export const PixelInput: React.FC<
 > = ({ className = "", ...props }) => {
     return (
         <input
-            className={`font-['DotGothic16'] text-base md:text-lg w-full bg-[#f1f5f9] border-2 border-black p-2 md:p-3 focus:outline-none focus:shadow-[4px_4px_0_0_#000] transition-shadow placeholder-gray-500 ${className}`}
+            className={`text-base md:text-lg w-full bg-[#f1f5f9] border-2 border-black p-2 md:p-3 focus:outline-none focus:shadow-[4px_4px_0_0_#000] transition-shadow placeholder-gray-500 ${className}`}
             {...props}
         />
     );
@@ -107,7 +107,7 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
     return (
         <div className={`relative ${className}`} ref={containerRef}>
             <div
-                className={`font-['VT323'] text-lg md:text-xl w-full bg-white border-2 border-black p-2 pr-10 cursor-pointer flex items-center justify-between select-none transition-all ${
+                className={`text-lg md:text-xl w-full bg-white border-2 border-black p-2 pr-10 cursor-pointer flex items-center justify-between select-none transition-all ${
                     isOpen
                         ? "translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0_0_#000]"
                         : "shadow-[4px_4px_0_0_#000] hover:shadow-[4px_4px_0_0_var(--theme-color)]"
@@ -142,7 +142,7 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
                     {options.map((option) => (
                         <div
                             key={option.value}
-                            className={`font-['VT323'] text-lg md:text-xl px-4 py-2 cursor-pointer hover:bg-theme hover:text-white transition-colors ${
+                            className={`text-lg md:text-xl px-4 py-2 cursor-pointer hover:bg-theme hover:text-white transition-colors ${
                                 option.value === value ? "bg-[#eff6ff]" : ""
                             }`}
                             onClick={() => {

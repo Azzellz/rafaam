@@ -34,7 +34,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         <header className="bg-theme border-b-4 border-black p-3 md:p-4 mb-6 md:mb-10 sticky top-0 z-10 shadow-[0_4px_0_0_rgba(0,0,0,0.2)]">
             <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
                 <div className="cursor-pointer" onClick={onLogoClick}>
-                    <h1 className="text-2xl md:text-4xl text-white font-['VT323'] tracking-widest drop-shadow-[2px_2px_0_#000]">
+                    <h1 className="text-2xl md:text-4xl text-white tracking-widest drop-shadow-[2px_2px_0_#000]">
                         {t.title}{" "}
                         <span className="text-[#facc15]">
                             {PRACTICE_LANGUAGES[practiceLanguage].nativeLabel}
@@ -63,7 +63,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
                     <button
                         onClick={onOpenSettings}
-                        className="h-10 w-10 md:h-12 md:w-12 bg-gray-200 border-2 border-black hover:bg-gray-300 shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center flex-shrink-0 p-0"
+                        className="h-10 w-10 md:h-12 md:w-12 bg-white border-2 border-black hover:bg-gray-100 shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center flex-shrink-0 p-0"
                         title={t.bgSettings}
                     >
                         <span className="text-xl md:text-2xl leading-none">
