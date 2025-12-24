@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChatSession, Language } from "@/types";
-import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
+import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
 import { GoogleGenAI } from "@google/genai";

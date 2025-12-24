@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ConversationSession, Language, PracticeLanguage } from "@/types";
-import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
+import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
 import {

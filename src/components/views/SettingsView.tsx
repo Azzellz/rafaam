@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Language } from "@/types";
-import { PixelButton, PixelCard } from "@/components/layout/PixelUI";
+import { PixelButton, PixelCard } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { AppearanceSettings } from "@/components/settings/AppearanceSettings";
 import { StorageSettings } from "@/components/settings/StorageSettings";

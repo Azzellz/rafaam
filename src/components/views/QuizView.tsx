@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { QuizSession, Language } from "@/types";
-import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
+import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 

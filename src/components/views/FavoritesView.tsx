@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GrammarPoint, Language, PracticeLanguage } from "@/types";
-import {
-    PixelCard,
-    PixelButton,
-    PixelSelect,
-} from "@/components/layout/PixelUI";
+import { PixelCard, PixelButton, PixelSelect } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "../widgets/TTSButton";
 import { pixelAccentLabel, pixelInfoPanel } from "@/constants/style";

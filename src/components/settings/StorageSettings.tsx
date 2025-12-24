@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Language } from "@/types";
 import { translations } from "@/i18n";
-import { PixelButton } from "@/components/layout/PixelUI";
+import { PixelButton } from "@/components/pixel";
 
 interface Props {
     language: Language;

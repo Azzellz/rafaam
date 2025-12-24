@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PixelButton } from "@/components/layout/PixelUI";
+import { PixelButton } from "@/components/pixel";
 
 export const InstallPWA: React.FC = () => {
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);

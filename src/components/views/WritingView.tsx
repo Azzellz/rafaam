@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Language, WritingTask, WritingEvaluation } from "@/types";
-import { PixelButton, PixelCard } from "../layout/PixelUI";
+import { PixelButton, PixelCard } from "../pixel";
 import { translations } from "@/i18n";
 import { evaluateWriting } from "@/services/geminiService";
 import { LoadingSprite } from "../widgets/LoadingSprite";

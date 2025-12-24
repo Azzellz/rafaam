@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { BackgroundConfig, Language } from "@/types";
-import { PixelButton } from "@/components/layout/PixelUI";
+import { PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { useAppStore } from "@/stores/useAppStore";
 import { saveBackgroundConfig } from "@/services/storageService";

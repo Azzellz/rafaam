@@ -12,7 +12,7 @@ import {
     PixelInput,
     PixelSelect,
     PixelTooltip,
-} from "../layout/PixelUI";
+} from "../pixel";
 
 type GeneratorIntroProps = {
     t: TranslationContent;

@@ -1,6 +1,6 @@
 import React from "react";
 import { ContentType, GeneratedContent, Language } from "../../types";
-import { PixelButton } from "../layout/PixelUI";
+import { PixelButton } from "../pixel";
 import { GrammarView } from "./GrammarView";
 import { QuizView } from "./QuizView";
 import { ConversationView } from "./ConversationView";

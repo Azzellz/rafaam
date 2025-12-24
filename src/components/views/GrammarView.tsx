@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { GrammarLesson, Language, GrammarPoint } from "@/types";
-import { PixelCard } from "@/components/layout/PixelUI";
+import { PixelCard } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
 import {
