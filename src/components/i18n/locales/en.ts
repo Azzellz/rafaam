@@ -64,7 +64,7 @@ export const enTranslation: TranslationContent = {
     transcriptUser: "YOU",
     transcriptModel: "SENSEI",
     conversationIntro: "Practice speaking Japanese in real-time!",
-    bgSettings: "THEME SETTINGS",
+    bgSettings: "THEME",
     uploadImage: "UPLOAD BACKGROUND",
     blur: "BLUR",
     opacity: "OVERLAY OPACITY",
@@ -77,4 +77,20 @@ export const enTranslation: TranslationContent = {
     chatIntro: "Chat with Sensei via text!",
     typeMessage: "Type your message...",
     send: "SEND",
+
+    // Storage Settings
+    storageSettings: "STORAGE",
+    storageUsage: "STORAGE USAGE",
+    clearStorage: "CLEAR STORAGE",
+    clearAll: "CLEAR ALL DATA",
+    clearFavorites: "CLEAR FAVORITES",
+    clearSettings: "CLEAR SETTINGS",
+    confirmClear:
+        "Are you sure you want to clear this data? This cannot be undone.",
+    cleared: "CLEARED",
+    calculating: "Calculating...",
+    unknown: "Unknown",
+    bytes: "Bytes",
+    kb: "KB",
+    mb: "MB",
 };

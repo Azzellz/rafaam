@@ -3,13 +3,14 @@ import { Language } from "@/types";
 import { PixelButton, PixelCard } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
 import { AppearanceSettings } from "@/components/settings/AppearanceSettings";
+import { StorageSettings } from "@/components/settings/StorageSettings";
 
 interface Props {
     language: Language;
     onBack: () => void;
 }
 
-type SettingsTab = "appearance" | "general";
+type SettingsTab = "appearance" | "storage";
 
 export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
     const t = translations[language];
@@ -17,6 +18,7 @@ export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
 
     const tabs: { id: SettingsTab; label: string; icon: string }[] = [
         { id: "appearance", label: t.bgSettings, icon: "🎨" },
+        { id: "storage", label: t.storageSettings, icon: "💾" },
     ];
 
     return (
@@ -58,6 +60,9 @@ export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
                     <PixelCard>
                         {activeTab === "appearance" && (
                             <AppearanceSettings language={language} />
+                        )}
+                        {activeTab === "storage" && (
+                            <StorageSettings language={language} />
                         )}
                     </PixelCard>
                 </div>

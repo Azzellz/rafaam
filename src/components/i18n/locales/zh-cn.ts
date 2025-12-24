@@ -63,7 +63,7 @@ export const zhCNTranslation: TranslationContent = {
     transcriptUser: "你",
     transcriptModel: "老师",
     conversationIntro: "实时练习日语口语！",
-    bgSettings: "主题设置",
+    bgSettings: "主题",
     uploadImage: "上传背景图",
     blur: "模糊度",
     opacity: "遮罩浓度",
@@ -76,4 +76,19 @@ export const zhCNTranslation: TranslationContent = {
     chatIntro: "通过文字与老师聊天！",
     typeMessage: "输入消息...",
     send: "发送",
+
+    // Storage Settings
+    storageSettings: "存储",
+    storageUsage: "存储占用",
+    clearStorage: "清除存储",
+    clearAll: "清除所有数据",
+    clearFavorites: "清除收藏",
+    clearSettings: "清除设置",
+    confirmClear: "确定要清除此数据吗？此操作无法撤销。",
+    cleared: "已清除",
+    calculating: "计算中...",
+    unknown: "未知",
+    bytes: "字节",
+    kb: "KB",
+    mb: "MB",
 };

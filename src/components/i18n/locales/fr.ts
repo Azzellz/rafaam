@@ -64,7 +64,7 @@ export const frTranslation: TranslationContent = {
     transcriptUser: "TOI",
     transcriptModel: "SENSEI",
     conversationIntro: "Pratique le japonais en temps réel !",
-    bgSettings: "RÉGLAGES DU THÈME",
+    bgSettings: "THÈME",
     uploadImage: "IMPORTER UN FOND",
     blur: "FLOU",
     opacity: "OPACITÉ DU VOILE",
@@ -77,4 +77,20 @@ export const frTranslation: TranslationContent = {
     chatIntro: "Discutez avec Sensei par SMS !",
     typeMessage: "Tapez votre message...",
     send: "ENVOYER",
+
+    // Storage Settings
+    storageSettings: "STOCKAGE",
+    storageUsage: "STORAGE USAGE",
+    clearStorage: "CLEAR STORAGE",
+    clearAll: "CLEAR ALL DATA",
+    clearFavorites: "CLEAR FAVORITES",
+    clearSettings: "CLEAR SETTINGS",
+    confirmClear:
+        "Are you sure you want to clear this data? This cannot be undone.",
+    cleared: "CLEARED",
+    calculating: "Calculating...",
+    unknown: "Unknown",
+    bytes: "Bytes",
+    kb: "KB",
+    mb: "MB",
 };

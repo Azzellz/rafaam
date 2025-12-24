@@ -63,7 +63,7 @@ export const jaTranslation: TranslationContent = {
     transcriptUser: "あなた",
     transcriptModel: "先生",
     conversationIntro: "リアルタイムで日本語会話を練習しよう！",
-    bgSettings: "テーマ設定",
+    bgSettings: "テーマ",
     uploadImage: "背景画像をアップロード",
     blur: "ぼかし",
     opacity: "オーバーレイ不透明度",
@@ -76,4 +76,20 @@ export const jaTranslation: TranslationContent = {
     chatIntro: "テキストで先生とチャットしよう！",
     typeMessage: "メッセージを入力...",
     send: "送信",
+
+    // Storage Settings
+    storageSettings: "ストレージ",
+    storageUsage: "ストレージ使用量",
+    clearStorage: "ストレージを消去",
+    clearAll: "すべてのデータを消去",
+    clearFavorites: "お気に入りを消去",
+    clearSettings: "設定を消去",
+    confirmClear:
+        "このデータを消去してもよろしいですか？この操作は取り消せません。",
+    cleared: "消去しました",
+    calculating: "計算中...",
+    unknown: "不明",
+    bytes: "バイト",
+    kb: "KB",
+    mb: "MB",
 };

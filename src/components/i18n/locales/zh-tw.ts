@@ -63,7 +63,7 @@ export const zhTWTranslation: TranslationContent = {
     transcriptUser: "你",
     transcriptModel: "老師",
     conversationIntro: "即時練習日語口語！",
-    bgSettings: "主題設置",
+    bgSettings: "主題",
     uploadImage: "上傳背景圖",
     blur: "模糊度",
     opacity: "遮罩濃度",
@@ -76,4 +76,19 @@ export const zhTWTranslation: TranslationContent = {
     chatIntro: "通過文字與老師聊天！",
     typeMessage: "輸入消息...",
     send: "發送",
+
+    // Storage Settings
+    storageSettings: "存儲",
+    storageUsage: "存儲佔用",
+    clearStorage: "清除存儲",
+    clearAll: "清除所有數據",
+    clearFavorites: "清除收藏",
+    clearSettings: "清除設置",
+    confirmClear: "確定要清除此數據嗎？此操作無法撤銷。",
+    cleared: "已清除",
+    calculating: "計算中...",
+    unknown: "未知",
+    bytes: "字節",
+    kb: "KB",
+    mb: "MB",
 };

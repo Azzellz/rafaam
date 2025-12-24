@@ -73,4 +73,19 @@ export interface TranslationContent {
     chatIntro: string;
     typeMessage: string;
     send: string;
+
+    // Storage Settings
+    storageSettings: string;
+    storageUsage: string;
+    clearStorage: string;
+    clearAll: string;
+    clearFavorites: string;
+    clearSettings: string;
+    confirmClear: string;
+    cleared: string;
+    calculating: string;
+    unknown: string;
+    bytes: string;
+    kb: string;
+    mb: string;
 }

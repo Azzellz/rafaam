@@ -58,7 +58,7 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
         <div className="space-y-6">
             {/* Theme Color */}
             <div>
-                <label className="block text-xl mb-2">Theme Color</label>
+                <label className="block text-xl mb-2">THEME COLOR</label>
                 <div className="flex flex-wrap gap-3 mb-3">
                     {THEME_PRESETS.map((color) => (
                         <button
@@ -80,7 +80,7 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
                     ))}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="">Custom:</span>
+                    <span className="">CUSTOM:</span>
                     <input
                         type="color"
                         value={bgConfig.themeColor || "#4f46e5"}
