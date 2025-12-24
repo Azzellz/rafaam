@@ -11,7 +11,7 @@ export const PixelButton: React.FC<
 
     const variants = {
         primary:
-            "bg-[#3b82f6] text-white shadow-[3px_3px_0_0_#1e3a8a] md:shadow-[4px_4px_0_0_#1e3a8a] hover:bg-[#2563eb]",
+            "bg-theme text-white shadow-[3px_3px_0_0_var(--theme-shadow)] md:shadow-[4px_4px_0_0_var(--theme-shadow)] hover:bg-theme-hover",
         secondary:
             "bg-[#facc15] text-black shadow-[3px_3px_0_0_#a16207] md:shadow-[4px_4px_0_0_#a16207] hover:bg-[#eab308]",
         danger: "bg-[#ef4444] text-white shadow-[3px_3px_0_0_#991b1b] md:shadow-[4px_4px_0_0_#991b1b] hover:bg-[#dc2626]",
@@ -38,7 +38,7 @@ export const PixelCard: React.FC<{
             className={`bg-white border-2 md:border-4 border-black shadow-[4px_4px_0_0_#cbd5e1] md:shadow-[8px_8px_0_0_#cbd5e1] p-4 md:p-6 relative ${className}`}
         >
             {title && (
-                <div className="absolute -top-4 md:-top-5 left-2 md:left-4 bg-[#6366f1] text-white px-3 py-0.5 md:px-4 md:py-1 border-2 border-black shadow-[2px_2px_0_0_#000]">
+                <div className="absolute -top-4 md:-top-5 left-2 md:left-4 bg-[var(--theme-color)] text-white px-3 py-0.5 md:px-4 md:py-1 border-2 border-black shadow-[2px_2px_0_0_#000]">
                     <span className="font-['VT323'] text-lg md:text-xl uppercase tracking-wider">
                         {title}
                     </span>
@@ -110,7 +110,7 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
                 className={`font-['VT323'] text-lg md:text-xl w-full bg-white border-2 border-black p-2 pr-10 cursor-pointer flex items-center justify-between select-none transition-all ${
                     isOpen
                         ? "translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0_0_#000]"
-                        : "shadow-[4px_4px_0_0_#000] hover:shadow-[4px_4px_0_0_#3b82f6]"
+                        : "shadow-[4px_4px_0_0_#000] hover:shadow-[4px_4px_0_0_var(--theme-color)]"
                 }`}
                 onClick={() => setIsOpen(!isOpen)}
             >
@@ -142,7 +142,7 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
                     {options.map((option) => (
                         <div
                             key={option.value}
-                            className={`font-['VT323'] text-lg md:text-xl px-4 py-2 cursor-pointer hover:bg-[#3b82f6] hover:text-white transition-colors ${
+                            className={`font-['VT323'] text-lg md:text-xl px-4 py-2 cursor-pointer hover:bg-theme hover:text-white transition-colors ${
                                 option.value === value ? "bg-[#eff6ff]" : ""
                             }`}
                             onClick={() => {

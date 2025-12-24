@@ -47,7 +47,7 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
                 <h2 className="text-4xl font-['VT323'] mb-6">
                     {t.questComplete}
                 </h2>
-                <div className="text-6xl mb-6 font-['DotGothic16'] text-[#4f46e5]">
+                <div className="text-6xl mb-6 font-['DotGothic16'] text-theme">
                     {score} / {data.questions.length}
                 </div>
                 <p className="text-xl mb-8 text-gray-600">
@@ -63,7 +63,7 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
     return (
         <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8">
-                <h2 className="text-3xl md:text-4xl font-['DotGothic16'] text-[#ec4899] drop-shadow-[2px_2px_0_#000]">
+                <h2 className="text-3xl md:text-4xl font-['DotGothic16'] text-theme drop-shadow-[2px_2px_0_#000]">
                     {data.title}
                 </h2>
                 <div className="mt-3 flex flex-wrap justify-center gap-2 font-['VT323'] text-base text-gray-700">
@@ -93,7 +93,7 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
 
             <div className="w-full bg-gray-200 h-4 border-2 border-black mb-8">
                 <div
-                    className="bg-[#3b82f6] h-full transition-all duration-300"
+                    className="bg-theme h-full transition-all duration-300"
                     style={{
                         width: `${
                             ((currentQuestionIndex + (isAnswered ? 1 : 0)) /

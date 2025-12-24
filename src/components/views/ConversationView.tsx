@@ -376,7 +376,7 @@ export const ConversationView: React.FC<Props> = ({
     return (
         <div className="flex flex-col items-center justify-center min-h-[50vh] md:min-h-[60vh] animate-fade-in w-full">
             <div className="mb-4 text-center">
-                <h2 className="text-2xl md:text-3xl font-['DotGothic16'] text-[#4f46e5] mb-2">
+                <h2 className="text-2xl md:text-3xl font-['DotGothic16'] text-theme mb-2">
                     {t.conversation}
                 </h2>
                 <p className={pixelMutedParagraph}>
@@ -414,7 +414,7 @@ export const ConversationView: React.FC<Props> = ({
                         </span>
                     </div>
                     {status === "connected" && (
-                        <div className="uppercase font-bold text-[#4f46e5]">
+                        <div className="uppercase font-bold text-theme">
                             {isTalking ? t.speaking : t.listening}
                         </div>
                     )}

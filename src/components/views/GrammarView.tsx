@@ -67,7 +67,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
     return (
         <div className="space-y-8 animate-fade-in">
             <div className="text-center mb-6 md:mb-8">
-                <h2 className="text-3xl md:text-5xl font-['DotGothic16'] mb-2 text-[#4f46e5] drop-shadow-[2px_2px_0_#000]">
+                <h2 className="text-3xl md:text-5xl font-['DotGothic16'] mb-2 text-theme drop-shadow-[2px_2px_0_#000]">
                     {data.title}
                 </h2>
                 <p
@@ -157,7 +157,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                                 {point.examples.map((ex, i) => (
                                     <li
                                         key={i}
-                                        className="flex flex-col gap-1 relative pl-2 border-l-4 border-gray-200 hover:border-[#3b82f6] transition-colors group p-1 md:p-2"
+                                        className="flex flex-col gap-1 relative pl-2 border-l-4 border-gray-200 hover:border-theme transition-colors group p-1 md:p-2"
                                     >
                                         <div className="flex justify-between items-start">
                                             <span className="text-base md:text-lg font-['DotGothic16'] text-black leading-snug">

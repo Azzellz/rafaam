@@ -36,14 +36,67 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
             imageData: null,
             blur: 0,
             overlayOpacity: 0.5,
+            themeColor: "#4f46e5",
         });
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
         }
     };
 
+    const THEME_PRESETS = [
+        "#4f46e5", // Indigo
+        "#3b82f6", // Blue
+        "#ef4444", // Red
+        "#22c55e", // Green
+        "#a855f7", // Purple
+        "#f97316", // Orange
+        "#ec4899", // Pink
+        "#06b6d4", // Cyan
+    ];
+
     return (
         <div className="space-y-6">
+            {/* Theme Color */}
+            <div>
+                <label className="block font-['VT323'] text-xl mb-2">
+                    Theme Color
+                </label>
+                <div className="flex flex-wrap gap-3 mb-3">
+                    {THEME_PRESETS.map((color) => (
+                        <button
+                            key={color}
+                            onClick={() =>
+                                handleConfigChange({
+                                    ...bgConfig,
+                                    themeColor: color,
+                                })
+                            }
+                            className={`w-8 h-8 rounded-full border-2 transition-transform hover:scale-110 ${
+                                bgConfig.themeColor === color
+                                    ? "border-black ring-2 ring-offset-2 ring-gray-400"
+                                    : "border-transparent"
+                            }`}
+                            style={{ backgroundColor: color }}
+                            aria-label={`Select color ${color}`}
+                        />
+                    ))}
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="font-['VT323']">Custom:</span>
+                    <input
+                        type="color"
+                        value={bgConfig.themeColor || "#4f46e5"}
+                        onChange={(e) =>
+                            handleConfigChange({
+                                ...bgConfig,
+                                themeColor: e.target.value,
+                            })
+                        }
+                        className="h-8 w-16 cursor-pointer border-2 border-black p-0"
+                    />
+                </div>
+            </div>
+
             {/* Image Upload */}
             <div>
                 <label className="block font-['VT323'] text-xl mb-2">
@@ -88,7 +141,7 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
                             blur: parseInt(e.target.value),
                         })
                     }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer border-2 border-black accent-[#3b82f6]"
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer border-2 border-black accent-theme"
                 />
             </div>
 
@@ -110,7 +163,7 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
                             overlayOpacity: parseFloat(e.target.value),
                         })
                     }
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer border-2 border-black accent-[#3b82f6]"
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer border-2 border-black accent-theme"
                 />
             </div>
 

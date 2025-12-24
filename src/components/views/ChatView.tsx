@@ -160,7 +160,7 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
     return (
         <div className="animate-fade-in w-full max-w-2xl mx-auto">
             <div className="mb-4 text-center">
-                <h2 className="text-2xl md:text-3xl font-['DotGothic16'] text-[#4f46e5] mb-2">
+                <h2 className="text-2xl md:text-3xl font-['DotGothic16'] text-theme mb-2">
                     {t.chatPractice}
                 </h2>
                 <p className="text-gray-500 font-['VT323']">
@@ -183,9 +183,20 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
                             <div
                                 className={`max-w-[80%] p-3 border-2 ${
                                     msg.role === "user"
-                                        ? "bg-[#dbeafe] border-[#1e40af] text-[#1e3a8a] rounded-l-lg rounded-tr-lg"
+                                        ? "rounded-l-lg rounded-tr-lg"
                                         : "bg-white border-black rounded-r-lg rounded-tl-lg"
                                 }`}
+                                style={
+                                    msg.role === "user"
+                                        ? {
+                                              backgroundColor:
+                                                  "color-mix(in srgb, var(--theme-color), white 90%)",
+                                              borderColor:
+                                                  "var(--theme-shadow)",
+                                              color: "var(--theme-shadow)",
+                                          }
+                                        : {}
+                                }
                             >
                                 <p className="font-['DotGothic16'] text-lg whitespace-pre-wrap">
                                     {msg.text}
@@ -195,7 +206,9 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
                                         <TTSButton
                                             text={msg.text}
                                             size="sm"
-                                            practiceLanguage={data.practiceLanguage}
+                                            practiceLanguage={
+                                                data.practiceLanguage
+                                            }
                                         />
                                     </div>
                                 )}
@@ -225,7 +238,7 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleSend()}
                             placeholder={t.typeMessage}
-                            className="flex-1 font-['VT323'] text-xl border-2 border-black px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b82f6]"
+                            className="flex-1 font-['VT323'] text-xl border-2 border-black px-3 py-2 focus:outline-none focus:ring-2 focus:ring-theme"
                             disabled={isLoading}
                         />
                         <PixelButton

@@ -43,7 +43,7 @@ export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
                             onClick={() => setActiveTab(tab.id)}
                             className={`w-full text-left px-4 py-3 font-['VT323'] text-xl border-2 transition-all ${
                                 activeTab === tab.id
-                                    ? "bg-[#3b82f6] text-white border-black shadow-[2px_2px_0_#000]"
+                                    ? "bg-theme text-white border-black shadow-[2px_2px_0_#000]"
                                     : "bg-white text-gray-600 border-transparent hover:bg-gray-50 hover:border-gray-200"
                             }`}
                         >

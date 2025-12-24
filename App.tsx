@@ -31,6 +31,8 @@ import {
     useNavigate,
 } from "react-router-dom";
 
+import { mixColorWithBlack } from "@/utils/color";
+
 const App: React.FC = () => {
     const {
         topic,
@@ -63,6 +65,21 @@ const App: React.FC = () => {
     useEffect(() => {
         setBgConfig(getBackgroundConfig());
     }, [setBgConfig]);
+
+    useEffect(() => {
+        if (bgConfig.themeColor) {
+            const root = document.documentElement;
+            root.style.setProperty("--theme-color", bgConfig.themeColor);
+            root.style.setProperty(
+                "--theme-hover",
+                mixColorWithBlack(bgConfig.themeColor, 0.1)
+            );
+            root.style.setProperty(
+                "--theme-shadow",
+                mixColorWithBlack(bgConfig.themeColor, 0.4)
+            );
+        }
+    }, [bgConfig.themeColor]);
 
     const t = translations[language as keyof typeof translations];
 

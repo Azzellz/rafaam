@@ -6,6 +6,9 @@
     :root {
         background-color: #f1f5f9;
         color: #0f172a;
+        --theme-color: #4f46e5;
+        --theme-hover: #473fce;
+        --theme-shadow: #2f2a89;
     }
 
     html,

@@ -7,6 +7,7 @@ export const getBackgroundConfig = (): BackgroundConfig => {
         imageData: null,
         blur: 0,
         overlayOpacity: 0.5,
+        themeColor: "#4f46e5",
     };
 
     try {

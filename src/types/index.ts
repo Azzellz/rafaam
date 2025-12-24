@@ -91,6 +91,7 @@ export interface BackgroundConfig {
     imageData: string | null; // Base64 string
     blur: number; // 0-20px
     overlayOpacity: number; // 0.0-1.0
+    themeColor?: string; // Hex color
 }
 
 // Discriminated union for the result

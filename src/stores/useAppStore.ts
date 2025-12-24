@@ -44,7 +44,12 @@ export const useAppStore = create<AppState>((set) => ({
     loading: false,
     content: null,
     error: null,
-    bgConfig: { imageData: null, blur: 0, overlayOpacity: 0.5 },
+    bgConfig: {
+        imageData: null,
+        blur: 0,
+        overlayOpacity: 0.5,
+        themeColor: "#4f46e5",
+    },
     setTopic: (topic) => set({ topic }),
     setLevel: (level) => set({ level }),
     setPracticeLanguage: (practiceLanguage) =>
