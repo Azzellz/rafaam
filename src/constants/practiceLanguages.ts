@@ -78,8 +78,8 @@ export const PRACTICE_LANGUAGES: Record<
 };
 
 const PRACTICE_LANGUAGE_ORDER: PracticeLanguage[] = [
-    PracticeLanguage.JAPANESE,
     PracticeLanguage.ENGLISH,
+    PracticeLanguage.JAPANESE,
     PracticeLanguage.FRENCH,
     PracticeLanguage.GERMAN,
 ];
@@ -88,7 +88,7 @@ export const PRACTICE_LANGUAGE_OPTIONS = PRACTICE_LANGUAGE_ORDER.map(
     (code) => PRACTICE_LANGUAGES[code]
 );
 
-export const DEFAULT_PRACTICE_LANGUAGE = PracticeLanguage.JAPANESE;
+export const DEFAULT_PRACTICE_LANGUAGE = PracticeLanguage.ENGLISH;
 
 export const getDefaultLevel = (practiceLanguage: PracticeLanguage): string => {
     const options = PRACTICE_LANGUAGES[practiceLanguage]?.levelOptions;

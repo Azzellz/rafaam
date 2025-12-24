@@ -3,7 +3,10 @@ import { ConversationSession, Language, PracticeLanguage } from "@/types";
 import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
 import { translations } from "@/components/i18n";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
-import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
+import {
+    PRACTICE_LANGUAGES,
+    DEFAULT_PRACTICE_LANGUAGE,
+} from "@/constants/practiceLanguages";
 import { pixelMutedParagraph } from "@/styles/classNames";
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
@@ -27,7 +30,7 @@ export const ConversationView: React.FC<Props> = ({
     const t = translations[language];
     const practiceLanguageConfig =
         PRACTICE_LANGUAGES[data.practiceLanguage] ??
-        PRACTICE_LANGUAGES[PracticeLanguage.JAPANESE];
+        PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE];
     const [status, setStatus] = useState<
         "idle" | "connecting" | "connected" | "disconnected" | "error"
     >("idle");

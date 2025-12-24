@@ -177,7 +177,7 @@ export const generateLesson = async (
     const langName = getLanguageName(language);
     const practiceConfig: PracticeLanguageConfig =
         PRACTICE_LANGUAGES[practiceLanguage] ??
-        PRACTICE_LANGUAGES[PracticeLanguage.JAPANESE];
+        PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE];
     const targetLanguage = practiceConfig.targetLanguageName;
     const levelLabel = practiceConfig.levelSystemLabel;
 
@@ -281,7 +281,7 @@ export const generateRandomTopic = async (
     const langName = getLanguageName(language);
     const practiceConfig =
         PRACTICE_LANGUAGES[practiceLanguage] ??
-        PRACTICE_LANGUAGES[PracticeLanguage.JAPANESE];
+        PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE];
     const targetLanguage = practiceConfig.targetLanguageName;
 
     const prompt = `Suggest one imaginative ${langName} keyword or short phrase (max 4 words) that would be an engaging topic for practicing ${targetLanguage}. Return only the keyword without numbering, quotes, or extra text.`;
