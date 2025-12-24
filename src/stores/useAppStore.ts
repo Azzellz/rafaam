@@ -23,7 +23,6 @@ type AppState = {
     content: GeneratedContent | null;
     error: string | null;
     bgConfig: BackgroundConfig;
-    showSettings: boolean;
     setTopic: (topic: string) => void;
     setLevel: (level: string) => void;
     setPracticeLanguage: (practiceLanguage: PracticeLanguage) => void;
@@ -33,7 +32,6 @@ type AppState = {
     setContent: (content: GeneratedContent | null) => void;
     setError: (error: string | null) => void;
     setBgConfig: (config: BackgroundConfig) => void;
-    setShowSettings: (show: boolean) => void;
     resetQuestState: () => void;
 };
 
@@ -47,7 +45,6 @@ export const useAppStore = create<AppState>((set) => ({
     content: null,
     error: null,
     bgConfig: { imageData: null, blur: 0, overlayOpacity: 0.5 },
-    showSettings: false,
     setTopic: (topic) => set({ topic }),
     setLevel: (level) => set({ level }),
     setPracticeLanguage: (practiceLanguage) =>
@@ -62,6 +59,5 @@ export const useAppStore = create<AppState>((set) => ({
     setContent: (content) => set({ content }),
     setError: (error) => set({ error }),
     setBgConfig: (config) => set({ bgConfig: config }),
-    setShowSettings: (show) => set({ showSettings: show }),
     resetQuestState: () => set({ content: null, topic: "", error: null }),
 }));

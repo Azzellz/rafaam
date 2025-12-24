@@ -13,8 +13,8 @@ import {
 } from "@/services/storageService";
 import { LoadingSprite } from "@/components/widgets/LoadingSprite";
 import { FavoritesView } from "@/components/views/FavoritesView";
+import { SettingsView } from "@/components/views/SettingsView";
 import { SelectionReader } from "@/components/widgets/SelectionReader";
-import { BackgroundSettings } from "@/components/layout/BackgroundSettings";
 import { InstallPWA } from "@/components/widgets/InstallPWA";
 import { translations } from "@/components/i18n";
 import { useAppStore } from "@/stores/useAppStore";
@@ -51,8 +51,6 @@ const App: React.FC = () => {
         setError,
         bgConfig,
         setBgConfig,
-        showSettings,
-        setShowSettings,
         resetQuestState,
     } = useAppStore();
 
@@ -65,11 +63,6 @@ const App: React.FC = () => {
     useEffect(() => {
         setBgConfig(getBackgroundConfig());
     }, [setBgConfig]);
-
-    const handleBgConfigChange = (newConfig: BackgroundConfig) => {
-        setBgConfig(newConfig);
-        saveBackgroundConfig(newConfig);
-    };
 
     const t = translations[language as keyof typeof translations];
 
@@ -148,10 +141,6 @@ const App: React.FC = () => {
         setContent(null);
     };
 
-    const handleShowSettings = (visible: boolean) => {
-        setShowSettings(visible);
-    };
-
     const generatorView = (
         <>
             {!content && !loading && (
@@ -201,22 +190,13 @@ const App: React.FC = () => {
             <SelectionReader />
             <InstallPWA />
 
-            {showSettings && (
-                <BackgroundSettings
-                    language={language}
-                    config={bgConfig}
-                    onConfigChange={handleBgConfigChange}
-                    onClose={() => handleShowSettings(false)}
-                />
-            )}
-
             <AppHeader
                 language={language}
                 practiceLanguage={practiceLanguage}
                 isFavoritesActive={isFavoritesRoute}
                 onLogoClick={handleLogoClick}
                 onToggleFavorites={handleToggleFavorites}
-                onOpenSettings={() => handleShowSettings(true)}
+                onOpenSettings={() => navigate("/settings")}
                 onLanguageChange={handleLanguageChange}
                 t={t}
             />
@@ -230,6 +210,15 @@ const App: React.FC = () => {
                             <FavoritesView
                                 language={language}
                                 practiceLanguage={practiceLanguage}
+                                onBack={() => navigate("/")}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/settings"
+                        element={
+                            <SettingsView
+                                language={language}
                                 onBack={() => navigate("/")}
                             />
                         }

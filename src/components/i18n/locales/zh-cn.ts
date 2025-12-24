@@ -71,4 +71,5 @@ export const zhCNTranslation: TranslationContent = {
     close: "关闭",
     bgNote: "注：图片过大可能无法保存。",
     noImage: "未选择图片",
+    settings: "设置",
 };

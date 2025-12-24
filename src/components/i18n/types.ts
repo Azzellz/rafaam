@@ -68,4 +68,5 @@ export interface TranslationContent {
     close: string;
     bgNote: string;
     noImage: string;
+    settings: string;
 }

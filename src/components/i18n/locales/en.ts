@@ -72,4 +72,5 @@ export const enTranslation: TranslationContent = {
     close: "CLOSE",
     bgNote: "Note: Large images may not save.",
     noImage: "No image selected",
+    settings: "SETTINGS",
 };
