@@ -44,14 +44,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
     };
 
     if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center py-12">
-                <LoadingSprite language={language} />
-                <p className="mt-4 font-['VT323'] text-xl text-gray-600">
-                    {t.evaluating}
-                </p>
-            </div>
-        );
+        return <LoadingSprite language={language} text={t.evaluating} />;
     }
 
     return (

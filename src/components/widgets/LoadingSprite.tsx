@@ -4,9 +4,10 @@ import { translations } from "@/components/i18n";
 
 interface Props {
     language: Language;
+    text?: string;
 }
 
-export const LoadingSprite: React.FC<Props> = ({ language }) => {
+export const LoadingSprite: React.FC<Props> = ({ language, text }) => {
     const t = translations[language];
     return (
         <div className="flex flex-col items-center justify-center space-y-4 min-h-[60vh] w-full">
@@ -18,7 +19,7 @@ export const LoadingSprite: React.FC<Props> = ({ language }) => {
                 <div className="absolute bottom-3 left-4 right-4 h-2 bg-black"></div>
             </div>
             <p className="font-['VT323'] text-2xl text-slate-600 animate-pulse">
-                {t.generating}
+                {text || t.generating}
             </p>
         </div>
     );
