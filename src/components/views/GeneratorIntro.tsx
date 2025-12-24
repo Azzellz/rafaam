@@ -96,11 +96,11 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                                 }))}
                             />
                         </div>
-                        <div>
+                        <div className="md:col-span-2">
                             <label className={`block ${pixelFormLabel} mb-2`}>
                                 {t.questType}
                             </label>
-                            <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-6">
                                 {[
                                     {
                                         label: t.grammarLesson,
@@ -195,7 +195,7 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
             <div className="mt-8 md:mt-12 grid grid-cols-3 gap-2 md:gap-4 opacity-50 text-center font-['VT323']">
                 {[
                     { icon: "⚡", label: t.instantGen },
-                    { icon: "🎌", label: t.nativeExamples },
+                    { icon: "✨", label: t.nativeExamples },
                     { icon: "⚔️", label: t.battleQuiz },
                 ].map((feature) => (
                     <div

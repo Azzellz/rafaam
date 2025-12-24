@@ -1,5 +1,6 @@
 import React from "react";
-import { BackgroundConfig } from "../../types";
+import { BackgroundConfig } from "@/types";
+import { backgroundColor } from "@/styles/classNames";
 
 type AppBackgroundProps = {
     config: BackgroundConfig;
@@ -10,7 +11,7 @@ export const AppBackground: React.FC<AppBackgroundProps> = ({ config }) => (
         <div
             className="fixed inset-0 z-[-1] transition-all duration-300"
             style={{
-                backgroundColor: "#f0f0f0",
+                backgroundColor,
                 backgroundImage: config.imageData
                     ? `url(${config.imageData})`
                     : "none",

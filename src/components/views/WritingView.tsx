@@ -135,7 +135,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
                                 </div>
 
                                 {evaluation.improvements.length > 0 && (
-                                    <div className="mt-6">
+                                    <div className="mt-12">
                                         <h4 className="font-bold font-['VT323'] text-xl mb-2">
                                             {t.improvements}
                                         </h4>

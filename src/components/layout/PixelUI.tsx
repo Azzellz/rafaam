@@ -107,10 +107,10 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
     return (
         <div className={`relative ${className}`} ref={containerRef}>
             <div
-                className={`font-['VT323'] text-lg md:text-xl w-full bg-white border-2 border-black p-2 pr-10 shadow-[4px_4px_0_0_#cbd5e1] cursor-pointer flex items-center justify-between select-none transition-all ${
+                className={`font-['VT323'] text-lg md:text-xl w-full shadow-[2px_2px_0_0_#000] bg-white border-2 border-black p-2 pr-10  cursor-pointer flex items-center justify-between select-none transition-all ${
                     isOpen
                         ? "shadow-[2px_2px_0_0_#000] translate-x-[2px] translate-y-[2px]"
-                        : "hover:shadow-[4px_4px_0_0_#94a3b8]"
+                        : "hover:shadow-[4px_4px_0_0_#eab308]"
                 }`}
                 onClick={() => setIsOpen(!isOpen)}
             >
