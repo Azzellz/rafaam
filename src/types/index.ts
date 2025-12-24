@@ -3,6 +3,7 @@ export enum ContentType {
     QUIZ = "QUIZ",
     CONVERSATION = "CONVERSATION",
     WRITING = "WRITING",
+    CHAT = "CHAT",
 }
 
 export enum Language {
@@ -65,6 +66,12 @@ export interface ConversationSession {
     practiceLanguage: PracticeLanguage;
 }
 
+export interface ChatSession {
+    topic: string;
+    level: string;
+    practiceLanguage: PracticeLanguage;
+}
+
 export interface WritingTask {
     topic: string;
     level: string;
@@ -91,4 +98,5 @@ export type GeneratedContent =
     | { type: ContentType.GRAMMAR; data: GrammarLesson }
     | { type: ContentType.QUIZ; data: QuizSession }
     | { type: ContentType.CONVERSATION; data: ConversationSession }
-    | { type: ContentType.WRITING; data: WritingTask };
+    | { type: ContentType.WRITING; data: WritingTask }
+    | { type: ContentType.CHAT; data: ChatSession };

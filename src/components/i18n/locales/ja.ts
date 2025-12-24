@@ -71,4 +71,9 @@ export const jaTranslation: TranslationContent = {
     close: "閉じる",
     bgNote: "注：画像が大きすぎると保存されない場合があります。",
     noImage: "画像未選択",
+    settings: "設定",
+    chatPractice: "チャット練習",
+    chatIntro: "テキストで先生とチャットしよう！",
+    typeMessage: "メッセージを入力...",
+    send: "送信",
 };

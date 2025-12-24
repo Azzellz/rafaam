@@ -243,7 +243,7 @@ IMPORTANT:
             level,
             topic,
         } as QuizSession;
-    } else {
+    } else if (contentType === ContentType.WRITING) {
         const prompt = `Create a ${targetLanguage} writing task for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
         Provide a writing prompt and some optional hints or vocabulary.
 
@@ -270,6 +270,8 @@ IMPORTANT:
             level,
             topic,
         } as WritingTask;
+    } else {
+        throw new Error(`Unsupported content type: ${contentType}`);
     }
 };
 

@@ -87,12 +87,15 @@ const App: React.FC = () => {
         e.preventDefault();
         if (!topic.trim()) return;
 
-        // Special handling for Conversation: No need to generate beforehand, just switch view
-        if (contentType === ContentType.CONVERSATION) {
+        // Special handling for Conversation/Chat: No need to generate beforehand, just switch view
+        if (
+            contentType === ContentType.CONVERSATION ||
+            contentType === ContentType.CHAT
+        ) {
             setContent({
-                type: ContentType.CONVERSATION,
+                type: contentType,
                 data: { topic, level, practiceLanguage },
-            });
+            } as GeneratedContent);
             return;
         }
 

@@ -72,4 +72,8 @@ export const zhCNTranslation: TranslationContent = {
     bgNote: "注：图片过大可能无法保存。",
     noImage: "未选择图片",
     settings: "设置",
+    chatPractice: "聊天练习",
+    chatIntro: "通过文字与老师聊天！",
+    typeMessage: "输入消息...",
+    send: "发送",
 };

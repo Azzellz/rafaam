@@ -73,4 +73,8 @@ export const enTranslation: TranslationContent = {
     bgNote: "Note: Large images may not save.",
     noImage: "No image selected",
     settings: "SETTINGS",
+    chatPractice: "CHAT PRACTICE",
+    chatIntro: "Chat with Sensei via text!",
+    typeMessage: "Type your message...",
+    send: "SEND",
 };

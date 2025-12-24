@@ -71,4 +71,9 @@ export const zhTWTranslation: TranslationContent = {
     close: "關閉",
     bgNote: "注：圖片過大可能無法保存。",
     noImage: "未選擇圖片",
+    settings: "設置",
+    chatPractice: "聊天練習",
+    chatIntro: "通過文字與老師聊天！",
+    typeMessage: "輸入消息...",
+    send: "發送",
 };

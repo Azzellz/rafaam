@@ -72,4 +72,9 @@ export const deTranslation: TranslationContent = {
     close: "SCHLIESSEN",
     bgNote: "Hinweis: Große Bilder können ggf. nicht gespeichert werden.",
     noImage: "Kein Bild ausgewählt",
+    settings: "EINSTELLUNGEN",
+    chatPractice: "CHAT-ÜBUNG",
+    chatIntro: "Chatten Sie per Text mit Sensei!",
+    typeMessage: "Nachricht eingeben...",
+    send: "SENDEN",
 };

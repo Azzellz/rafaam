@@ -72,4 +72,9 @@ export const frTranslation: TranslationContent = {
     close: "FERMER",
     bgNote: "Remarque : les grandes images peuvent ne pas être sauvegardées.",
     noImage: "Aucune image sélectionnée",
+    settings: "PARAMÈTRES",
+    chatPractice: "PRATIQUE DU CHAT",
+    chatIntro: "Discutez avec Sensei par SMS !",
+    typeMessage: "Tapez votre message...",
+    send: "ENVOYER",
 };

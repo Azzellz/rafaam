@@ -69,4 +69,8 @@ export interface TranslationContent {
     bgNote: string;
     noImage: string;
     settings: string;
+    chatPractice: string;
+    chatIntro: string;
+    typeMessage: string;
+    send: string;
 }

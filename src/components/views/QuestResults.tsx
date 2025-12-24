@@ -5,6 +5,7 @@ import { GrammarView } from "./GrammarView";
 import { QuizView } from "./QuizView";
 import { ConversationView } from "./ConversationView";
 import { WritingView } from "./WritingView";
+import { ChatView } from "./ChatView";
 
 type QuestResultsProps = {
     content: GeneratedContent;
@@ -41,6 +42,12 @@ export const QuestResults: React.FC<QuestResultsProps> = ({
             />
         ) : content.type === ContentType.CONVERSATION ? (
             <ConversationView
+                data={content.data}
+                language={language}
+                onExit={onClearContent}
+            />
+        ) : content.type === ContentType.CHAT ? (
+            <ChatView
                 data={content.data}
                 language={language}
                 onExit={onClearContent}
