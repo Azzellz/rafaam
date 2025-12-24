@@ -16,7 +16,7 @@ import { FavoritesView } from "@/components/views/FavoritesView";
 import { SettingsView } from "@/components/views/SettingsView";
 import { SelectionReader } from "@/components/widgets/SelectionReader";
 import { InstallPWA } from "@/components/widgets/InstallPWA";
-import { translations } from "@/components/i18n";
+import { translations } from "@/i18n";
 import { useAppStore } from "@/stores/useAppStore";
 import { AppBackground } from "@/components/layout/AppBackground";
 import { AppHeader } from "@/components/layout/AppHeader";

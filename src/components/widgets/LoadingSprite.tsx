@@ -1,6 +1,6 @@
 import React from "react";
 import { Language } from "@/types";
-import { translations } from "@/components/i18n";
+import { translations } from "@/i18n";
 
 interface Props {
     language: Language;

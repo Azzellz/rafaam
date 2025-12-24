@@ -5,9 +5,9 @@ import {
     PixelButton,
     PixelSelect,
 } from "@/components/layout/PixelUI";
-import { translations } from "@/components/i18n";
+import { translations } from "@/i18n";
 import { TTSButton } from "../widgets/TTSButton";
-import { pixelAccentLabel, pixelInfoPanel } from "@/styles/classNames";
+import { pixelAccentLabel, pixelInfoPanel } from "@/constants/style";
 import {
     DEFAULT_PRACTICE_LANGUAGE,
     PRACTICE_LANGUAGES,

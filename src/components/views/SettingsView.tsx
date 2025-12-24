@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Language } from "@/types";
 import { PixelButton, PixelCard } from "@/components/layout/PixelUI";
-import { translations } from "@/components/i18n";
+import { translations } from "@/i18n";
 import { AppearanceSettings } from "@/components/settings/AppearanceSettings";
 import { StorageSettings } from "@/components/settings/StorageSettings";
 

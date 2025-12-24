@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { ContentType, PracticeLanguage } from "@/types";
-import { TranslationContent } from "@/components/i18n";
-import { pixelFormLabel } from "@/styles/classNames";
+import { TranslationContent } from "@/i18n";
+import { pixelFormLabel } from "@/constants/style";
 import {
     PRACTICE_LANGUAGE_OPTIONS,
     PRACTICE_LANGUAGES,

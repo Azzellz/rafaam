@@ -1,6 +1,6 @@
 import React from "react";
 import { Language, PracticeLanguage } from "@/types";
-import { TranslationContent } from "@/components/i18n";
+import { TranslationContent } from "@/i18n";
 import { LANGUAGE_OPTIONS } from "@/constants/languages";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 import { PixelSelect } from "./PixelUI";

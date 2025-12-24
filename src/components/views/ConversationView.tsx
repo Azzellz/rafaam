@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ConversationSession, Language, PracticeLanguage } from "@/types";
 import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
-import { translations } from "@/components/i18n";
+import { translations } from "@/i18n";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
 import {
     PRACTICE_LANGUAGES,
     DEFAULT_PRACTICE_LANGUAGE,
 } from "@/constants/practiceLanguages";
-import { pixelMutedParagraph } from "@/styles/classNames";
+import { pixelMutedParagraph } from "@/constants/style";
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
 

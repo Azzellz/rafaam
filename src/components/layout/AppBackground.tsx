@@ -1,6 +1,6 @@
 import React from "react";
 import { BackgroundConfig } from "@/types";
-import { backgroundColor } from "@/styles/classNames";
+import { backgroundColor } from "@/constants/style";
 
 type AppBackgroundProps = {
     config: BackgroundConfig;

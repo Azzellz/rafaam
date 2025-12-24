@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { QuizSession, Language } from "@/types";
 import { PixelCard, PixelButton } from "@/components/layout/PixelUI";
-import { translations } from "@/components/i18n";
+import { translations } from "@/i18n";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 
 interface Props {

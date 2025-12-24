@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo } from "react";
 import { GrammarLesson, Language, GrammarPoint } from "@/types";
 import { PixelCard } from "@/components/layout/PixelUI";
-import { translations } from "@/components/i18n";
+import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
 import {
     pixelAccentLabel,
     pixelInfoPanel,
     pixelMutedParagraph,
-} from "@/styles/classNames";
+} from "@/constants/style";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 import { useFavoritesStore } from "@/stores/useFavoritesStore";
 
