@@ -5,6 +5,7 @@ import {
     savePracticeRecord,
     clearPracticeRecords,
 } from "@/services/statsService";
+import { usePlanStore } from "./usePlanStore";
 
 type StatsState = {
     records: PracticeRecord[];
@@ -22,6 +23,13 @@ export const useStatsStore = create<StatsState>((set) => ({
             timestamp: Date.now(),
         };
         savePracticeRecord(newRecord);
+
+        // Update plan progress
+        usePlanStore.getState().recordProgress({
+            count: 1,
+            duration: recordData.duration || 0,
+        });
+
         set((state) => ({ records: [...state.records, newRecord] }));
     },
     clearRecords: () => {

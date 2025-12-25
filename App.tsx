@@ -189,6 +189,7 @@ const App: React.FC = () => {
 
             {!content && !loading && (
                 <GeneratorIntro
+                    language={language}
                     t={t}
                     topic={topic}
                     level={level}

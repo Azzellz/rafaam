@@ -152,4 +152,17 @@ export const jaTranslation: TranslationContent = {
     // Appearance
     themeColor: "テーマカラー",
     custom: "カスタム",
+
+    // Study Plan
+    studyPlan: "学習計画",
+    enablePlan: "毎日の計画を有効にする",
+    dailyGoal: "毎日の目標",
+    planType: "計画タイプ",
+    target: "目標",
+    byCount: "回数",
+    byDuration: "時間",
+    todayProgress: "今日の進捗",
+    goalReached: "目標達成！",
+    keepGoing: "頑張って",
+    setGoal: "目標を設定",
 };

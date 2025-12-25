@@ -153,4 +153,17 @@ export const enTranslation: TranslationContent = {
     // Appearance
     themeColor: "THEME COLOR",
     custom: "CUSTOM",
+
+    // Study Plan
+    studyPlan: "Study Plan",
+    enablePlan: "Enable Daily Plan",
+    dailyGoal: "Daily Goal",
+    planType: "Plan Type",
+    target: "Target",
+    byCount: "By Sessions",
+    byDuration: "By Duration",
+    todayProgress: "Today's Progress",
+    goalReached: "Goal Reached!",
+    keepGoing: "Keep Going",
+    setGoal: "Set Goal",
 };

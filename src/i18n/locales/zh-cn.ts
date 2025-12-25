@@ -148,4 +148,17 @@ export const zhCNTranslation: TranslationContent = {
     // Appearance
     themeColor: "主题颜色",
     custom: "自定义",
+
+    // Study Plan
+    studyPlan: "学习计划",
+    enablePlan: "启用每日计划",
+    dailyGoal: "每日目标",
+    planType: "计划类型",
+    target: "目标",
+    byCount: "按次数",
+    byDuration: "按时长",
+    todayProgress: "今日进度",
+    goalReached: "目标达成！",
+    keepGoing: "继续加油",
+    setGoal: "设定目标",
 };

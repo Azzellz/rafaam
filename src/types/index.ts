@@ -149,3 +149,18 @@ export interface PracticeRecord {
     maxScore?: number; // For quiz
     duration?: number; // In seconds
 }
+
+export type DailyGoalType = "count" | "duration";
+
+export interface StudyPlan {
+    enabled: boolean;
+    type: DailyGoalType;
+    target: number; // count or minutes
+}
+
+export interface DailyProgress {
+    date: string; // YYYY-MM-DD
+    count: number;
+    duration: number; // seconds
+    isCompleted: boolean;
+}

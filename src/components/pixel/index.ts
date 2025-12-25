@@ -6,3 +6,4 @@ export * from "./PixelTooltip";
 export * from "./PixelModal";
 export * from "./PixelInfoModal";
 export * from "./PixelToast";
+export * from "./PixelTabs";

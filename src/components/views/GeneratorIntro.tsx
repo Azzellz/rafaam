@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ContentType, PracticeLanguage } from "@/types";
+import { ContentType, PracticeLanguage, Language } from "@/types";
 import { TranslationContent } from "@/i18n";
 import { pixelFormLabel } from "@/constants/style";
 import { useCustomTypesStore } from "@/stores/useCustomTypesStore";
@@ -14,9 +14,12 @@ import {
     PixelInput,
     PixelSelect,
     PixelTooltip,
+    PixelTabs,
 } from "../pixel";
+import { StudyPlan } from "@/components/widgets/StudyPlan";
 
 type GeneratorIntroProps = {
+    language: Language;
     t: TranslationContent;
     topic: string;
     level: string;
@@ -32,6 +35,7 @@ type GeneratorIntroProps = {
 };
 
 export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
+    language,
     t,
     topic,
     level,
@@ -58,6 +62,182 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
         setCustomTypeId(id);
     };
 
+    const generatorForm = (
+        <form onSubmit={onSubmit} className="space-y-4 md:space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div>
+                    <label className={`block ${pixelFormLabel} mb-2`}>
+                        {t.practiceLanguage}
+                    </label>
+                    <PixelSelect
+                        value={practiceLanguage}
+                        onChange={(value) =>
+                            onPracticeLanguageChange(value as PracticeLanguage)
+                        }
+                        options={PRACTICE_LANGUAGE_OPTIONS.map((option) => ({
+                            value: option.id,
+                            label: option.nativeLabel,
+                        }))}
+                    />
+                </div>
+                <div>
+                    <label className={`block ${pixelFormLabel} mb-2`}>
+                        {t.proficiencyLevel}
+                    </label>
+                    <PixelSelect
+                        value={level}
+                        onChange={(value) => onLevelChange(value)}
+                        options={levelOptions.map((option) => ({
+                            value: option.id,
+                            label: option.label,
+                        }))}
+                    />
+                </div>
+                <div className="md:col-span-2">
+                    <label className={`block ${pixelFormLabel} mb-2`}>
+                        {t.questType}
+                    </label>
+                    <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-6">
+                        {[
+                            {
+                                label: t.grammarLesson,
+                                value: ContentType.GRAMMAR,
+                                desc: t.grammarLessonDesc,
+                            },
+                            {
+                                label: t.quizBattle,
+                                value: ContentType.QUIZ,
+                                desc: t.quizBattleDesc,
+                            },
+                            {
+                                label: t.voicePractice,
+                                value: ContentType.CONVERSATION,
+                                desc: t.voicePracticeDesc,
+                            },
+                            {
+                                label: t.listeningPractice,
+                                value: ContentType.LISTENING,
+                                desc: t.listeningPracticeDesc,
+                            },
+                            {
+                                label: t.chatPractice,
+                                value: ContentType.CHAT,
+                                desc: t.chatPracticeDesc,
+                            },
+                            {
+                                label: t.writingPractice,
+                                value: ContentType.WRITING,
+                                desc: t.writingPracticeDesc,
+                            },
+                        ].map((option) => (
+                            <PixelTooltip
+                                key={option.value}
+                                content={option.desc}
+                            >
+                                <label className="flex items-center space-x-2 cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="contentType"
+                                        checked={contentType === option.value}
+                                        onChange={() => {
+                                            onContentTypeChange(option.value);
+                                            setCustomTypeId(null);
+                                        }}
+                                        className="hidden"
+                                    />
+                                    <div
+                                        className={`w-5 h-5 md:w-6 md:h-6 border-2 border-black flex items-center justify-center ${
+                                            contentType === option.value
+                                                ? "bg-theme"
+                                                : "bg-white"
+                                        }`}
+                                    >
+                                        {contentType === option.value && (
+                                            <div className="w-2 h-2 bg-white"></div>
+                                        )}
+                                    </div>
+                                    <span className="text-lg md:text-xl group-hover:underline">
+                                        {option.label}
+                                    </span>
+                                </label>
+                            </PixelTooltip>
+                        ))}
+
+                        {customTypes.map((type) => (
+                            <PixelTooltip
+                                key={type.id}
+                                content={type.description || t.customTypes}
+                            >
+                                <label className="flex items-center space-x-2 cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="contentType"
+                                        checked={
+                                            contentType ===
+                                                ContentType.CUSTOM &&
+                                            customTypeId === type.id
+                                        }
+                                        onChange={() =>
+                                            handleCustomTypeSelect(type.id)
+                                        }
+                                        className="hidden"
+                                    />
+                                    <div
+                                        className={`w-5 h-5 md:w-6 md:h-6 border-2 border-black flex items-center justify-center ${
+                                            contentType ===
+                                                ContentType.CUSTOM &&
+                                            customTypeId === type.id
+                                                ? "bg-theme"
+                                                : "bg-white"
+                                        }`}
+                                    >
+                                        {contentType === ContentType.CUSTOM &&
+                                            customTypeId === type.id && (
+                                                <div className="w-2 h-2 bg-white"></div>
+                                            )}
+                                    </div>
+                                    <span className="text-lg md:text-xl group-hover:underline">
+                                        {type.name}
+                                    </span>
+                                </label>
+                            </PixelTooltip>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label className={`block ${pixelFormLabel} mb-2`}>
+                    {t.questTopic}
+                </label>
+                <div className="flex flex-col sm:flex-row gap-3">
+                    <PixelInput
+                        className="flex-1"
+                        placeholder={t.topicPlaceholder}
+                        value={topic}
+                        onChange={(event) => onTopicChange(event.target.value)}
+                        required
+                    />
+                    <PixelButton
+                        type="button"
+                        variant="secondary"
+                        onClick={onRandomTopic}
+                        disabled={randomTopicLoading}
+                        className="w-full sm:w-auto whitespace-nowrap"
+                    >
+                        {randomTopicLoading ? t.generating : t.randomTopic}
+                    </PixelButton>
+                </div>
+            </div>
+
+            <div className="pt-2 md:pt-4 text-center">
+                <PixelButton type="submit" className="w-full md:w-1/2">
+                    {t.startQuest}
+                </PixelButton>
+            </div>
+        </form>
+    );
+
     return (
         <div className="animate-fade-in">
             <div className="text-center mb-8 md:mb-12">
@@ -70,199 +250,21 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                 <p className="text-gray-500 text-lg">{t.introSubtitle}</p>
             </div>
 
-            <PixelCard title={t.configureQuest}>
-                <form onSubmit={onSubmit} className="space-y-4 md:space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <div>
-                            <label className={`block ${pixelFormLabel} mb-2`}>
-                                {t.practiceLanguage}
-                            </label>
-                            <PixelSelect
-                                value={practiceLanguage}
-                                onChange={(value) =>
-                                    onPracticeLanguageChange(
-                                        value as PracticeLanguage
-                                    )
-                                }
-                                options={PRACTICE_LANGUAGE_OPTIONS.map(
-                                    (option) => ({
-                                        value: option.id,
-                                        label: option.nativeLabel,
-                                    })
-                                )}
-                            />
-                        </div>
-                        <div>
-                            <label className={`block ${pixelFormLabel} mb-2`}>
-                                {t.proficiencyLevel}
-                            </label>
-                            <PixelSelect
-                                value={level}
-                                onChange={(value) => onLevelChange(value)}
-                                options={levelOptions.map((option) => ({
-                                    value: option.id,
-                                    label: option.label,
-                                }))}
-                            />
-                        </div>
-                        <div className="md:col-span-2">
-                            <label className={`block ${pixelFormLabel} mb-2`}>
-                                {t.questType}
-                            </label>
-                            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-6">
-                                {[
-                                    {
-                                        label: t.grammarLesson,
-                                        value: ContentType.GRAMMAR,
-                                        desc: t.grammarLessonDesc,
-                                    },
-                                    {
-                                        label: t.quizBattle,
-                                        value: ContentType.QUIZ,
-                                        desc: t.quizBattleDesc,
-                                    },
-                                    {
-                                        label: t.voicePractice,
-                                        value: ContentType.CONVERSATION,
-                                        desc: t.voicePracticeDesc,
-                                    },
-                                    {
-                                        label: t.listeningPractice,
-                                        value: ContentType.LISTENING,
-                                        desc: t.listeningPracticeDesc,
-                                    },
-                                    {
-                                        label: t.chatPractice,
-                                        value: ContentType.CHAT,
-                                        desc: t.chatPracticeDesc,
-                                    },
-                                    {
-                                        label: t.writingPractice,
-                                        value: ContentType.WRITING,
-                                        desc: t.writingPracticeDesc,
-                                    },
-                                ].map((option) => (
-                                    <PixelTooltip
-                                        key={option.value}
-                                        content={option.desc}
-                                    >
-                                        <label className="flex items-center space-x-2 cursor-pointer group">
-                                            <input
-                                                type="radio"
-                                                name="contentType"
-                                                checked={
-                                                    contentType === option.value
-                                                }
-                                                onChange={() => {
-                                                    onContentTypeChange(
-                                                        option.value
-                                                    );
-                                                    setCustomTypeId(null);
-                                                }}
-                                                className="hidden"
-                                            />
-                                            <div
-                                                className={`w-5 h-5 md:w-6 md:h-6 border-2 border-black flex items-center justify-center ${
-                                                    contentType === option.value
-                                                        ? "bg-theme"
-                                                        : "bg-white"
-                                                }`}
-                                            >
-                                                {contentType ===
-                                                    option.value && (
-                                                    <div className="w-2 h-2 bg-white"></div>
-                                                )}
-                                            </div>
-                                            <span className="text-lg md:text-xl group-hover:underline">
-                                                {option.label}
-                                            </span>
-                                        </label>
-                                    </PixelTooltip>
-                                ))}
-
-                                {customTypes.map((type) => (
-                                    <PixelTooltip
-                                        key={type.id}
-                                        content={
-                                            type.description || t.customTypes
-                                        }
-                                    >
-                                        <label className="flex items-center space-x-2 cursor-pointer group">
-                                            <input
-                                                type="radio"
-                                                name="contentType"
-                                                checked={
-                                                    contentType ===
-                                                        ContentType.CUSTOM &&
-                                                    customTypeId === type.id
-                                                }
-                                                onChange={() =>
-                                                    handleCustomTypeSelect(
-                                                        type.id
-                                                    )
-                                                }
-                                                className="hidden"
-                                            />
-                                            <div
-                                                className={`w-5 h-5 md:w-6 md:h-6 border-2 border-black flex items-center justify-center ${
-                                                    contentType ===
-                                                        ContentType.CUSTOM &&
-                                                    customTypeId === type.id
-                                                        ? "bg-theme"
-                                                        : "bg-white"
-                                                }`}
-                                            >
-                                                {contentType ===
-                                                    ContentType.CUSTOM &&
-                                                    customTypeId ===
-                                                        type.id && (
-                                                        <div className="w-2 h-2 bg-white"></div>
-                                                    )}
-                                            </div>
-                                            <span className="text-lg md:text-xl group-hover:underline">
-                                                {type.name}
-                                            </span>
-                                        </label>
-                                    </PixelTooltip>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label className={`block ${pixelFormLabel} mb-2`}>
-                            {t.questTopic}
-                        </label>
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            <PixelInput
-                                className="flex-1"
-                                placeholder={t.topicPlaceholder}
-                                value={topic}
-                                onChange={(event) =>
-                                    onTopicChange(event.target.value)
-                                }
-                                required
-                            />
-                            <PixelButton
-                                type="button"
-                                variant="secondary"
-                                onClick={onRandomTopic}
-                                disabled={randomTopicLoading}
-                                className="w-full sm:w-auto whitespace-nowrap"
-                            >
-                                {randomTopicLoading
-                                    ? t.generating
-                                    : t.randomTopic}
-                            </PixelButton>
-                        </div>
-                    </div>
-
-                    <div className="pt-2 md:pt-4 text-center">
-                        <PixelButton type="submit" className="w-full md:w-1/2">
-                            {t.startQuest}
-                        </PixelButton>
-                    </div>
-                </form>
+            <PixelCard>
+                <PixelTabs
+                    tabs={[
+                        {
+                            id: "generator",
+                            label: t.configureQuest,
+                            content: generatorForm,
+                        },
+                        {
+                            id: "studyPlan",
+                            label: t.studyPlan,
+                            content: <StudyPlan language={language} />,
+                        },
+                    ]}
+                />
             </PixelCard>
         </div>
     );

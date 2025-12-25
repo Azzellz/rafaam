@@ -1,10 +1,16 @@
 import React from "react";
 
-export const PixelCard: React.FC<{
+interface PixelCardProps {
     children: React.ReactNode;
     className?: string;
     title?: string;
-}> = ({ children, className = "", title }) => {
+}
+
+export const PixelCard: React.FC<PixelCardProps> = ({
+    children,
+    className = "",
+    title,
+}) => {
     return (
         <div
             className={`bg-white border-2 md:border-4 border-black shadow-[4px_4px_0_0_#cbd5e1] md:shadow-[8px_8px_0_0_#cbd5e1] p-4 md:p-6 relative ${className}`}

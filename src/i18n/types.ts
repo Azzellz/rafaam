@@ -144,4 +144,17 @@ export interface TranslationContent {
     // Appearance
     themeColor: string;
     custom: string;
+
+    // Study Plan
+    studyPlan: string;
+    enablePlan: string;
+    dailyGoal: string;
+    planType: string;
+    target: string;
+    byCount: string;
+    byDuration: string;
+    todayProgress: string;
+    goalReached: string;
+    keepGoing: string;
+    setGoal: string;
 }
