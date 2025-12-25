@@ -70,7 +70,7 @@ export const PixelTabs: React.FC<PixelTabsProps> = ({
 
     return (
         <div className={`flex flex-col h-full ${className}`}>
-            <div className="absolute -top-5 md:-top-6 left-2 md:left-4 right-2 md:right-4 z-10 flex items-center">
+            <div className="absolute -top-5 md:-top-6 left-2 md:left-4 right-2 md:right-4 z-10 flex items-center pb-2">
                 {/* 左箭头 */}
                 {showLeftArrow && (
                     <button
@@ -98,10 +98,11 @@ export const PixelTabs: React.FC<PixelTabsProps> = ({
                 {/* 标签滚动容器 */}
                 <div
                     ref={scrollContainerRef}
-                    className="flex gap-2 overflow-x-auto flex-1 scrollbar-hide"
+                    className="flex gap-2 overflow-x-auto flex-1 scrollbar-hide py-1"
                     style={{
                         scrollbarWidth: "none",
                         msOverflowStyle: "none",
+                        overflowY: "visible",
                     }}
                 >
                     {tabs.map((tab) => (
