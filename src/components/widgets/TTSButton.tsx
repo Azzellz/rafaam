@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { generateSpeech } from "../../services/geminiService";
-import { playAudioData } from "../../utils/audio";
+import { generateSpeech } from "@/services/geminiService";
+import { playAudioData } from "@/utils/audio";
 import { PracticeLanguage } from "@/types";
 
 interface Props {

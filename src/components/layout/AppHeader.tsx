@@ -33,7 +33,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     };
 
     return (
-        <header className="bg-theme border-b-4 border-black p-3 md:p-4 mb-6 md:mb-10 sticky top-0 z-10 shadow-[0_4px_0_0_rgba(0,0,0,0.2)]">
+        <header className="bg-theme border-b-4 border-black p-3 md:p-4 mb-6 md:mb-10 sticky top-0 z-20 shadow-[0_4px_0_0_rgba(0,0,0,0.2)]">
             <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
                 <div className="cursor-pointer" onClick={onLogoClick}>
                     <h1 className="text-2xl md:text-4xl text-white tracking-widest drop-shadow-[2px_2px_0_#000]">
