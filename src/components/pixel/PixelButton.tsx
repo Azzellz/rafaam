@@ -3,10 +3,23 @@ import React from "react";
 export const PixelButton: React.FC<
     React.ButtonHTMLAttributes<HTMLButtonElement> & {
         variant?: "primary" | "secondary" | "danger";
+        size?: "sm" | "md" | "lg";
     }
-> = ({ children, className = "", variant = "primary", ...props }) => {
+> = ({
+    children,
+    className = "",
+    variant = "primary",
+    size = "md",
+    ...props
+}) => {
     const baseStyle =
-        "text-lg md:text-xl px-4 md:px-6 py-2 border-2 border-black transition-transform active:translate-y-1 active:shadow-none disabled:opacity-60 disabled:cursor-not-allowed";
+        "border-2 border-black transition-transform active:translate-y-1 active:shadow-none disabled:opacity-60 disabled:cursor-not-allowed";
+
+    const sizes = {
+        sm: "text-sm px-2 py-1 md:px-3 md:py-1",
+        md: "text-lg md:text-xl px-4 md:px-6 py-2",
+        lg: "text-xl md:text-2xl px-6 md:px-8 py-3",
+    };
 
     const variants = {
         primary:
@@ -18,7 +31,7 @@ export const PixelButton: React.FC<
 
     return (
         <button
-            className={`${baseStyle} ${variants[variant]} ${className}`}
+            className={`${baseStyle} ${sizes[size]} ${variants[variant]} ${className}`}
             {...props}
         >
             {children}
