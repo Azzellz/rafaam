@@ -8,6 +8,8 @@ import {
     WritingEvaluation,
     Language,
     PracticeLanguage,
+    CustomTypeDefinition,
+    CustomContentData,
 } from "../types";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
 import {
@@ -171,8 +173,9 @@ export const generateLesson = async (
     topic: string,
     contentType: ContentType,
     language: Language,
-    practiceLanguage: PracticeLanguage
-): Promise<GrammarLesson | QuizSession | WritingTask> => {
+    practiceLanguage: PracticeLanguage,
+    customTypeDefinition?: CustomTypeDefinition
+): Promise<GrammarLesson | QuizSession | WritingTask | CustomContentData> => {
     const model = "gemini-2.5-flash";
     const langName = getLanguageName(language);
     const practiceConfig: PracticeLanguageConfig =
@@ -181,7 +184,67 @@ export const generateLesson = async (
     const targetLanguage = practiceConfig.targetLanguageName;
     const levelLabel = practiceConfig.levelSystemLabel;
 
-    if (contentType === ContentType.GRAMMAR) {
+    if (contentType === ContentType.CUSTOM && customTypeDefinition) {
+        const fieldProperties: Record<string, any> = {};
+        const requiredFields: string[] = [];
+
+        customTypeDefinition.fields.forEach((field) => {
+            fieldProperties[field.key] = {
+                type: Type.STRING,
+                description: field.description || field.label,
+            };
+            requiredFields.push(field.key);
+        });
+
+        const customSchema: Schema = {
+            type: Type.OBJECT,
+            properties: {
+                title: {
+                    type: Type.STRING,
+                    description: "Title of the content",
+                },
+                items: {
+                    type: Type.ARRAY,
+                    items: {
+                        type: Type.OBJECT,
+                        properties: fieldProperties,
+                        required: requiredFields,
+                    },
+                },
+            },
+            required: ["title", "items"],
+        };
+
+        const prompt = `
+        Task: ${customTypeDefinition.prompt}
+        Target Language: ${targetLanguage}
+        Learner Level: ${levelLabel} ${level}
+        Topic: "${topic}"
+        User Language: ${langName}
+
+        Generate content based on the task description.
+        Ensure the output matches the JSON schema structure.
+        `;
+
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: customSchema,
+            },
+        });
+
+        const text = response.text;
+        if (!text) throw new Error("No response from AI");
+        const rawData = JSON.parse(text);
+
+        return {
+            title: rawData.title,
+            items: rawData.items,
+            definition: customTypeDefinition,
+        } as CustomContentData;
+    } else if (contentType === ContentType.GRAMMAR) {
         const prompt = `Create a ${targetLanguage} grammar lesson for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
 Provide 2-3 grammar points relevant to this topic and level.
 

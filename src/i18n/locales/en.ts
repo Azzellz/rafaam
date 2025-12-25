@@ -107,4 +107,43 @@ export const enTranslation: TranslationContent = {
     noRecords: "No practice records yet.",
     minutes: "min",
     seconds: "sec",
+
+    // Custom Types
+    customTypes: "Custom Types",
+    customTypesDesc: "Create and manage custom content generation templates",
+    customTypesManagement: "Custom Types Management",
+    savedCustomTypes: "Saved Types",
+    createCustomType: "Create Type",
+    noCustomTypes: "No custom types yet. Click above to create one.",
+    edit: "Edit",
+    delete: "Delete",
+    deleteConfirm: "Are you sure you want to delete this custom type?",
+    editCustomType: "Edit Type",
+    newCustomType: "New Type",
+    name: "Name",
+    namePlaceholder: "e.g. Word List, Scenario Dialogue...",
+    description: "Description",
+    descriptionPlaceholder: "Short description of this type's purpose",
+    prompt: "Prompt",
+    promptPlaceholder:
+        "Tell AI how to generate content. e.g. Generate 10 words related to the topic...",
+    promptHint:
+        "Tip: Language, level, and topic will be automatically appended.",
+    outputStructure: "Output Structure",
+    addField: "Add Field",
+    fieldKey: "Field Key (e.g. word)",
+    fieldLabel: "Display Label (e.g. Word)",
+    fieldDesc: "Description (Optional, helps AI understand)",
+    noFields: "Click Add Field to define output structure",
+    cancel: "Cancel",
+    save: "Save",
+    fillAllFields:
+        "Please fill in all required fields (Name, Prompt, at least one field)",
+    updateSuccess: "Update Successful",
+    createSuccess: "Creation Successful",
+    deleteSuccess: "Deletion Successful",
+
+    // Appearance
+    themeColor: "THEME COLOR",
+    custom: "CUSTOM",
 };

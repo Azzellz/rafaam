@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import { ContentType, PracticeLanguage } from "@/types";
 import { TranslationContent } from "@/i18n";
 import { pixelFormLabel } from "@/constants/style";
+import { useCustomTypesStore } from "@/stores/useCustomTypesStore";
+import { useAppStore } from "@/stores/useAppStore";
 import {
     PRACTICE_LANGUAGE_OPTIONS,
     PRACTICE_LANGUAGES,
@@ -43,10 +45,18 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
     onContentTypeChange,
     onSubmit,
 }) => {
+    const { customTypes } = useCustomTypesStore();
+    const { customTypeId, setCustomTypeId } = useAppStore();
+
     const levelOptions = useMemo(
         () => PRACTICE_LANGUAGES[practiceLanguage]?.levelOptions ?? [],
         [practiceLanguage]
     );
+
+    const handleCustomTypeSelect = (id: string) => {
+        onContentTypeChange(ContentType.CUSTOM);
+        setCustomTypeId(id);
+    };
 
     return (
         <div className="animate-fade-in">
@@ -138,11 +148,12 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                                                 checked={
                                                     contentType === option.value
                                                 }
-                                                onChange={() =>
+                                                onChange={() => {
                                                     onContentTypeChange(
                                                         option.value
-                                                    )
-                                                }
+                                                    );
+                                                    setCustomTypeId(null);
+                                                }}
                                                 className="hidden"
                                             />
                                             <div
@@ -159,6 +170,52 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                                             </div>
                                             <span className="text-lg md:text-xl group-hover:underline">
                                                 {option.label}
+                                            </span>
+                                        </label>
+                                    </PixelTooltip>
+                                ))}
+
+                                {customTypes.map((type) => (
+                                    <PixelTooltip
+                                        key={type.id}
+                                        content={
+                                            type.description || t.customTypes
+                                        }
+                                    >
+                                        <label className="flex items-center space-x-2 cursor-pointer group">
+                                            <input
+                                                type="radio"
+                                                name="contentType"
+                                                checked={
+                                                    contentType ===
+                                                        ContentType.CUSTOM &&
+                                                    customTypeId === type.id
+                                                }
+                                                onChange={() =>
+                                                    handleCustomTypeSelect(
+                                                        type.id
+                                                    )
+                                                }
+                                                className="hidden"
+                                            />
+                                            <div
+                                                className={`w-5 h-5 md:w-6 md:h-6 border-2 border-black flex items-center justify-center ${
+                                                    contentType ===
+                                                        ContentType.CUSTOM &&
+                                                    customTypeId === type.id
+                                                        ? "bg-theme"
+                                                        : "bg-white"
+                                                }`}
+                                            >
+                                                {contentType ===
+                                                    ContentType.CUSTOM &&
+                                                    customTypeId ===
+                                                        type.id && (
+                                                        <div className="w-2 h-2 bg-white"></div>
+                                                    )}
+                                            </div>
+                                            <span className="text-lg md:text-xl group-hover:underline">
+                                                {type.name}
                                             </span>
                                         </label>
                                     </PixelTooltip>

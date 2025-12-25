@@ -102,4 +102,40 @@ export interface TranslationContent {
     noRecords: string;
     minutes: string;
     seconds: string;
+
+    // Custom Types
+    customTypes: string;
+    customTypesDesc: string;
+    customTypesManagement: string;
+    savedCustomTypes: string;
+    createCustomType: string;
+    noCustomTypes: string;
+    edit: string;
+    delete: string;
+    deleteConfirm: string;
+    editCustomType: string;
+    newCustomType: string;
+    name: string;
+    namePlaceholder: string;
+    description: string;
+    descriptionPlaceholder: string;
+    prompt: string;
+    promptPlaceholder: string;
+    promptHint: string;
+    outputStructure: string;
+    addField: string;
+    fieldKey: string;
+    fieldLabel: string;
+    fieldDesc: string;
+    noFields: string;
+    cancel: string;
+    save: string;
+    fillAllFields: string;
+    updateSuccess: string;
+    createSuccess: string;
+    deleteSuccess: string;
+
+    // Appearance
+    themeColor: string;
+    custom: string;
 }

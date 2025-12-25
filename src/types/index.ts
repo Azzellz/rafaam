@@ -4,6 +4,27 @@ export enum ContentType {
     CONVERSATION = "CONVERSATION",
     WRITING = "WRITING",
     CHAT = "CHAT",
+    CUSTOM = "CUSTOM",
+}
+
+export interface CustomField {
+    key: string;
+    label: string;
+    description?: string;
+}
+
+export interface CustomTypeDefinition {
+    id: string;
+    name: string;
+    description: string;
+    prompt: string;
+    fields: CustomField[];
+}
+
+export interface CustomContentData {
+    title: string;
+    items: Record<string, string>[];
+    definition: CustomTypeDefinition;
 }
 
 export enum Language {
@@ -100,7 +121,8 @@ export type GeneratedContent =
     | { type: ContentType.QUIZ; data: QuizSession }
     | { type: ContentType.CONVERSATION; data: ConversationSession }
     | { type: ContentType.WRITING; data: WritingTask }
-    | { type: ContentType.CHAT; data: ChatSession };
+    | { type: ContentType.CHAT; data: ChatSession }
+    | { type: ContentType.CUSTOM; data: CustomContentData };
 
 export interface PracticeRecord {
     id: string;
