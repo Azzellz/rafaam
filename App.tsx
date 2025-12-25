@@ -178,6 +178,15 @@ const App: React.FC = () => {
 
     const generatorView = (
         <>
+            {error && (
+                <ErrorBanner
+                    title={t.errorTitle}
+                    message={error}
+                    dismissLabel={t.errorDismiss}
+                    onDismiss={handleDismissError}
+                />
+            )}
+
             {!content && !loading && (
                 <GeneratorIntro
                     t={t}
@@ -196,15 +205,6 @@ const App: React.FC = () => {
             )}
 
             {loading && <LoadingSprite language={language} />}
-
-            {error && (
-                <ErrorBanner
-                    title={t.errorTitle}
-                    message={error}
-                    dismissLabel={t.errorDismiss}
-                    onDismiss={handleDismissError}
-                />
-            )}
 
             {content && !loading && (
                 <QuestResults

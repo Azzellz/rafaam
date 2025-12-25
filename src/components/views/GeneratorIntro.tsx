@@ -127,6 +127,11 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                                         desc: t.voicePracticeDesc,
                                     },
                                     {
+                                        label: t.listeningPractice,
+                                        value: ContentType.LISTENING,
+                                        desc: t.listeningPracticeDesc,
+                                    },
+                                    {
                                         label: t.chatPractice,
                                         value: ContentType.CHAT,
                                         desc: t.chatPracticeDesc,
@@ -259,26 +264,6 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                     </div>
                 </form>
             </PixelCard>
-
-            <div className="mt-8 md:mt-12 grid grid-cols-3 gap-2 md:gap-4 opacity-50 text-center">
-                {[
-                    { icon: "⚡", label: t.instantGen },
-                    { icon: "✨", label: t.nativeExamples },
-                    { icon: "⚔️", label: t.battleQuiz },
-                ].map((feature) => (
-                    <div
-                        key={feature.label}
-                        className="flex flex-col items-center"
-                    >
-                        <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-300 border-2 border-black mb-2 flex items-center justify-center text-xl md:text-2xl">
-                            {feature.icon}
-                        </div>
-                        <span className="text-sm md:text-base">
-                            {feature.label}
-                        </span>
-                    </div>
-                ))}
-            </div>
         </div>
     );
 };

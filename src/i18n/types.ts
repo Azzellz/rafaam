@@ -15,6 +15,7 @@ export interface TranslationContent {
     quizBattleDesc: string;
     voicePracticeDesc: string;
     chatPracticeDesc: string;
+    listeningPracticeDesc: string;
     writingPracticeDesc: string;
     questTopic: string;
     topicPlaceholder: string;
@@ -24,6 +25,7 @@ export interface TranslationContent {
     nativeExamples: string;
     battleQuiz: string;
     voicePractice: string;
+    listeningPractice: string;
     writingPractice: string;
     generating: string;
     errorTitle: string;
@@ -33,6 +35,9 @@ export interface TranslationContent {
     question: string;
     score: string;
     quizBattleTitle: string;
+    transcript: string;
+    showTranscript: string;
+    hideTranscript: string;
     explanation: string;
     next: string;
     finish: string;

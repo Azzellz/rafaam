@@ -4,6 +4,7 @@ import {
     GrammarLesson,
     GrammarPoint,
     QuizSession,
+    ListeningExercise,
     WritingTask,
     WritingEvaluation,
     Language,
@@ -119,6 +120,51 @@ const quizSchema: Schema = {
     required: ["title", "questions"],
 };
 
+const listeningSchema: Schema = {
+    type: Type.OBJECT,
+    properties: {
+        title: { type: Type.STRING },
+        transcript: {
+            type: Type.STRING,
+            description:
+                "The full text of the story or dialogue to be spoken. Should be appropriate for the level.",
+        },
+        questions: {
+            type: Type.ARRAY,
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    question: {
+                        type: Type.STRING,
+                        description:
+                            "Comprehension question about the transcript",
+                    },
+                    options: {
+                        type: Type.ARRAY,
+                        items: { type: Type.STRING },
+                        description: "4 multiple choice options",
+                    },
+                    correctIndex: {
+                        type: Type.INTEGER,
+                        description: "Index of correct answer (0-3)",
+                    },
+                    explanation: {
+                        type: Type.STRING,
+                        description: "Explanation of the answer",
+                    },
+                },
+                required: [
+                    "question",
+                    "options",
+                    "correctIndex",
+                    "explanation",
+                ],
+            },
+        },
+    },
+    required: ["title", "transcript", "questions"],
+};
+
 const writingTaskSchema: Schema = {
     type: Type.OBJECT,
     properties: {
@@ -175,7 +221,13 @@ export const generateLesson = async (
     language: Language,
     practiceLanguage: PracticeLanguage,
     customTypeDefinition?: CustomTypeDefinition
-): Promise<GrammarLesson | QuizSession | WritingTask | CustomContentData> => {
+): Promise<
+    | GrammarLesson
+    | QuizSession
+    | WritingTask
+    | CustomContentData
+    | ListeningExercise
+> => {
     const model = "gemini-2.5-flash";
     const langName = getLanguageName(language);
     const practiceConfig: PracticeLanguageConfig =
@@ -306,6 +358,35 @@ IMPORTANT:
             level,
             topic,
         } as QuizSession;
+    } else if (contentType === ContentType.LISTENING) {
+        const prompt = `Create a ${targetLanguage} listening exercise for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
+        1. Generate a short story or dialogue (approx. 100-150 words) suitable for this level.
+        2. Create 3 comprehension questions based on the text.
+
+        IMPORTANT:
+        - The 'transcript' must be in ${targetLanguage}.
+        - The 'questions' and 'options' must be in ${targetLanguage}.
+        - The 'explanation' for the correct answer must be in ${langName}.
+        `;
+
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: listeningSchema,
+            },
+        });
+
+        const text = response.text;
+        if (!text) throw new Error("No response from AI");
+        const rawData = JSON.parse(text);
+        return {
+            ...rawData,
+            practiceLanguage,
+            level,
+            topic,
+        };
     } else if (contentType === ContentType.WRITING) {
         const prompt = `Create a ${targetLanguage} writing task for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
         Provide a writing prompt and some optional hints or vocabulary.
