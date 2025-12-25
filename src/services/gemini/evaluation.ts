@@ -15,7 +15,7 @@ export const evaluateWriting = async (
     language: Language,
     practiceLanguage: PracticeLanguage
 ): Promise<WritingEvaluation> => {
-    const aiConfig = getAIConfig();
+    const aiConfig = await getAIConfig();
     const model = aiConfig.defaultModel;
     const langName = getLanguageName(language);
     const practiceConfig = PRACTICE_LANGUAGES[practiceLanguage];
@@ -33,7 +33,8 @@ Provide:
 4. A list of specific improvements or corrections in ${langName}.
 `;
 
-    const response = await getAIClient().models.generateContent({
+    const client = await getAIClient();
+    const response = await client.models.generateContent({
         model,
         contents: evaluationPrompt,
         config: {

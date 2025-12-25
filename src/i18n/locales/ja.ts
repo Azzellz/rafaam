@@ -103,6 +103,8 @@ export const jaTranslation: TranslationContent = {
     bytes: "バイト",
     kb: "KB",
     mb: "MB",
+    total: "合計",
+    systemQuota: "システムクォータ",
 
     // Stats
     statistics: "統計",

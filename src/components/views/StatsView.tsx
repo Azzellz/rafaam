@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { ContentType, Language } from "@/types";
 import {
     PixelModal,
@@ -26,6 +26,11 @@ export const StatsView: React.FC<Props> = ({
     const t = translations[language];
     const records = useStatsStore((state) => state.records);
     const clearRecords = useStatsStore((state) => state.clearRecords);
+    const refreshRecords = useStatsStore((state) => state.refreshRecords);
+
+    useEffect(() => {
+        refreshRecords();
+    }, [refreshRecords]);
 
     const [filterType, setFilterType] = useState<string>("all");
     const [filterTopic, setFilterTopic] = useState<string>("");
@@ -231,9 +236,9 @@ export const StatsView: React.FC<Props> = ({
                 <div className="flex justify-end mt-4">
                     <PixelButton
                         variant="danger"
-                        onClick={() => {
+                        onClick={async () => {
                             if (confirm(t.confirmClear)) {
-                                clearRecords();
+                                await clearRecords();
                             }
                         }}
                     >

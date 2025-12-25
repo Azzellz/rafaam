@@ -28,8 +28,11 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
     const formatBytes = (bytes: number) => {
         if (bytes === 0) return `0 ${t.bytes}`;
         const k = 1024;
-        const sizes = [t.bytes, t.kb, t.mb];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        const sizes = [t.bytes, t.kb, t.mb, "GB", "TB"];
+        const i = Math.min(
+            Math.floor(Math.log(bytes) / Math.log(k)),
+            sizes.length - 1
+        );
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
     };
 
@@ -56,6 +59,16 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                             "rafaam_favorites_",
                             ""
                         )})`;
+                    } else if (key === "rafaam_ai_config") {
+                        label = "AI Settings";
+                    } else if (key === "rafaam_api_base_url") {
+                        label = "API Base URL";
+                    } else if (key === "rafaam_practice_stats") {
+                        label = "Practice Statistics";
+                    } else if (key === "rafaam_study_plan") {
+                        label = "Study Plan";
+                    } else if (key === "rafaam_daily_progress") {
+                        label = "Daily Progress";
                     }
 
                     items.push({
@@ -77,9 +90,16 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                     setQuota(estimate.quota || null);
 
                     items.push({
-                        key: "indexedDB_usage",
-                        label: "IndexedDB / Cache",
+                        key: "indexedDB_storage",
+                        label: "IndexedDB (Storage)",
                         size: estimate.usage,
+                        type: "indexedDB",
+                    });
+
+                    items.push({
+                        key: "indexedDB_favorites",
+                        label: "IndexedDB (Favorites)",
+                        size: 0, // Will be included in estimate.usage
                         type: "indexedDB",
                     });
                 }
@@ -99,8 +119,11 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                 localStorage.removeItem(item.key);
             } else if (item.type === "indexedDB") {
                 if (window.indexedDB) {
-                    const DB_NAME = "rafaam_client_store";
-                    window.indexedDB.deleteDatabase(DB_NAME);
+                    if (item.key === "indexedDB_storage") {
+                        window.indexedDB.deleteDatabase("rafaam_storage");
+                    } else if (item.key === "indexedDB_favorites") {
+                        window.indexedDB.deleteDatabase("rafaam_client_store");
+                    }
                 }
             }
             setTimeout(calculateStorage, 500);
@@ -119,10 +142,10 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
             }
             keysToRemove.forEach((k) => localStorage.removeItem(k));
 
-            // Clear IndexedDB
+            // Clear IndexedDB - both databases
             if (window.indexedDB) {
-                const DB_NAME = "rafaam_client_store";
-                window.indexedDB.deleteDatabase(DB_NAME);
+                window.indexedDB.deleteDatabase("rafaam_storage");
+                window.indexedDB.deleteDatabase("rafaam_client_store");
             }
 
             calculateStorage();
@@ -142,7 +165,7 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                         <div className="p-4 bg-gray-50 border-2 border-black">
                             <div className="flex justify-between items-end mb-2">
                                 <span className="text-xl font-bold">
-                                    Total (LocalStorage)
+                                    {t.total} (LocalStorage)
                                 </span>
                                 <span className="text-xl text-theme">
                                     {formatBytes(totalUsage)}
@@ -150,7 +173,7 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                             </div>
                             {quota && (
                                 <p className="text-sm text-gray-500">
-                                    System Quota: {formatBytes(quota)}
+                                    {t.systemQuota}: {formatBytes(quota)}
                                 </p>
                             )}
                         </div>
@@ -178,12 +201,14 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                                         <span className="text-gray-600">
                                             {formatBytes(item.size)}
                                         </span>
-                                        <button
-                                            onClick={() => clearItem(item)}
-                                            className="text-red-500 hover:text-red-700 hover:underline text-sm"
-                                        >
-                                            {t.clearStorage}
-                                        </button>
+                                        {item.size > 0 && (
+                                            <button
+                                                onClick={() => clearItem(item)}
+                                                className="text-red-500 hover:text-red-700 hover:underline text-sm"
+                                            >
+                                                {t.clearStorage}
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             ))}

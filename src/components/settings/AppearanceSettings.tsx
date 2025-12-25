@@ -14,9 +14,13 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { bgConfig, setBgConfig } = useAppStore();
 
-    const handleConfigChange = (newConfig: BackgroundConfig) => {
+    const handleConfigChange = async (newConfig: BackgroundConfig) => {
         setBgConfig(newConfig);
-        saveBackgroundConfig(newConfig);
+        try {
+            await saveBackgroundConfig(newConfig);
+        } catch (error) {
+            console.error("Failed to save background config", error);
+        }
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

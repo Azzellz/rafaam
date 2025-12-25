@@ -1,12 +1,13 @@
 import { StudyPlan, DailyProgress } from "@/types";
+import { storageManager } from "@/services/storage";
 
 const PLAN_KEY = "rafaam_study_plan";
 const PROGRESS_KEY = "rafaam_daily_progress";
 
-export const getStudyPlan = (): StudyPlan => {
-    const stored = localStorage.getItem(PLAN_KEY);
+export const getStudyPlan = async (): Promise<StudyPlan> => {
+    const stored = await storageManager.get<StudyPlan>(PLAN_KEY);
     if (stored) {
-        return JSON.parse(stored);
+        return stored;
     }
     return {
         enabled: false,
@@ -15,28 +16,34 @@ export const getStudyPlan = (): StudyPlan => {
     };
 };
 
-export const saveStudyPlan = (plan: StudyPlan) => {
-    localStorage.setItem(PLAN_KEY, JSON.stringify(plan));
+export const saveStudyPlan = async (plan: StudyPlan): Promise<void> => {
+    await storageManager.set(PLAN_KEY, plan);
 };
 
-export const getDailyProgress = (): Record<string, DailyProgress> => {
-    const stored = localStorage.getItem(PROGRESS_KEY);
+export const getDailyProgress = async (): Promise<
+    Record<string, DailyProgress>
+> => {
+    const stored = await storageManager.get<Record<string, DailyProgress>>(
+        PROGRESS_KEY
+    );
     if (stored) {
-        return JSON.parse(stored);
+        return stored;
     }
     return {};
 };
 
-export const saveDailyProgress = (progress: Record<string, DailyProgress>) => {
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+export const saveDailyProgress = async (
+    progress: Record<string, DailyProgress>
+): Promise<void> => {
+    await storageManager.set(PROGRESS_KEY, progress);
 };
 
-export const updateDailyProgress = (
+export const updateDailyProgress = async (
     date: string,
     increment: { count?: number; duration?: number },
     plan: StudyPlan
-): DailyProgress => {
-    const allProgress = getDailyProgress();
+): Promise<DailyProgress> => {
+    const allProgress = await getDailyProgress();
     const current = allProgress[date] || {
         date,
         count: 0,
@@ -60,6 +67,6 @@ export const updateDailyProgress = (
     }
 
     allProgress[date] = updated;
-    saveDailyProgress(allProgress);
+    await saveDailyProgress(allProgress);
     return updated;
 };

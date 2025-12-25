@@ -1,27 +1,32 @@
 import { PracticeRecord } from "@/types";
+import { storageManager } from "@/services/storage";
 
 const STATS_STORAGE_KEY = "rafaam_practice_stats";
 
-export const getPracticeRecords = (): PracticeRecord[] => {
+export const getPracticeRecords = async (): Promise<PracticeRecord[]> => {
     try {
-        const stored = localStorage.getItem(STATS_STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [];
+        const records = await storageManager.get<PracticeRecord[]>(
+            STATS_STORAGE_KEY
+        );
+        return records || [];
     } catch (error) {
         console.error("Failed to load practice records", error);
         return [];
     }
 };
 
-export const savePracticeRecord = (record: PracticeRecord): void => {
+export const savePracticeRecord = async (
+    record: PracticeRecord
+): Promise<void> => {
     try {
-        const records = getPracticeRecords();
+        const records = await getPracticeRecords();
         records.push(record);
-        localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(records));
+        await storageManager.set(STATS_STORAGE_KEY, records);
     } catch (error) {
         console.error("Failed to save practice record", error);
     }
 };
 
-export const clearPracticeRecords = (): void => {
-    localStorage.removeItem(STATS_STORAGE_KEY);
+export const clearPracticeRecords = async (): Promise<void> => {
+    await storageManager.remove(STATS_STORAGE_KEY);
 };

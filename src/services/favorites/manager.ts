@@ -1,107 +1,86 @@
 import { GrammarPoint, PracticeLanguage } from "@/types";
 import { DEFAULT_PRACTICE_LANGUAGE } from "@/constants/practiceLanguages";
-import {
-    hasIndexedDBSupport,
-    openDB,
-    getAllFromIndexedDB,
-    addToIndexedDB,
-    removeFromIndexedDB,
-} from "./indexedDB";
-import {
-    readLocalFavorites,
-    upsertLocalFavorite,
-    removeLocalFavorite,
-} from "./localStorage";
+import { storageManager } from "@/services/storage";
 
 export type FavoriteStorageStrategy = "indexedDB" | "localStorage";
 
-const FALLBACK_LOG =
-    "IndexedDB is unavailable; falling back to localStorage for favorites.";
+const FAVORITES_KEY_PREFIX = "favorites_";
 
 class FavoritesStorageManager {
-    public strategy: FavoriteStorageStrategy = "indexedDB";
-    private dbPromise: Promise<IDBDatabase> | null = null;
+    public get strategy(): FavoriteStorageStrategy {
+        return storageManager.strategy;
+    }
 
-    private async ensureDB(): Promise<IDBDatabase | null> {
-        if (this.strategy === "localStorage") {
-            return null;
-        }
-
-        if (!hasIndexedDBSupport()) {
-            console.warn(FALLBACK_LOG);
-            this.strategy = "localStorage";
-            return null;
-        }
-
-        if (!this.dbPromise) {
-            this.dbPromise = openDB();
-        }
-
-        try {
-            return await this.dbPromise;
-        } catch (error) {
-            console.error("IndexedDB initialization failed", error);
-            this.dbPromise = null;
-            this.strategy = "localStorage";
-            return null;
-        }
+    private getStorageKey(language: PracticeLanguage): string {
+        return `${FAVORITES_KEY_PREFIX}${language}`;
     }
 
     public async getAll(language?: PracticeLanguage): Promise<GrammarPoint[]> {
-        const db = await this.ensureDB();
-        if (db) {
-            try {
-                return await getAllFromIndexedDB(db, language);
-            } catch (error) {
-                console.error("Failed to read favorites from IndexedDB", error);
-                this.strategy = "localStorage";
+        try {
+            if (language) {
+                const key = this.getStorageKey(language);
+                const favorites = await storageManager.get<GrammarPoint[]>(key);
+                return favorites || [];
+            } else {
+                // 如果没有指定语言，返回默认语言的收藏
+                const key = this.getStorageKey(DEFAULT_PRACTICE_LANGUAGE);
+                const favorites = await storageManager.get<GrammarPoint[]>(key);
+                return favorites || [];
             }
-        }
-
-        if (language) {
-            return readLocalFavorites(language);
-        } else {
-            // If no language specified, we might want to aggregate all local storage keys
-            // But for simplicity and current requirements, we might just return empty or handle it if needed.
-            // For now, let's just return the default language ones or implement aggregation if requested.
-            // Given the requirement "independent storage space", aggregation might be expensive.
-            // Let's return default language as fallback or empty.
-            return readLocalFavorites(DEFAULT_PRACTICE_LANGUAGE);
+        } catch (error) {
+            console.error("Failed to get favorites", error);
+            return [];
         }
     }
 
     public async add(point: GrammarPoint): Promise<void> {
-        const db = await this.ensureDB();
-        if (db) {
-            try {
-                await addToIndexedDB(db, point);
-                return;
-            } catch (error) {
-                console.error("Failed to add favorite to IndexedDB", error);
-                this.strategy = "localStorage";
+        try {
+            const language =
+                point.practiceLanguage || DEFAULT_PRACTICE_LANGUAGE;
+            const key = this.getStorageKey(language);
+            const favorites = await this.getAll(language);
+
+            // 检查是否已存在
+            const existingIndex = favorites.findIndex(
+                (item) => item.pattern === point.pattern
+            );
+
+            if (existingIndex >= 0) {
+                // 更新现有项
+                favorites[existingIndex] = {
+                    ...point,
+                    practiceLanguage: language,
+                };
+            } else {
+                // 添加新项
+                favorites.push({
+                    ...point,
+                    practiceLanguage: language,
+                });
             }
+
+            await storageManager.set(key, favorites);
+        } catch (error) {
+            console.error("Failed to add favorite", error);
+            throw error;
         }
-        upsertLocalFavorite(point);
     }
 
     public async remove(
         pattern: string,
         language: PracticeLanguage
     ): Promise<void> {
-        const db = await this.ensureDB();
-        if (db) {
-            try {
-                await removeFromIndexedDB(db, pattern, language);
-                return;
-            } catch (error) {
-                console.error(
-                    "Failed to remove favorite from IndexedDB",
-                    error
-                );
-                this.strategy = "localStorage";
-            }
+        try {
+            const key = this.getStorageKey(language);
+            const favorites = await this.getAll(language);
+            const filtered = favorites.filter(
+                (item) => item.pattern !== pattern
+            );
+            await storageManager.set(key, filtered);
+        } catch (error) {
+            console.error("Failed to remove favorite", error);
+            throw error;
         }
-        removeLocalFavorite(pattern, language);
     }
 }
 

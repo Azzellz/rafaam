@@ -101,6 +101,8 @@ export const zhCNTranslation: TranslationContent = {
     bytes: "字节",
     kb: "KB",
     mb: "MB",
+    total: "总计",
+    systemQuota: "系统配额",
 
     // Stats
     statistics: "统计数据",

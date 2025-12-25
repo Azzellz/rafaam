@@ -1,8 +1,9 @@
 import { BackgroundConfig } from "../../types";
+import { storageManager } from "./manager";
 
 const BG_STORAGE_KEY = "rafaam_background_config";
 
-export const getBackgroundConfig = (): BackgroundConfig => {
+export const getBackgroundConfig = async (): Promise<BackgroundConfig> => {
     const defaultConfig: BackgroundConfig = {
         imageData: null,
         blur: 0,
@@ -11,19 +12,21 @@ export const getBackgroundConfig = (): BackgroundConfig => {
     };
 
     try {
-        const stored = localStorage.getItem(BG_STORAGE_KEY);
-        return stored
-            ? { ...defaultConfig, ...JSON.parse(stored) }
-            : defaultConfig;
+        const stored = await storageManager.get<BackgroundConfig>(
+            BG_STORAGE_KEY
+        );
+        return stored ? { ...defaultConfig, ...stored } : defaultConfig;
     } catch (error) {
         console.error("Failed to load background config", error);
         return defaultConfig;
     }
 };
 
-export const saveBackgroundConfig = (config: BackgroundConfig): void => {
+export const saveBackgroundConfig = async (
+    config: BackgroundConfig
+): Promise<void> => {
     try {
-        localStorage.setItem(BG_STORAGE_KEY, JSON.stringify(config));
+        await storageManager.set(BG_STORAGE_KEY, config);
     } catch (error) {
         console.error(
             "Failed to save background config (likely quota exceeded)",
@@ -32,5 +35,6 @@ export const saveBackgroundConfig = (config: BackgroundConfig): void => {
         alert(
             "Image too large to save to local storage. It will be reset on reload."
         );
+        throw error;
     }
 };

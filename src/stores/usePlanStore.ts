@@ -10,26 +10,38 @@ import {
 type PlanState = {
     plan: StudyPlan;
     progress: Record<string, DailyProgress>;
-    updatePlan: (plan: StudyPlan) => void;
-    recordProgress: (increment: { count?: number; duration?: number }) => void;
+    updatePlan: (plan: StudyPlan) => Promise<void>;
+    recordProgress: (increment: {
+        count?: number;
+        duration?: number;
+    }) => Promise<void>;
     getTodayProgress: () => DailyProgress;
+    refreshData: () => Promise<void>;
+};
+
+const defaultPlan: StudyPlan = {
+    enabled: false,
+    type: "count",
+    target: 1,
 };
 
 export const usePlanStore = create<PlanState>((set, get) => ({
-    plan: getStudyPlan(),
-    progress: getDailyProgress(),
-    updatePlan: (newPlan) => {
-        saveStudyPlan(newPlan);
+    plan: defaultPlan,
+    progress: {},
+    updatePlan: async (newPlan) => {
+        await saveStudyPlan(newPlan);
         // Re-evaluate today's completion status with new plan
         const today = new Date().toISOString().split("T")[0];
-        updateDailyProgress(today, {}, newPlan);
-        set({ plan: newPlan, progress: getDailyProgress() });
+        await updateDailyProgress(today, {}, newPlan);
+        const progress = await getDailyProgress();
+        set({ plan: newPlan, progress });
     },
-    recordProgress: (increment) => {
+    recordProgress: async (increment) => {
         const today = new Date().toISOString().split("T")[0];
         const { plan } = get();
-        updateDailyProgress(today, increment, plan);
-        set({ progress: getDailyProgress() });
+        await updateDailyProgress(today, increment, plan);
+        const progress = await getDailyProgress();
+        set({ progress });
     },
     getTodayProgress: () => {
         const today = new Date().toISOString().split("T")[0];
@@ -42,5 +54,10 @@ export const usePlanStore = create<PlanState>((set, get) => ({
                 isCompleted: false,
             }
         );
+    },
+    refreshData: async () => {
+        const plan = await getStudyPlan();
+        const progress = await getDailyProgress();
+        set({ plan, progress });
     },
 }));

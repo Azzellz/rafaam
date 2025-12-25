@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Language, StudyPlan as StudyPlanType, DailyGoalType } from "@/types";
 import { translations } from "@/i18n";
 import { usePlanStore } from "@/stores/usePlanStore";
@@ -10,15 +10,20 @@ interface Props {
 
 export const StudyPlan: React.FC<Props> = ({ language }) => {
     const t = translations[language];
-    const { plan, updatePlan, getTodayProgress, progress } = usePlanStore();
+    const { plan, updatePlan, getTodayProgress, progress, refreshData } =
+        usePlanStore();
     const [isEditing, setIsEditing] = useState(false);
     const [editPlan, setEditPlan] = useState<StudyPlanType>(plan);
 
+    useEffect(() => {
+        refreshData();
+    }, [refreshData]);
+
     const todayProgress = getTodayProgress();
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (editPlan.target <= 0) return;
-        updatePlan(editPlan);
+        await updatePlan(editPlan);
         setIsEditing(false);
     };
 

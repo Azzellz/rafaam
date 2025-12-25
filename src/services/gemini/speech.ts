@@ -18,7 +18,8 @@ export const generateSpeech = async (
         PRACTICE_LANGUAGES[practiceLanguage]?.ttsVoice ||
         PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE].ttsVoice;
 
-    const response = await getAIClient().models.generateContent({
+    const client = await getAIClient();
+    const response = await client.models.generateContent({
         model: "gemini-2.5-flash-preview-tts",
         contents: [{ parts: [{ text: text.trim() }] }],
         config: {

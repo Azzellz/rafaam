@@ -56,8 +56,8 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
 
     useEffect(() => {
         const initChat = async () => {
-            const ai = getAIClient();
-            const aiConfig = getAIConfig();
+            const ai = await getAIClient();
+            const aiConfig = await getAIConfig();
 
             const langName = LANGUAGE_CONFIG[language]?.aiName ?? "English";
             const targetLanguage = practiceLanguageConfig.targetLanguageName;
@@ -141,8 +141,8 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
         setIsLoading(true);
 
         try {
-            const ai = getAIClient();
-            const aiConfig = getAIConfig();
+            const ai = await getAIClient();
+            const aiConfig = await getAIConfig();
 
             // Construct history for the API
             // Map local messages to API format

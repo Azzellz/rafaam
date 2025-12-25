@@ -5,13 +5,14 @@ export const translateText = async (
     text: string,
     targetLanguage: string
 ): Promise<string> => {
-    const aiConfig = getAIConfig();
+    const aiConfig = await getAIConfig();
     const model = aiConfig.defaultModel;
     const prompt = `Translate the following text into ${targetLanguage}. Only return the translation, no explanations.
     
     Text: "${text}"`;
 
-    const response = await getAIClient().models.generateContent({
+    const client = await getAIClient();
+    const response = await client.models.generateContent({
         model,
         contents: [{ parts: [{ text: prompt }] }],
     });

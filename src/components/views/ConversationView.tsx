@@ -100,8 +100,8 @@ export const ConversationView: React.FC<Props> = ({
         setStatus("connecting");
 
         try {
-            const ai = getAIClient();
-            const aiConfig = getAIConfig();
+            const ai = await getAIClient();
+            const aiConfig = await getAIConfig();
 
             // Initialize Audio Contexts
             inputAudioContextRef.current = new (window.AudioContext ||

@@ -98,6 +98,8 @@ export interface TranslationContent {
     bytes: string;
     kb: string;
     mb: string;
+    total: string;
+    systemQuota: string;
 
     // Stats
     statistics: string;

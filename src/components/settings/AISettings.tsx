@@ -15,18 +15,49 @@ interface Props {
 
 export const AISettings: React.FC<Props> = ({ language }) => {
     const t = translations[language];
-    const [config, setConfig] = useState<AIConfig>(getAIConfig());
-    const [apiBaseUrl, setApiBaseUrl] = useState<string>(getApiBaseUrl());
+    const [config, setConfig] = useState<AIConfig | null>(null);
+    const [apiBaseUrl, setApiBaseUrl] = useState<string>("");
+    const [isLoading, setIsLoading] = useState(true);
 
-    const handleSave = () => {
-        saveAIConfig(config);
-        saveApiBaseUrl(apiBaseUrl);
-        alert(t.saved);
+    useEffect(() => {
+        const loadSettings = async () => {
+            try {
+                const [loadedConfig, loadedUrl] = await Promise.all([
+                    getAIConfig(),
+                    getApiBaseUrl(),
+                ]);
+                setConfig(loadedConfig);
+                setApiBaseUrl(loadedUrl);
+            } catch (error) {
+                console.error("Failed to load settings", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        loadSettings();
+    }, []);
+
+    const handleSave = async () => {
+        if (!config) return;
+        try {
+            await Promise.all([
+                saveAIConfig(config),
+                saveApiBaseUrl(apiBaseUrl),
+            ]);
+            alert(t.saved);
+        } catch (error) {
+            console.error("Failed to save settings", error);
+            alert("Failed to save settings");
+        }
     };
 
     const handleChange = (key: keyof AIConfig, value: string | number) => {
-        setConfig((prev) => ({ ...prev, [key]: value }));
+        setConfig((prev) => (prev ? { ...prev, [key]: value } : null));
     };
+
+    if (isLoading || !config) {
+        return <div className="p-4">Loading...</div>;
+    }
 
     return (
         <div className="space-y-6">

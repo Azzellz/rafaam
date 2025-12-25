@@ -9,34 +9,37 @@ import { usePlanStore } from "./usePlanStore";
 
 type StatsState = {
     records: PracticeRecord[];
-    addRecord: (record: Omit<PracticeRecord, "id" | "timestamp">) => void;
-    clearRecords: () => void;
-    refreshRecords: () => void;
+    addRecord: (
+        record: Omit<PracticeRecord, "id" | "timestamp">
+    ) => Promise<void>;
+    clearRecords: () => Promise<void>;
+    refreshRecords: () => Promise<void>;
 };
 
 export const useStatsStore = create<StatsState>((set) => ({
-    records: getPracticeRecords(),
-    addRecord: (recordData) => {
+    records: [],
+    addRecord: async (recordData) => {
         const newRecord: PracticeRecord = {
             ...recordData,
             id: crypto.randomUUID(),
             timestamp: Date.now(),
         };
-        savePracticeRecord(newRecord);
+        await savePracticeRecord(newRecord);
 
         // Update plan progress
-        usePlanStore.getState().recordProgress({
+        await usePlanStore.getState().recordProgress({
             count: 1,
             duration: recordData.duration || 0,
         });
 
         set((state) => ({ records: [...state.records, newRecord] }));
     },
-    clearRecords: () => {
-        clearPracticeRecords();
+    clearRecords: async () => {
+        await clearPracticeRecords();
         set({ records: [] });
     },
-    refreshRecords: () => {
-        set({ records: getPracticeRecords() });
+    refreshRecords: async () => {
+        const records = await getPracticeRecords();
+        set({ records });
     },
 }));

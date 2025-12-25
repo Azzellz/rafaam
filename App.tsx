@@ -64,7 +64,11 @@ const App: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setBgConfig(getBackgroundConfig());
+        const loadBgConfig = async () => {
+            const config = await getBackgroundConfig();
+            setBgConfig(config);
+        };
+        loadBgConfig();
     }, [setBgConfig]);
 
     useEffect(() => {

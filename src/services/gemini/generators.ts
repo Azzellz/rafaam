@@ -52,7 +52,7 @@ export const generateLesson = async (
     | CustomContentData
     | ListeningExercise
 > => {
-    const aiConfig = getAIConfig();
+    const aiConfig = await getAIConfig();
     const model = aiConfig.defaultModel;
     const langName = getLanguageName(language);
     const practiceConfig: PracticeLanguageConfig =
@@ -103,7 +103,8 @@ export const generateLesson = async (
         Ensure the output matches the JSON schema structure.
         `;
 
-        const response = await getAIClient().models.generateContent({
+        const client = await getAIClient();
+        const response = await client.models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -134,7 +135,8 @@ IMPORTANT:
 - Keep the JSON structure exactly as specified by the schema.
 `;
 
-        const response = await getAIClient().models.generateContent({
+        const client = await getAIClient();
+        const response = await client.models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -165,7 +167,8 @@ IMPORTANT:
     - Write the explanation for each correct answer in ${langName}.
     `;
 
-        const response = await getAIClient().models.generateContent({
+        const client = await getAIClient();
+        const response = await client.models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -194,7 +197,8 @@ IMPORTANT:
         - The 'explanation' for the correct answer must be in ${langName}.
         `;
 
-        const response = await getAIClient().models.generateContent({
+        const client = await getAIClient();
+        const response = await client.models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -221,7 +225,8 @@ IMPORTANT:
         - Write 'hints' in ${targetLanguage} with ${langName} translations if necessary.
         `;
 
-        const response = await getAIClient().models.generateContent({
+        const client = await getAIClient();
+        const response = await client.models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -248,7 +253,7 @@ export const generateRandomTopic = async (
     practiceLanguage: PracticeLanguage,
     language: Language
 ): Promise<string> => {
-    const aiConfig = getAIConfig();
+    const aiConfig = await getAIConfig();
     const model = aiConfig.defaultModel;
     const langName = getLanguageName(language);
     const practiceConfig =
@@ -258,7 +263,8 @@ export const generateRandomTopic = async (
 
     const prompt = `Suggest one imaginative ${langName} keyword or short phrase (max 4 words) that would be an engaging topic for practicing ${targetLanguage}. Return only the keyword without numbering, quotes, or extra text.`;
 
-    const response = await getAIClient().models.generateContent({
+    const client = await getAIClient();
+    const response = await client.models.generateContent({
         model,
         contents: [{ parts: [{ text: prompt }] }],
     });

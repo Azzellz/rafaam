@@ -37,7 +37,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
                 data.practiceLanguage
             );
             setEvaluation(result);
-            addRecord({
+            await addRecord({
                 type: ContentType.WRITING,
                 language: data.practiceLanguage,
                 topic: data.topic,

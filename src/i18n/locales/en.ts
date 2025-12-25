@@ -104,6 +104,8 @@ export const enTranslation: TranslationContent = {
     bytes: "Bytes",
     kb: "KB",
     mb: "MB",
+    total: "Total",
+    systemQuota: "System Quota",
 
     // Stats
     statistics: "Statistics",
