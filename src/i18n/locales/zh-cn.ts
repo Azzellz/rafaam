@@ -168,4 +168,18 @@ export const zhCNTranslation: TranslationContent = {
     goalReached: "目标达成！",
     keepGoing: "继续加油",
     setGoal: "设定目标",
+    // AI Settings
+    aiSettings: "AI 设置",
+    defaultModel: "默认模型",
+    defaultModelDesc: "用于生成课程、测验等 (例如: gemini-2.0-flash)",
+    chatModel: "聊天模型",
+    chatModelDesc: "用于文字聊天功能 (例如: gemini-2.0-flash)",
+    conversationModel: "实时对话模型",
+    conversationModelDesc:
+        "用于实时语音对话 (必须支持 Live API, 例如: gemini-2.0-flash-exp)",
+    temperature: "随机性 (Temperature)",
+    temperatureDesc: "值越高，回答越有创意；值越低，回答越确定。",
+    apiBaseUrl: "API Base URL",
+    apiBaseUrlDesc: "用于 API 访问的反向代理 URL (可选)",
+    apiBaseUrlPlaceholder: "https://api.example.com",
 };

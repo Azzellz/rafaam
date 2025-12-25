@@ -173,4 +173,19 @@ export const enTranslation: TranslationContent = {
     goalReached: "Goal Reached!",
     keepGoing: "Keep Going",
     setGoal: "Set Goal",
+    // AI Settings
+    aiSettings: "AI Settings",
+    defaultModel: "Default Model",
+    defaultModelDesc:
+        "For generating lessons, quizzes, etc. (e.g., gemini-2.0-flash)",
+    chatModel: "Chat Model",
+    chatModelDesc: "For text chat feature (e.g., gemini-2.0-flash)",
+    conversationModel: "Conversation Model",
+    conversationModelDesc:
+        "For live voice conversation (Must support Live API, e.g., gemini-2.0-flash-exp)",
+    temperature: "Temperature",
+    temperatureDesc: "Higher values mean more creative responses.",
+    apiBaseUrl: "API Base URL",
+    apiBaseUrlDesc: "Reverse Proxy URL for API access (Optional)",
+    apiBaseUrlPlaceholder: "https://api.example.com",
 };

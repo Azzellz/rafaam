@@ -164,4 +164,18 @@ export interface TranslationContent {
     goalReached: string;
     keepGoing: string;
     setGoal: string;
+
+    // AI Settings
+    aiSettings: string;
+    defaultModel: string;
+    defaultModelDesc: string;
+    chatModel: string;
+    chatModelDesc: string;
+    conversationModel: string;
+    conversationModelDesc: string;
+    temperature: string;
+    temperatureDesc: string;
+    apiBaseUrl: string;
+    apiBaseUrlDesc: string;
+    apiBaseUrlPlaceholder: string;
 }

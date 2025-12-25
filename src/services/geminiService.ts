@@ -18,8 +18,16 @@ import {
     PracticeLanguageConfig,
     DEFAULT_PRACTICE_LANGUAGE,
 } from "@/constants/practiceLanguages";
+import { getApiBaseUrl, getAIConfig } from "./storageService";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+export const getAIClient = () => {
+    const baseUrl = getApiBaseUrl();
+    const config: any = { apiKey: process.env.API_KEY };
+    if (baseUrl) {
+        config.baseUrl = baseUrl;
+    }
+    return new GoogleGenAI(config);
+};
 
 const grammarSchema: Schema = {
     type: Type.OBJECT,
@@ -228,7 +236,8 @@ export const generateLesson = async (
     | CustomContentData
     | ListeningExercise
 > => {
-    const model = "gemini-2.5-flash";
+    const aiConfig = getAIConfig();
+    const model = aiConfig.defaultModel;
     const langName = getLanguageName(language);
     const practiceConfig: PracticeLanguageConfig =
         PRACTICE_LANGUAGES[practiceLanguage] ??
@@ -278,7 +287,7 @@ export const generateLesson = async (
         Ensure the output matches the JSON schema structure.
         `;
 
-        const response = await ai.models.generateContent({
+        const response = await getAIClient().models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -309,7 +318,7 @@ IMPORTANT:
 - Keep the JSON structure exactly as specified by the schema.
 `;
 
-        const response = await ai.models.generateContent({
+        const response = await getAIClient().models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -340,7 +349,7 @@ IMPORTANT:
     - Write the explanation for each correct answer in ${langName}.
     `;
 
-        const response = await ai.models.generateContent({
+        const response = await getAIClient().models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -369,7 +378,7 @@ IMPORTANT:
         - The 'explanation' for the correct answer must be in ${langName}.
         `;
 
-        const response = await ai.models.generateContent({
+        const response = await getAIClient().models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -396,7 +405,7 @@ IMPORTANT:
         - Write 'hints' in ${targetLanguage} with ${langName} translations if necessary.
         `;
 
-        const response = await ai.models.generateContent({
+        const response = await getAIClient().models.generateContent({
             model,
             contents: prompt,
             config: {
@@ -423,7 +432,8 @@ export const generateRandomTopic = async (
     practiceLanguage: PracticeLanguage,
     language: Language
 ): Promise<string> => {
-    const model = "gemini-2.5-flash";
+    const aiConfig = getAIConfig();
+    const model = aiConfig.defaultModel;
     const langName = getLanguageName(language);
     const practiceConfig =
         PRACTICE_LANGUAGES[practiceLanguage] ??
@@ -432,7 +442,7 @@ export const generateRandomTopic = async (
 
     const prompt = `Suggest one imaginative ${langName} keyword or short phrase (max 4 words) that would be an engaging topic for practicing ${targetLanguage}. Return only the keyword without numbering, quotes, or extra text.`;
 
-    const response = await ai.models.generateContent({
+    const response = await getAIClient().models.generateContent({
         model,
         contents: [{ parts: [{ text: prompt }] }],
     });
@@ -457,7 +467,7 @@ export const generateSpeech = async (
         PRACTICE_LANGUAGES[practiceLanguage]?.ttsVoice ||
         PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE].ttsVoice;
 
-    const response = await ai.models.generateContent({
+    const response = await getAIClient().models.generateContent({
         model: "gemini-2.5-flash-preview-tts",
         contents: [{ parts: [{ text: text.trim() }] }],
         config: {
@@ -490,12 +500,13 @@ export const translateText = async (
     text: string,
     targetLanguage: string
 ): Promise<string> => {
-    const model = "gemini-2.5-flash";
+    const aiConfig = getAIConfig();
+    const model = aiConfig.defaultModel;
     const prompt = `Translate the following text into ${targetLanguage}. Only return the translation, no explanations.
     
     Text: "${text}"`;
 
-    const response = await ai.models.generateContent({
+    const response = await getAIClient().models.generateContent({
         model,
         contents: [{ parts: [{ text: prompt }] }],
     });
@@ -510,7 +521,8 @@ export const evaluateWriting = async (
     language: Language,
     practiceLanguage: PracticeLanguage
 ): Promise<WritingEvaluation> => {
-    const model = "gemini-2.5-flash";
+    const aiConfig = getAIConfig();
+    const model = aiConfig.defaultModel;
     const langName = getLanguageName(language);
     const practiceConfig = PRACTICE_LANGUAGES[practiceLanguage];
     const targetLanguage = practiceConfig.targetLanguageName;
@@ -527,7 +539,7 @@ Provide:
 4. A list of specific improvements or corrections in ${langName}.
 `;
 
-    const response = await ai.models.generateContent({
+    const response = await getAIClient().models.generateContent({
         model,
         contents: evaluationPrompt,
         config: {

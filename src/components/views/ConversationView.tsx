@@ -13,7 +13,9 @@ import {
     DEFAULT_PRACTICE_LANGUAGE,
 } from "@/constants/practiceLanguages";
 import { pixelMutedParagraph } from "@/constants/style";
-import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
+import { LiveServerMessage, Modality } from "@google/genai";
+import { getAIClient } from "@/services/geminiService";
+import { getAIConfig } from "@/services/storageService";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
 import { useStatsStore } from "@/stores/useStatsStore";
 
@@ -98,7 +100,8 @@ export const ConversationView: React.FC<Props> = ({
         setStatus("connecting");
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = getAIClient();
+            const aiConfig = getAIConfig();
 
             // Initialize Audio Contexts
             inputAudioContextRef.current = new (window.AudioContext ||
@@ -134,7 +137,7 @@ export const ConversationView: React.FC<Props> = ({
 
             // Establish Live Connection
             const sessionPromise = ai.live.connect({
-                model: "gemini-2.5-flash-native-audio-preview-09-2025",
+                model: aiConfig.conversationModel,
                 callbacks: {
                     onopen: () => {
                         if (!mountedRef.current) return;

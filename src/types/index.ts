@@ -164,3 +164,10 @@ export interface DailyProgress {
     duration: number; // seconds
     isCompleted: boolean;
 }
+
+export interface AIConfig {
+    defaultModel: string;
+    chatModel: string;
+    conversationModel: string;
+    temperature: number;
+}

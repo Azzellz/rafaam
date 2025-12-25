@@ -3,7 +3,8 @@ import { ChatSession, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
-import { GoogleGenAI } from "@google/genai";
+import { getAIClient } from "@/services/geminiService";
+import { getAIConfig } from "@/services/storageService";
 import {
     PRACTICE_LANGUAGES,
     DEFAULT_PRACTICE_LANGUAGE,
@@ -55,7 +56,8 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
 
     useEffect(() => {
         const initChat = async () => {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = getAIClient();
+            const aiConfig = getAIConfig();
 
             const langName = LANGUAGE_CONFIG[language]?.aiName ?? "English";
             const targetLanguage = practiceLanguageConfig.targetLanguageName;
@@ -80,7 +82,7 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
                 setIsLoading(true);
                 // Initial greeting
                 const response = await ai.models.generateContent({
-                    model: "gemini-2.5-flash",
+                    model: aiConfig.chatModel,
                     config: {
                         systemInstruction: {
                             parts: [{ text: systemInstruction }],
@@ -139,7 +141,8 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
         setIsLoading(true);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = getAIClient();
+            const aiConfig = getAIConfig();
 
             // Construct history for the API
             // Map local messages to API format
@@ -149,7 +152,7 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
             }));
 
             const response = await ai.models.generateContent({
-                model: "gemini-2.5-flash",
+                model: aiConfig.chatModel,
                 config: {
                     systemInstruction: {
                         parts: [{ text: systemInstructionRef.current }],

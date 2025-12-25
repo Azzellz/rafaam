@@ -172,4 +172,18 @@ export const jaTranslation: TranslationContent = {
     goalReached: "目標達成！",
     keepGoing: "頑張って",
     setGoal: "目標を設定",
+    // AI Settings
+    aiSettings: "AI設定",
+    defaultModel: "デフォルトモデル",
+    defaultModelDesc: "レッスンやクイズの生成に使用 (例: gemini-2.0-flash)",
+    chatModel: "チャットモデル",
+    chatModelDesc: "テキストチャット機能に使用 (例: gemini-2.0-flash)",
+    conversationModel: "会話モデル",
+    conversationModelDesc:
+        "リアルタイム音声会話に使用 (Live API対応必須, 例: gemini-2.0-flash-exp)",
+    temperature: "温度 (Temperature)",
+    temperatureDesc: "値が高いほど創造的な回答になります。",
+    apiBaseUrl: "API Base URL",
+    apiBaseUrlDesc: "APIアクセスのためのリバースプロキシURL (オプション)",
+    apiBaseUrlPlaceholder: "https://api.example.com",
 };
