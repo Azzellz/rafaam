@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Language, PracticeLanguage } from "@/types";
 import { TranslationContent } from "@/i18n";
 import { LANGUAGE_OPTIONS } from "@/constants/languages";
@@ -22,6 +23,10 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     onLanguageChange,
     t,
 }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const showBackButton = location.pathname !== "/";
+
     const handleLanguageChange = (value: string) => {
         onLanguageChange(value as Language);
     };
@@ -29,13 +34,39 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     return (
         <header className="bg-theme border-b-4 border-black p-3 md:p-4 mb-6 md:mb-10 sticky top-0 z-20 shadow-[0_4px_0_0_rgba(0,0,0,0.2)]">
             <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
-                <div className="cursor-pointer" onClick={onLogoClick}>
-                    <h1 className="text-2xl md:text-4xl text-white tracking-widest drop-shadow-[2px_2px_0_#000]">
-                        {t.title}{" "}
-                        <span className="text-[#facc15]">
-                            {PRACTICE_LANGUAGES[practiceLanguage].nativeLabel}
-                        </span>
-                    </h1>
+                <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
+                    {showBackButton && (
+                        <button
+                            onClick={() => navigate("/")}
+                            className="h-8 w-8 md:h-10 md:w-10 bg-white border-2 border-black hover:bg-gray-100 shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center text-black flex-shrink-0 p-0"
+                            title="Back"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="m15 18-6-6 6-6" />
+                            </svg>
+                        </button>
+                    )}
+                    <div className="cursor-pointer" onClick={onLogoClick}>
+                        <h1 className="text-2xl md:text-4xl text-white tracking-widest drop-shadow-[2px_2px_0_#000]">
+                            {t.title}{" "}
+                            <span className="text-[#facc15]">
+                                {
+                                    PRACTICE_LANGUAGES[practiceLanguage]
+                                        .nativeLabel
+                                }
+                            </span>
+                        </h1>
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-2 md:gap-3">
@@ -71,7 +102,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                         <PixelSelect
                             value={language}
                             onChange={handleLanguageChange}
-                            className="h-10 md:h-12 text-base md:text-lg"
+                            className="h-10 md:h-12 text-base md:text-lg [&>div:first-child]:shadow-[2px_2px_0_0_#000] [&>div:first-child]:hover:shadow-[2px_2px_0_0_#000] [&>div:first-child]:h-full [&>div:first-child]:!py-0 [&>div:first-child]:flex [&>div:first-child]:items-center"
                             options={LANGUAGE_OPTIONS.map((option) => ({
                                 value: option.code,
                                 label: option.nativeLabel,
