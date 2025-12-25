@@ -6,7 +6,7 @@ import {
     BackgroundConfig,
     PracticeLanguage,
 } from "@/types";
-import { generateLesson, generateRandomTopic } from "@/services/geminiService";
+import { generateLesson, generateRandomTopic } from "@/services/gemini";
 import {
     getBackgroundConfig,
     saveBackgroundConfig,

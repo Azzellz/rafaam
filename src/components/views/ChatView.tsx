@@ -3,7 +3,7 @@ import { ChatSession, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
-import { getAIClient } from "@/services/geminiService";
+import { getAIClient } from "@/services/gemini";
 import { getAIConfig } from "@/services/storageService";
 import {
     PRACTICE_LANGUAGES,

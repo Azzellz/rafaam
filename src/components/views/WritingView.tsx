@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Language, WritingTask, WritingEvaluation, ContentType } from "@/types";
 import { PixelButton, PixelCard } from "../pixel";
 import { translations } from "@/i18n";
-import { evaluateWriting } from "@/services/geminiService";
+import { evaluateWriting } from "@/services/gemini";
 import { LoadingSprite } from "../widgets/LoadingSprite";
 import { useStatsStore } from "@/stores/useStatsStore";
 
