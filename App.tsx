@@ -15,7 +15,7 @@ import { LoadingSprite } from "@/components/widgets/LoadingSprite";
 import { FavoritesView } from "@/components/views/FavoritesView";
 import { SettingsView } from "@/components/views/SettingsView";
 import { StatsView } from "@/components/views/StatsView";
-import { SelectionReader } from "@/components/widgets/SelectionReader";
+import { SelectionTool } from "@/components/widgets/SelectionTool";
 import { InstallPWA } from "@/components/widgets/InstallPWA";
 import { translations } from "@/i18n";
 import { useAppStore } from "@/stores/useAppStore";
@@ -222,7 +222,7 @@ const App: React.FC = () => {
         <div className="min-h-screen pb-20 relative isolate">
             <AppBackground config={bgConfig} />
 
-            <SelectionReader />
+            <SelectionTool />
             <InstallPWA />
 
             <AppHeader

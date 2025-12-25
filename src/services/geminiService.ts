@@ -486,6 +486,23 @@ export const generateSpeech = async (
     throw new Error("No audio data returned");
 };
 
+export const translateText = async (
+    text: string,
+    targetLanguage: string
+): Promise<string> => {
+    const model = "gemini-2.5-flash";
+    const prompt = `Translate the following text into ${targetLanguage}. Only return the translation, no explanations.
+    
+    Text: "${text}"`;
+
+    const response = await ai.models.generateContent({
+        model,
+        contents: [{ parts: [{ text: prompt }] }],
+    });
+
+    return response.text?.trim() || "";
+};
+
 export const evaluateWriting = async (
     text: string,
     prompt: string,
