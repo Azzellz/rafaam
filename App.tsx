@@ -24,6 +24,7 @@ import { AppHeader } from "@/components/layout/AppHeader";
 import { GeneratorIntro } from "@/components/views/GeneratorIntro";
 import { QuestResults } from "@/components/views/QuestResults";
 import { ErrorBanner } from "@/components/widgets/ErrorBanner";
+import { PixelToastContainer } from "@/components/pixel";
 import {
     Navigate,
     Route,
@@ -256,6 +257,7 @@ const App: React.FC = () => {
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </main>
+            <PixelToastContainer />
         </div>
     );
 };

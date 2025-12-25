@@ -28,6 +28,20 @@ const config: Config = {
                 "theme-hover": "var(--theme-hover)",
                 "theme-shadow": "var(--theme-shadow)",
             },
+            keyframes: {
+                "slide-in-top": {
+                    "0%": { transform: "translateY(-100%)", opacity: "0" },
+                    "100%": { transform: "translateY(0)", opacity: "1" },
+                },
+                "fade-in": {
+                    "0%": { opacity: "0" },
+                    "100%": { opacity: "1" },
+                },
+            },
+            animation: {
+                "slide-in-top": "slide-in-top 0.3s ease-out forwards",
+                "fade-in": "fade-in 0.2s ease-out forwards",
+            },
         },
     },
     plugins: [],
