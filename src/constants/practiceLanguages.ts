@@ -25,6 +25,24 @@ const CEFR_LEVELS: PracticeLevelOption[] = [
     { id: "C2", label: "CEFR C2" },
 ];
 
+const FRENCH_LEVELS: PracticeLevelOption[] = [
+    { id: "A1", label: "DELF A1" },
+    { id: "A2", label: "DELF A2" },
+    { id: "B1", label: "DELF B1" },
+    { id: "B2", label: "DELF B2" },
+    { id: "C1", label: "DALF C1" },
+    { id: "C2", label: "DALF C2" },
+];
+
+const GERMAN_LEVELS: PracticeLevelOption[] = [
+    { id: "A1", label: "A1 (Beginner)" },
+    { id: "A2", label: "A2 (Elementary)" },
+    { id: "B1", label: "B1 (Intermediate)" },
+    { id: "B2", label: "B2 (Upper Intermediate)" },
+    { id: "C1", label: "C1 (Advanced)" },
+    { id: "C2", label: "C2 (Mastery)" },
+];
+
 export const PRACTICE_LANGUAGES: Record<
     PracticeLanguage,
     PracticeLanguageConfig
@@ -60,8 +78,8 @@ export const PRACTICE_LANGUAGES: Record<
         label: "French",
         nativeLabel: "Français",
         targetLanguageName: "French",
-        levelSystemLabel: "CEFR",
-        levelOptions: CEFR_LEVELS.map((level) => ({ ...level })),
+        levelSystemLabel: "DELF/DALF",
+        levelOptions: FRENCH_LEVELS.map((level) => ({ ...level })),
         teacherTitle: "Professeur",
         ttsVoice: "Charon",
     },
@@ -71,7 +89,7 @@ export const PRACTICE_LANGUAGES: Record<
         nativeLabel: "Deutsch",
         targetLanguageName: "German",
         levelSystemLabel: "CEFR",
-        levelOptions: CEFR_LEVELS.map((level) => ({ ...level })),
+        levelOptions: GERMAN_LEVELS.map((level) => ({ ...level })),
         teacherTitle: "Lehrer",
         ttsVoice: "Fenrir",
     },
