@@ -14,7 +14,7 @@ import {
 } from "@/constants/practiceLanguages";
 import { pixelMutedParagraph } from "@/constants/style";
 import { LiveServerMessage, Modality } from "@google/genai";
-import { getAIClient } from "@/services/gemini";
+import { getAIClient } from "@/services/ai";
 import { getAIConfig } from "@/services/storage";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
 import { useStatsStore } from "@/stores/useStatsStore";

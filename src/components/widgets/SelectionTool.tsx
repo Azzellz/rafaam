@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { TTSButton } from "./TTSButton";
 import { createPortal } from "react-dom";
-import { translateText } from "@/services/gemini";
+import { translateText } from "@/services/ai";
 
 export const SelectionTool: React.FC = () => {
     const [position, setPosition] = useState<{ x: number; y: number } | null>(

@@ -6,7 +6,7 @@ import {
     BackgroundConfig,
     PracticeLanguage,
 } from "@/types";
-import { generateLesson, generateRandomTopic } from "@/services/gemini";
+import { generateLesson, generateRandomTopic } from "@/services/ai";
 import { getBackgroundConfig, saveBackgroundConfig } from "@/services/storage";
 import { LoadingSprite } from "@/components/widgets/LoadingSprite";
 import { SettingsView } from "@/components/views/SettingsView";

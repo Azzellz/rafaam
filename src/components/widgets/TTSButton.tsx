@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { generateSpeech } from "@/services/gemini";
+import { generateSpeech } from "@/services/ai";
 import { playAudioData } from "@/utils/audio";
 import { PracticeLanguage } from "@/types";
 
