@@ -1,5 +1,5 @@
 import { GoogleGenAI, GoogleGenAIOptions } from "@google/genai";
-import { getApiBaseUrl } from "../storageService";
+import { getApiBaseUrl } from "../storage";
 
 export const getAIClient = () => {
     const baseUrl = getApiBaseUrl();

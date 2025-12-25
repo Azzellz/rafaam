@@ -1,7 +1,7 @@
 import { Language, PracticeLanguage, WritingEvaluation } from "../../types";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
-import { getAIConfig } from "../storageService";
+import { getAIConfig } from "../storage";
 import { getAIClient } from "./client";
 import { writingEvaluationSchema } from "./schemas";
 

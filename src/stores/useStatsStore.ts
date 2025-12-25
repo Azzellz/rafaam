@@ -4,7 +4,7 @@ import {
     getPracticeRecords,
     savePracticeRecord,
     clearPracticeRecords,
-} from "@/services/statsService";
+} from "@/services/stats";
 import { usePlanStore } from "./usePlanStore";
 
 type StatsState = {

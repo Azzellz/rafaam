@@ -3,7 +3,7 @@ import { GrammarPoint, PracticeLanguage } from "@/types";
 import {
     FavoriteStorageStrategy,
     favoritesStorageManager,
-} from "@/services/favoritesStorage";
+} from "@/services/favorites";
 import { DEFAULT_PRACTICE_LANGUAGE } from "@/constants/practiceLanguages";
 
 interface FavoritesState {

@@ -5,7 +5,7 @@ import {
     saveStudyPlan,
     getDailyProgress,
     updateDailyProgress,
-} from "@/services/planService";
+} from "@/services/plan";
 
 type PlanState = {
     plan: StudyPlan;

@@ -7,10 +7,7 @@ import {
     PracticeLanguage,
 } from "@/types";
 import { generateLesson, generateRandomTopic } from "@/services/gemini";
-import {
-    getBackgroundConfig,
-    saveBackgroundConfig,
-} from "@/services/storageService";
+import { getBackgroundConfig, saveBackgroundConfig } from "@/services/storage";
 import { LoadingSprite } from "@/components/widgets/LoadingSprite";
 import { SettingsView } from "@/components/views/SettingsView";
 import { SelectionTool } from "@/components/widgets/SelectionTool";

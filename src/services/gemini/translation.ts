@@ -1,4 +1,4 @@
-import { getAIConfig } from "../storageService";
+import { getAIConfig } from "../storage";
 import { getAIClient } from "./client";
 
 export const translateText = async (
