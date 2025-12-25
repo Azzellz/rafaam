@@ -12,9 +12,7 @@ import {
     saveBackgroundConfig,
 } from "@/services/storageService";
 import { LoadingSprite } from "@/components/widgets/LoadingSprite";
-import { FavoritesView } from "@/components/views/FavoritesView";
 import { SettingsView } from "@/components/views/SettingsView";
-import { StatsView } from "@/components/views/StatsView";
 import { SelectionTool } from "@/components/widgets/SelectionTool";
 import { InstallPWA } from "@/components/widgets/InstallPWA";
 import { translations } from "@/i18n";
@@ -63,11 +61,9 @@ const App: React.FC = () => {
     } = useAppStore();
 
     const [isRandomizingTopic, setIsRandomizingTopic] = useState(false);
-    const [showStats, setShowStats] = useState(false);
 
     const location = useLocation();
     const navigate = useNavigate();
-    const isFavoritesRoute = location.pathname.startsWith("/favorites");
 
     useEffect(() => {
         setBgConfig(getBackgroundConfig());
@@ -90,28 +86,10 @@ const App: React.FC = () => {
 
     const t = translations[language as keyof typeof translations];
 
-    const handleRandomTopic = async () => {
-        if (isRandomizingTopic) return;
-        setIsRandomizingTopic(true);
-        try {
-            const randomTopic = await generateRandomTopic(
-                practiceLanguage,
-                language
-            );
-            setTopic(randomTopic);
-        } catch (err) {
-            console.error(err);
-            alert(t.connectionError);
-        } finally {
-            setIsRandomizingTopic(false);
-        }
-    };
-
     const { getCustomType } = useCustomTypesStore();
 
-    const handleGenerate = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!topic.trim()) return;
+    const startQuest = async (questTopic: string) => {
+        if (!questTopic.trim()) return;
 
         // Special handling for Conversation/Chat: No need to generate beforehand, just switch view
         if (
@@ -120,7 +98,7 @@ const App: React.FC = () => {
         ) {
             setContent({
                 type: contentType,
-                data: { topic, level, practiceLanguage },
+                data: { topic: questTopic, level, practiceLanguage },
             } as GeneratedContent);
             return;
         }
@@ -137,7 +115,7 @@ const App: React.FC = () => {
 
             const result = await generateLesson(
                 level,
-                topic,
+                questTopic,
                 contentType,
                 language,
                 practiceLanguage,
@@ -152,12 +130,31 @@ const App: React.FC = () => {
         }
     };
 
-    const handleReset = () => {
-        resetQuestState();
+    const handleRandomTopic = async () => {
+        if (isRandomizingTopic) return;
+        setIsRandomizingTopic(true);
+        try {
+            const randomTopic = await generateRandomTopic(
+                practiceLanguage,
+                language
+            );
+            setTopic(randomTopic);
+            await startQuest(randomTopic);
+        } catch (err) {
+            console.error(err);
+            alert(t.connectionError);
+        } finally {
+            setIsRandomizingTopic(false);
+        }
     };
 
-    const handleToggleFavorites = () => {
-        navigate(isFavoritesRoute ? "/" : "/favorites");
+    const handleGenerate = async (e: React.FormEvent) => {
+        e.preventDefault();
+        await startQuest(topic);
+    };
+
+    const handleReset = () => {
+        resetQuestState();
     };
 
     const handleLogoClick = () => {
@@ -229,35 +226,15 @@ const App: React.FC = () => {
             <AppHeader
                 language={language}
                 practiceLanguage={practiceLanguage}
-                isFavoritesActive={isFavoritesRoute}
                 onLogoClick={handleLogoClick}
-                onToggleFavorites={handleToggleFavorites}
                 onOpenSettings={() => navigate("/settings")}
-                onOpenStats={() => setShowStats(true)}
                 onLanguageChange={handleLanguageChange}
                 t={t}
             />
 
-            {showStats && (
-                <StatsView
-                    language={language}
-                    onClose={() => setShowStats(false)}
-                />
-            )}
-
             <main className="max-w-4xl mx-auto px-3 md:px-4">
                 <Routes>
                     <Route path="/" element={generatorView} />
-                    <Route
-                        path="/favorites"
-                        element={
-                            <FavoritesView
-                                language={language}
-                                practiceLanguage={practiceLanguage}
-                                onBack={() => navigate("/")}
-                            />
-                        }
-                    />
                     <Route
                         path="/settings"
                         element={

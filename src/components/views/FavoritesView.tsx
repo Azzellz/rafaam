@@ -14,13 +14,15 @@ import { useFavoritesStore } from "@/stores/useFavoritesStore";
 interface Props {
     language: Language;
     practiceLanguage: PracticeLanguage;
-    onBack: () => void;
+    onBack?: () => void;
+    embedded?: boolean;
 }
 
 export const FavoritesView: React.FC<Props> = ({
     language,
     practiceLanguage,
     onBack,
+    embedded = false,
 }) => {
     const t = translations[language];
     const [selectedLanguage, setSelectedLanguage] =
@@ -55,10 +57,16 @@ export const FavoritesView: React.FC<Props> = ({
     return (
         <div className="space-y-8 animate-fade-in">
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                <h2 className="text-4xl text-[#facc15] drop-shadow-[2px_2px_0_#000] text-stroke-black">
-                    {t.myFavorites}
-                </h2>
-                <div className="flex items-center gap-4 w-full md:w-auto">
+                {!embedded && (
+                    <h2 className="text-4xl text-[#facc15] drop-shadow-[2px_2px_0_#000] text-stroke-black">
+                        {t.myFavorites}
+                    </h2>
+                )}
+                <div
+                    className={`flex items-center gap-4 w-full md:w-auto ${
+                        embedded ? "justify-end" : ""
+                    }`}
+                >
                     <div className="w-full md:w-48">
                         <PixelSelect
                             value={selectedLanguage}
@@ -71,13 +79,15 @@ export const FavoritesView: React.FC<Props> = ({
                             }))}
                         />
                     </div>
-                    <PixelButton
-                        onClick={onBack}
-                        variant="secondary"
-                        className="text-sm whitespace-nowrap"
-                    >
-                        {t.backToGenerator}
-                    </PixelButton>
+                    {!embedded && onBack && (
+                        <PixelButton
+                            onClick={onBack}
+                            variant="secondary"
+                            className="text-sm whitespace-nowrap"
+                        >
+                            {t.backToGenerator}
+                        </PixelButton>
+                    )}
                 </div>
             </div>
 

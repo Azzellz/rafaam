@@ -8,11 +8,8 @@ import { PixelSelect } from "@/components/pixel";
 type AppHeaderProps = {
     language: Language;
     practiceLanguage: PracticeLanguage;
-    isFavoritesActive: boolean;
     onLogoClick: () => void;
-    onToggleFavorites: () => void;
     onOpenSettings: () => void;
-    onOpenStats: () => void;
     onLanguageChange: (language: Language) => void;
     t: TranslationContent;
 };
@@ -20,11 +17,8 @@ type AppHeaderProps = {
 export const AppHeader: React.FC<AppHeaderProps> = ({
     language,
     practiceLanguage,
-    isFavoritesActive,
     onLogoClick,
-    onToggleFavorites,
     onOpenSettings,
-    onOpenStats,
     onLanguageChange,
     t,
 }) => {
@@ -64,33 +58,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     </a>
 
                     <button
-                        onClick={onOpenStats}
-                        className="h-10 w-10 md:h-12 md:w-12 bg-white border-2 border-black hover:bg-gray-100 shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center flex-shrink-0 p-0"
-                        title={t.statistics}
-                    >
-                        <span className="text-xl md:text-2xl leading-none">
-                            📊
-                        </span>
-                    </button>
-
-                    <button
                         onClick={onOpenSettings}
                         className="h-10 w-10 md:h-12 md:w-12 bg-white border-2 border-black hover:bg-gray-100 shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center flex-shrink-0 p-0"
                         title={t.bgSettings}
                     >
                         <span className="text-xl md:text-2xl leading-none">
                             ⚙️
-                        </span>
-                    </button>
-
-                    <button
-                        onClick={onToggleFavorites}
-                        className="h-10 w-10 md:h-12 md:w-12 bg-[#facc15] border-2 border-black hover:bg-[#eab308] shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center flex-shrink-0 p-0"
-                        title={t.myFavorites}
-                        aria-pressed={isFavoritesActive}
-                    >
-                        <span className="text-xl md:text-2xl leading-none pt-1">
-                            ★
                         </span>
                     </button>
 

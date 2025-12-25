@@ -17,6 +17,8 @@ import {
     PixelTabs,
 } from "../pixel";
 import { StudyPlan } from "@/components/widgets/StudyPlan";
+import { FavoritesView } from "./FavoritesView";
+import { StatsView } from "./StatsView";
 
 type GeneratorIntroProps = {
     language: Language;
@@ -210,28 +212,26 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                 <label className={`block ${pixelFormLabel} mb-2`}>
                     {t.questTopic}
                 </label>
-                <div className="flex flex-col sm:flex-row gap-3">
-                    <PixelInput
-                        className="flex-1"
-                        placeholder={t.topicPlaceholder}
-                        value={topic}
-                        onChange={(event) => onTopicChange(event.target.value)}
-                        required
-                    />
-                    <PixelButton
-                        type="button"
-                        variant="secondary"
-                        onClick={onRandomTopic}
-                        disabled={randomTopicLoading}
-                        className="w-full sm:w-auto whitespace-nowrap"
-                    >
-                        {randomTopicLoading ? t.generating : t.randomTopic}
-                    </PixelButton>
-                </div>
+                <PixelInput
+                    className="w-full"
+                    placeholder={t.topicPlaceholder}
+                    value={topic}
+                    onChange={(event) => onTopicChange(event.target.value)}
+                    required
+                />
             </div>
 
-            <div className="pt-2 md:pt-4 text-center">
-                <PixelButton type="submit" className="w-full md:w-1/2">
+            <div className="pt-2 md:pt-4 flex flex-col sm:flex-row gap-3 justify-center">
+                <PixelButton
+                    type="button"
+                    variant="secondary"
+                    onClick={onRandomTopic}
+                    disabled={randomTopicLoading}
+                    className="w-full sm:w-auto whitespace-nowrap"
+                >
+                    {randomTopicLoading ? t.generating : t.randomTopic}
+                </PixelButton>
+                <PixelButton type="submit" className="w-full sm:w-1/2">
                     {t.startQuest}
                 </PixelButton>
             </div>
@@ -262,6 +262,22 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                             id: "studyPlan",
                             label: t.studyPlan,
                             content: <StudyPlan language={language} />,
+                        },
+                        {
+                            id: "favorites",
+                            label: t.myFavorites,
+                            content: (
+                                <FavoritesView
+                                    language={language}
+                                    practiceLanguage={practiceLanguage}
+                                    embedded
+                                />
+                            ),
+                        },
+                        {
+                            id: "stats",
+                            label: t.statistics,
+                            content: <StatsView language={language} embedded />,
                         },
                     ]}
                 />
