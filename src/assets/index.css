@@ -49,3 +49,14 @@
         background: #1e293b;
     }
 }
+
+@layer utilities {
+    /* 隐藏滚动条但保持滚动功能 */
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+}
