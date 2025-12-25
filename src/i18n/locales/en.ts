@@ -109,11 +109,11 @@ export const enTranslation: TranslationContent = {
     seconds: "sec",
 
     // Custom Types
-    customTypes: "Custom Types",
+    customTypes: "CUSTOM TYPES",
     customTypesDesc: "Create and manage custom content generation templates",
     customTypesManagement: "Custom Types Management",
-    savedCustomTypes: "Saved Types",
-    createCustomType: "Create Type",
+    savedCustomTypes: "SAVED TYPES",
+    createCustomType: "CREATE TYPE",
     noCustomTypes: "No custom types yet. Click above to create one.",
     edit: "Edit",
     delete: "Delete",
@@ -123,6 +123,7 @@ export const enTranslation: TranslationContent = {
     name: "Name",
     namePlaceholder: "e.g. Word List, Scenario Dialogue...",
     description: "Description",
+    noDescription: "No description",
     descriptionPlaceholder: "Short description of this type's purpose",
     prompt: "Prompt",
     promptPlaceholder:

@@ -82,7 +82,7 @@ export const CustomTypesSettings: React.FC<CustomTypesSettingsProps> = ({
     return (
         <div className="animate-fade-in">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">{t.savedCustomTypes}</h2>
+                <h2 className="text-2xl">{t.savedCustomTypes}</h2>
                 <PixelButton
                     onClick={() => {
                         setEditingType({ fields: [] });
@@ -109,7 +109,7 @@ export const CustomTypesSettings: React.FC<CustomTypesSettingsProps> = ({
                                 {type.name}
                             </h3>
                             <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                                {type.description || "无描述"}
+                                {type.description || t.noDescription}
                             </p>
                             <div className="flex gap-2 justify-end">
                                 <button

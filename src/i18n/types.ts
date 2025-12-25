@@ -118,6 +118,7 @@ export interface TranslationContent {
     name: string;
     namePlaceholder: string;
     description: string;
+    noDescription: string;
     descriptionPlaceholder: string;
     prompt: string;
     promptPlaceholder: string;

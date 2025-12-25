@@ -121,6 +121,7 @@ export const zhCNTranslation: TranslationContent = {
     name: "名称",
     namePlaceholder: "例如：单词列表、情景对话...",
     description: "描述",
+    noDescription: "无描述",
     descriptionPlaceholder: "简短描述这个题型的用途",
     prompt: "提示词 (Prompt)",
     promptPlaceholder:

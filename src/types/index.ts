@@ -30,10 +30,7 @@ export interface CustomContentData {
 export enum Language {
     EN = "en",
     ZH_CN = "zh-CN",
-    ZH_TW = "zh-TW",
     JA = "ja",
-    FR = "fr",
-    DE = "de",
 }
 
 export enum PracticeLanguage {
