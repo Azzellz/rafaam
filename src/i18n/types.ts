@@ -107,6 +107,13 @@ export interface TranslationContent {
     noRecords: string;
     minutes: string;
     seconds: string;
+    filterByType: string;
+    filterByTopic: string;
+    allTypes: string;
+    previousPage: string;
+    nextPage: string;
+    page: string;
+    of: string;
 
     // Custom Types
     customTypes: string;

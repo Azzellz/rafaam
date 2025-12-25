@@ -11,6 +11,7 @@ interface PixelSelectProps {
     options: PixelSelectOption[];
     className?: string;
     placeholder?: string;
+    size?: "sm" | "md" | "lg";
 }
 
 export const PixelSelect: React.FC<PixelSelectProps> = ({
@@ -19,9 +20,22 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
     options,
     className = "",
     placeholder = "Select...",
+    size = "md",
 }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const containerRef = React.useRef<HTMLDivElement>(null);
+
+    const sizeClasses = {
+        sm: "text-sm p-1 md:p-2 pr-8 md:pr-8",
+        md: "text-base md:text-lg p-2 md:p-3 pr-10 md:pr-10",
+        lg: "text-lg md:text-xl p-3 md:p-4 pr-12 md:pr-12",
+    };
+
+    const optionSizeClasses = {
+        sm: "text-sm px-2 py-1",
+        md: "text-base md:text-lg px-4 py-2",
+        lg: "text-lg md:text-xl px-6 py-3",
+    };
 
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -44,7 +58,9 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
     return (
         <div className={`relative ${className}`} ref={containerRef}>
             <div
-                className={`text-lg md:text-xl w-full bg-white border-2 border-black p-2 pr-10 cursor-pointer flex items-center justify-between select-none transition-all ${
+                className={`${
+                    sizeClasses[size]
+                } w-full bg-white border-2 border-black cursor-pointer flex items-center justify-between select-none transition-all ${
                     isOpen
                         ? "translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0_0_#000]"
                         : "shadow-[4px_4px_0_0_#000] hover:shadow-[4px_4px_0_0_var(--theme-color)]"
@@ -79,7 +95,9 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
                     {options.map((option) => (
                         <div
                             key={option.value}
-                            className={`text-lg md:text-xl px-4 py-2 cursor-pointer hover:bg-theme hover:text-white transition-colors ${
+                            className={`${
+                                optionSizeClasses[size]
+                            } cursor-pointer hover:bg-theme hover:text-white transition-colors ${
                                 option.value === value ? "bg-[#eff6ff]" : ""
                             }`}
                             onClick={() => {

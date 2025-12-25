@@ -113,6 +113,13 @@ export const enTranslation: TranslationContent = {
     noRecords: "No practice records yet.",
     minutes: "min",
     seconds: "sec",
+    filterByType: "Filter by Type",
+    filterByTopic: "Filter by Topic",
+    allTypes: "All Types",
+    previousPage: "Prev",
+    nextPage: "Next",
+    page: "Page",
+    of: "of",
 
     // Custom Types
     customTypes: "CUSTOM TYPES",

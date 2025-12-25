@@ -110,6 +110,13 @@ export const zhCNTranslation: TranslationContent = {
     noRecords: "暂无练习记录。",
     minutes: "分",
     seconds: "秒",
+    filterByType: "按类型筛选",
+    filterByTopic: "按主题搜索",
+    allTypes: "所有类型",
+    previousPage: "上一页",
+    nextPage: "下一页",
+    page: "页",
+    of: "/",
 
     // Custom Types
     customTypes: "自定义题型",

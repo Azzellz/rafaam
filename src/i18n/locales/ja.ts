@@ -112,6 +112,13 @@ export const jaTranslation: TranslationContent = {
     noRecords: "練習記録はまだありません。",
     minutes: "分",
     seconds: "秒",
+    filterByType: "タイプでフィルタ",
+    filterByTopic: "トピックで検索",
+    allTypes: "すべてのタイプ",
+    previousPage: "前へ",
+    nextPage: "次へ",
+    page: "ページ",
+    of: "/",
 
     // Custom Types
     customTypes: "カスタム問題",

@@ -7,6 +7,7 @@ interface PixelModalProps {
     title?: string;
     children: React.ReactNode;
     className?: string;
+    noPadding?: boolean;
 }
 
 export const PixelModal: React.FC<PixelModalProps> = ({
@@ -15,6 +16,7 @@ export const PixelModal: React.FC<PixelModalProps> = ({
     title,
     children,
     className = "",
+    noPadding = false,
 }) => {
     if (!isOpen) return null;
 
@@ -30,6 +32,7 @@ export const PixelModal: React.FC<PixelModalProps> = ({
                 <PixelCard
                     className="flex-1 flex flex-col min-h-0"
                     title={title}
+                    noPadding={noPadding}
                 >
                     <button
                         onClick={onClose}
