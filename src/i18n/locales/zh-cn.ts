@@ -5,7 +5,7 @@ export const zhCNTranslation: TranslationContent = {
     subtitle: "日本語",
     newQuest: "新任务",
     introTitle: "开启你的{lang}学习冒险之旅。",
-    introSubtitle: "由 Gemini AI 魔法驱动",
+    introSubtitle: "由 AI 魔法驱动",
     configureQuest: "配置任务",
     practiceLanguage: "练习语言",
     proficiencyLevel: "水平等级",
