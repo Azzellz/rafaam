@@ -7,3 +7,4 @@ export * from "./PixelModal";
 export * from "./PixelInfoModal";
 export * from "./PixelToast";
 export * from "./PixelTabs";
+export * from "./PixelDialog";

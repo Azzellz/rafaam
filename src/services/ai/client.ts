@@ -1,9 +1,11 @@
 import { GoogleGenAI, GoogleGenAIOptions } from "@google/genai";
-import { getApiBaseUrl } from "../storage";
+import { getApiBaseUrl, getApiKey } from "../storage";
 
 export const getAIClient = async () => {
-    const baseUrl = await getApiBaseUrl();
-    const config: GoogleGenAIOptions = { apiKey: process.env.API_KEY };
+    const [baseUrl, apiKey] = await Promise.all([getApiBaseUrl(), getApiKey()]);
+    const config: GoogleGenAIOptions = {
+        apiKey: apiKey,
+    };
     if (baseUrl) {
         config.httpOptions = { baseUrl };
     }

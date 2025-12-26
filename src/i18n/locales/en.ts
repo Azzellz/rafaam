@@ -177,6 +177,10 @@ export const enTranslation: TranslationContent = {
     setGoal: "Set Goal",
     // AI Settings
     aiSettings: "AI Settings",
+    apiKey: "API Key",
+    apiKeyDesc:
+        "Gemini API Key (configurable here, or uses environment variable if empty)",
+    apiKeyPlaceholder: "Enter your Gemini API Key",
     defaultModel: "Default Model",
     defaultModelDesc:
         "For generating lessons, quizzes, etc. (e.g., gemini-2.0-flash)",

@@ -1,5 +1,6 @@
 import { BackgroundConfig } from "../../types";
 import { storageManager } from "./manager";
+import { showAlert } from "@/stores/useDialogStore";
 
 const BG_STORAGE_KEY = "rafaam_background_config";
 
@@ -32,7 +33,7 @@ export const saveBackgroundConfig = async (
             "Failed to save background config (likely quota exceeded)",
             error
         );
-        alert(
+        showAlert(
             "Image too large to save to local storage. It will be reset on reload."
         );
         throw error;

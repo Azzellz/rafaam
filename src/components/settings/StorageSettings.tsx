@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Language } from "@/types";
 import { translations } from "@/i18n";
 import { PixelButton } from "@/components/pixel";
+import { showAlert, showConfirm } from "@/stores/useDialogStore";
 
 interface Props {
     language: Language;
@@ -114,7 +115,7 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
     };
 
     const clearItem = (item: StorageItem) => {
-        if (confirm(t.confirmClear)) {
+        showConfirm(t.confirmClear, () => {
             if (item.type === "localStorage") {
                 localStorage.removeItem(item.key);
             } else if (item.type === "indexedDB") {
@@ -127,11 +128,11 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                 }
             }
             setTimeout(calculateStorage, 500);
-        }
+        });
     };
 
     const clearAll = async () => {
-        if (confirm(t.confirmClear)) {
+        showConfirm(t.confirmClear, () => {
             // Clear LocalStorage
             const keysToRemove = [];
             for (let i = 0; i < localStorage.length; i++) {
@@ -149,9 +150,9 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
             }
 
             calculateStorage();
-            alert(t.cleared);
+            showAlert(t.cleared);
             window.location.reload(); // Reload to reset state
-        }
+        });
     };
 
     return (

@@ -3,6 +3,7 @@ import { storageManager } from "./manager";
 
 const AI_CONFIG_KEY = "rafaam_ai_config";
 const API_BASE_URL_KEY = "rafaam_api_base_url";
+const API_KEY = "rafaam_api_key";
 
 export const getApiBaseUrl = async (): Promise<string> => {
     const url = await storageManager.get<string>(API_BASE_URL_KEY);
@@ -11,6 +12,15 @@ export const getApiBaseUrl = async (): Promise<string> => {
 
 export const saveApiBaseUrl = async (url: string): Promise<void> => {
     await storageManager.set(API_BASE_URL_KEY, url);
+};
+
+export const getApiKey = async (): Promise<string> => {
+    const key = await storageManager.get<string>(API_KEY);
+    return key || "";
+};
+
+export const saveApiKey = async (key: string): Promise<void> => {
+    await storageManager.set(API_KEY, key);
 };
 
 export const getAIConfig = async (): Promise<AIConfig> => {

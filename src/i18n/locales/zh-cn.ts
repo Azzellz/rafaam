@@ -172,6 +172,9 @@ export const zhCNTranslation: TranslationContent = {
     setGoal: "设定目标",
     // AI Settings
     aiSettings: "AI 设置",
+    apiKey: "API Key",
+    apiKeyDesc: "Gemini API 密钥（可在设置中配置，留空则使用环境变量）",
+    apiKeyPlaceholder: "输入你的 Gemini API Key",
     defaultModel: "默认模型",
     defaultModelDesc: "用于生成课程、测验等 (例如: gemini-2.0-flash)",
     chatModel: "聊天模型",

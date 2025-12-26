@@ -176,6 +176,9 @@ export const jaTranslation: TranslationContent = {
     setGoal: "目標を設定",
     // AI Settings
     aiSettings: "AI設定",
+    apiKey: "API Key",
+    apiKeyDesc: "Gemini APIキー（ここで設定可能、空の場合は環境変数を使用）",
+    apiKeyPlaceholder: "Gemini API Keyを入力",
     defaultModel: "デフォルトモデル",
     defaultModelDesc: "レッスンやクイズの生成に使用 (例: gemini-2.0-flash)",
     chatModel: "チャットモデル",

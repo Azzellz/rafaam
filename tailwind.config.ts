@@ -37,10 +37,15 @@ const config: Config = {
                     "0%": { opacity: "0" },
                     "100%": { opacity: "1" },
                 },
+                "scale-in": {
+                    "0%": { transform: "scale(0.9)", opacity: "0" },
+                    "100%": { transform: "scale(1)", opacity: "1" },
+                },
             },
             animation: {
                 "slide-in-top": "slide-in-top 0.3s ease-out forwards",
                 "fade-in": "fade-in 0.2s ease-out forwards",
+                "scale-in": "scale-in 0.2s ease-out forwards",
             },
         },
     },

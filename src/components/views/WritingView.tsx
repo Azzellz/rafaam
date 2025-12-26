@@ -5,6 +5,7 @@ import { translations } from "@/i18n";
 import { evaluateWriting } from "@/services/ai";
 import { LoadingSprite } from "../widgets/LoadingSprite";
 import { useStatsStore } from "@/stores/useStatsStore";
+import { showAlert } from "@/stores/useDialogStore";
 
 type WritingViewProps = {
     data: WritingTask;
@@ -46,7 +47,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
             });
         } catch (error) {
             console.error(error);
-            alert(t.connectionError);
+            showAlert(t.connectionError);
         } finally {
             setLoading(false);
         }

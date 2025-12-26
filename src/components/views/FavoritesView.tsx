@@ -4,6 +4,7 @@ import { PixelCard, PixelButton, PixelSelect } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "../widgets/TTSButton";
 import { pixelAccentLabel, pixelInfoPanel } from "@/constants/style";
+import { showAlert } from "@/stores/useDialogStore";
 import {
     DEFAULT_PRACTICE_LANGUAGE,
     PRACTICE_LANGUAGES,
@@ -48,7 +49,7 @@ export const FavoritesView: React.FC<Props> = ({
     const handleRemove = async (pattern: string, lang: PracticeLanguage) => {
         const success = await removeFavoriteFromStore(pattern, lang);
         if (!success) {
-            alert(t.connectionError);
+            showAlert(t.connectionError);
         }
     };
 

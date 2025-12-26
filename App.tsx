@@ -20,7 +20,8 @@ import { GeneratorIntro } from "@/components/views/GeneratorIntro";
 import { QuestResults } from "@/components/views/QuestResults";
 import { ErrorBanner } from "@/components/widgets/ErrorBanner";
 import { ScrollToTop } from "@/components/widgets/ScrollToTop";
-import { PixelToastContainer } from "@/components/pixel";
+import { PixelToastContainer, PixelDialog } from "@/components/pixel";
+import { showAlert } from "@/stores/useDialogStore";
 import {
     Navigate,
     Route,
@@ -144,7 +145,7 @@ const App: React.FC = () => {
             await startQuest(randomTopic);
         } catch (err) {
             console.error(err);
-            alert(t.connectionError);
+            showAlert(t.connectionError);
         } finally {
             setIsRandomizingTopic(false);
         }
@@ -251,6 +252,7 @@ const App: React.FC = () => {
             </main>
             <ScrollToTop />
             <PixelToastContainer />
+            <PixelDialog />
         </div>
     );
 };

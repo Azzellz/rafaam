@@ -4,6 +4,7 @@ import { useCustomTypesStore } from "@/stores/useCustomTypesStore";
 import { CustomTypeDefinition, CustomField, Language } from "@/types";
 import { useToastStore } from "@/stores/useToastStore";
 import { translations } from "@/i18n";
+import { showConfirm } from "@/stores/useDialogStore";
 
 interface CustomTypesSettingsProps {
     onBack: () => void;
@@ -53,10 +54,10 @@ export const CustomTypesSettings: React.FC<CustomTypesSettingsProps> = ({
     };
 
     const handleDelete = (id: string) => {
-        if (confirm(t.deleteConfirm)) {
+        showConfirm(t.deleteConfirm, () => {
             deleteCustomType(id);
             addToast(t.deleteSuccess, "success");
-        }
+        });
     };
 
     const handleAddField = () => {

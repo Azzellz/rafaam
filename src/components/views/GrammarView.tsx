@@ -3,6 +3,7 @@ import { GrammarLesson, Language, GrammarPoint, ContentType } from "@/types";
 import { PixelCard } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
+import { showAlert } from "@/stores/useDialogStore";
 import {
     pixelAccentLabel,
     pixelInfoPanel,
@@ -77,7 +78,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
             : await addFavoriteToStore(point);
 
         if (!success) {
-            alert(t.connectionError);
+            showAlert(t.connectionError);
         }
     };
 

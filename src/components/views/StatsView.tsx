@@ -8,6 +8,7 @@ import {
 } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { useStatsStore } from "@/stores/useStatsStore";
+import { showConfirm } from "@/stores/useDialogStore";
 import { pixelMutedParagraph } from "@/constants/style";
 
 interface Props {
@@ -237,9 +238,9 @@ export const StatsView: React.FC<Props> = ({
                     <PixelButton
                         variant="danger"
                         onClick={async () => {
-                            if (confirm(t.confirmClear)) {
+                            showConfirm(t.confirmClear, async () => {
                                 await clearRecords();
-                            }
+                            });
                         }}
                     >
                         {t.clearAll}

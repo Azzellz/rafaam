@@ -1,6 +1,8 @@
 export {
     getApiBaseUrl,
     saveApiBaseUrl,
+    getApiKey,
+    saveApiKey,
     getAIConfig,
     saveAIConfig,
 } from "./config";
