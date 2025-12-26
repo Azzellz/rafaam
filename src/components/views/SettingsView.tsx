@@ -5,7 +5,7 @@ import { translations } from "@/i18n";
 import { AppearanceSettings } from "@/components/settings/AppearanceSettings";
 import { StorageSettings } from "@/components/settings/StorageSettings";
 import { CustomTypesSettings } from "@/components/settings/CustomTypesSettings";
-import { AISettings } from "@/components/settings/AISettings";
+import { AISettings } from "@/components/settings/ai";
 
 interface Props {
     language: Language;

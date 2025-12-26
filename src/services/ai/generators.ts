@@ -18,7 +18,7 @@ import {
     DEFAULT_PRACTICE_LANGUAGE,
 } from "@/constants/practiceLanguages";
 import { getAIConfig } from "../storage";
-import { getAIClient } from "./client";
+import { getProviderForType } from "./providers";
 import {
     grammarSchema,
     quizSchema,
@@ -103,19 +103,12 @@ export const generateLesson = async (
         Ensure the output matches the JSON schema structure.
         `;
 
-        const client = await getAIClient();
-        const response = await client.models.generateContent({
-            model,
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: customSchema,
-            },
-        });
-
-        const text = response.text;
-        if (!text) throw new Error("No response from AI");
-        const rawData = JSON.parse(text);
+        const provider = await getProviderForType("text");
+        const rawData = await provider.generateStructuredData(
+            prompt,
+            customSchema,
+            { model }
+        );
 
         return {
             title: rawData.title,
@@ -135,19 +128,13 @@ IMPORTANT:
 - Keep the JSON structure exactly as specified by the schema.
 `;
 
-        const client = await getAIClient();
-        const response = await client.models.generateContent({
-            model,
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: grammarSchema,
-            },
-        });
-
-        const text = response.text;
-        if (!text) throw new Error("No response from AI");
-        const rawLesson = JSON.parse(text) as RawGrammarLesson;
+        const provider = await getProviderForType("text");
+        const rawLesson =
+            await provider.generateStructuredData<RawGrammarLesson>(
+                prompt,
+                grammarSchema,
+                { model }
+            );
         return {
             ...rawLesson,
             practiceLanguage,
@@ -167,19 +154,12 @@ IMPORTANT:
     - Write the explanation for each correct answer in ${langName}.
     `;
 
-        const client = await getAIClient();
-        const response = await client.models.generateContent({
-            model,
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: quizSchema,
-            },
-        });
-
-        const text = response.text;
-        if (!text) throw new Error("No response from AI");
-        const rawQuiz = JSON.parse(text) as RawQuizSession;
+        const provider = await getProviderForType("text");
+        const rawQuiz = await provider.generateStructuredData<RawQuizSession>(
+            prompt,
+            quizSchema,
+            { model }
+        );
         return {
             ...rawQuiz,
             practiceLanguage,
@@ -197,19 +177,12 @@ IMPORTANT:
         - The 'explanation' for the correct answer must be in ${langName}.
         `;
 
-        const client = await getAIClient();
-        const response = await client.models.generateContent({
-            model,
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: listeningSchema,
-            },
-        });
-
-        const text = response.text;
-        if (!text) throw new Error("No response from AI");
-        const rawData = JSON.parse(text);
+        const provider = await getProviderForType("text");
+        const rawData = await provider.generateStructuredData(
+            prompt,
+            listeningSchema,
+            { model }
+        );
         return {
             ...rawData,
             practiceLanguage,
@@ -225,19 +198,12 @@ IMPORTANT:
         - Write 'hints' in ${targetLanguage} with ${langName} translations if necessary.
         `;
 
-        const client = await getAIClient();
-        const response = await client.models.generateContent({
-            model,
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: writingTaskSchema,
-            },
-        });
-
-        const text = response.text;
-        if (!text) throw new Error("No response from AI");
-        const rawTask = JSON.parse(text) as RawWritingTask;
+        const provider = await getProviderForType("text");
+        const rawTask = await provider.generateStructuredData<RawWritingTask>(
+            prompt,
+            writingTaskSchema,
+            { model }
+        );
         return {
             ...rawTask,
             practiceLanguage,
@@ -263,16 +229,8 @@ export const generateRandomTopic = async (
 
     const prompt = `Suggest one imaginative ${langName} keyword or short phrase (max 4 words) that would be an engaging topic for practicing ${targetLanguage}. Return only the keyword without numbering, quotes, or extra text.`;
 
-    const client = await getAIClient();
-    const response = await client.models.generateContent({
-        model,
-        contents: [{ parts: [{ text: prompt }] }],
-    });
-
-    const suggestion = response.text?.trim();
-    if (!suggestion) {
-        throw new Error("No topic generated");
-    }
+    const provider = await getProviderForType("text");
+    const suggestion = await provider.generateText(prompt, { model });
 
     return suggestion.replace(/^['"\s]+|['"\s]+$/g, "");
 };

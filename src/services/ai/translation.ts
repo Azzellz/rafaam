@@ -1,5 +1,5 @@
 import { getAIConfig } from "../storage";
-import { getAIClient } from "./client";
+import { getProviderForType } from "./providers";
 
 export const translateText = async (
     text: string,
@@ -11,11 +11,6 @@ export const translateText = async (
     
     Text: "${text}"`;
 
-    const client = await getAIClient();
-    const response = await client.models.generateContent({
-        model,
-        contents: [{ parts: [{ text: prompt }] }],
-    });
-
-    return response.text?.trim() || "";
+    const provider = await getProviderForType("text");
+    return await provider.translate(text, targetLanguage, { model });
 };

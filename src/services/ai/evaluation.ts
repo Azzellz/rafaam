@@ -2,7 +2,7 @@ import { Language, PracticeLanguage, WritingEvaluation } from "../../types";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 import { getAIConfig } from "../storage";
-import { getAIClient } from "./client";
+import { getProviderForType } from "./providers";
 import { writingEvaluationSchema } from "./schemas";
 
 const getLanguageName = (lang: Language): string =>
@@ -33,17 +33,10 @@ Provide:
 4. A list of specific improvements or corrections in ${langName}.
 `;
 
-    const client = await getAIClient();
-    const response = await client.models.generateContent({
-        model,
-        contents: evaluationPrompt,
-        config: {
-            responseMimeType: "application/json",
-            responseSchema: writingEvaluationSchema,
-        },
-    });
-
-    const responseText = response.text;
-    if (!responseText) throw new Error("No response from AI");
-    return JSON.parse(responseText) as WritingEvaluation;
+    const provider = await getProviderForType("text");
+    return await provider.generateStructuredData<WritingEvaluation>(
+        evaluationPrompt,
+        writingEvaluationSchema,
+        { model }
+    );
 };

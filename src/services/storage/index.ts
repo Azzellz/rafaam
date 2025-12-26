@@ -5,6 +5,8 @@ export {
     saveApiKey,
     getAIConfig,
     saveAIConfig,
+    getAIProviderConfig,
+    saveAIProviderConfig,
 } from "./config";
 export { getBackgroundConfig, saveBackgroundConfig } from "./background";
 export { storageManager } from "./manager";
