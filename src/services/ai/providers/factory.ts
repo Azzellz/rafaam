@@ -86,7 +86,8 @@ export class AIProviderFactory {
         // 获取实际使用的配置（处理自定义Provider）
         const effectiveConfig = this.getEffectiveModelConfig(
             modelConfig,
-            config
+            config,
+            modelType
         );
 
         // 如果配置没变，返回现有实例
@@ -132,7 +133,8 @@ export class AIProviderFactory {
      */
     private static getEffectiveModelConfig(
         modelConfig: ProviderModelConfig,
-        fullConfig: AIProviderConfig
+        fullConfig: AIProviderConfig,
+        modelType?: ModelType
     ): ProviderModelConfig {
         // 如果是CUSTOM类型且有选中的自定义Provider
         if (
@@ -144,7 +146,8 @@ export class AIProviderFactory {
             );
 
             if (customProvider) {
-                // 使用选中的自定义Provider配置，但保留modelConfig中的model字段
+                // 使用选中的自定义Provider配置
+                // 模型名称直接使用 modelConfig.model（在各个tab中配置）
                 return {
                     ...modelConfig,
                     apiKey: customProvider.apiKey,

@@ -184,12 +184,24 @@ export const enTranslation: TranslationContent = {
     providerAnthropic: "Anthropic Claude",
     providerCustom: "Custom API",
     customProviders: "Custom Providers",
-    customProvidersDesc: "Manage your custom API configurations",
+    customProvidersDesc:
+        "Manage your custom API configurations (OpenAI API compatible)",
     addCustomProvider: "Add Custom API",
     editCustomProvider: "Edit",
     deleteCustomProvider: "Delete",
     customProviderName: "Configuration Name",
-    customProviderNamePlaceholder: "e.g. Local Ollama",
+    customProviderNamePlaceholder: "e.g., Local Ollama, DeepSeek API",
+    customProviderCompatibilityTitle: "OpenAI API Compatibility Mode",
+    customProviderCompatibilityDesc:
+        "This configuration uses OpenAI SDK. Supports all services compatible with OpenAI API format, such as Ollama, vLLM, LocalAI, Together AI, DeepSeek, etc.",
+    customProviderBaseUrlDesc:
+        "Base URL of the API, must end with /v1, e.g., http://localhost:11434/v1",
+    customProviderModelDesc:
+        "Model name for text generation (translation, grammar analysis, etc.)",
+    customProviderTTSModelDesc:
+        "Model name for text-to-speech, can be same as text model if TTS is not supported",
+    customProviderLiveModelDesc:
+        "Model name for real-time conversation, can be same as text model if not supported",
     selectCustomProvider: "Select Custom Provider",
     selectCustomProviderPlaceholder: "Please select a custom provider",
     noCustomProviders: "No custom providers, click to add",

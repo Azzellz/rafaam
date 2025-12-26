@@ -182,6 +182,12 @@ export interface TranslationContent {
     deleteCustomProvider: string;
     customProviderName: string;
     customProviderNamePlaceholder: string;
+    customProviderCompatibilityTitle: string;
+    customProviderCompatibilityDesc: string;
+    customProviderBaseUrlDesc: string;
+    customProviderModelDesc: string;
+    customProviderTTSModelDesc: string;
+    customProviderLiveModelDesc: string;
     selectCustomProvider: string;
     selectCustomProviderPlaceholder: string;
     noCustomProviders: string;

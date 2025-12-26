@@ -38,6 +38,15 @@ export const AISettings: React.FC<Props> = ({ language }) => {
             try {
                 const loadedConfig = await getAIProviderConfig();
                 if (loadedConfig) {
+                    // 确保 TTS 配置有默认的 Edge TTS 设置（向后兼容）
+                    if (loadedConfig.tts && !loadedConfig.tts.edgeTTSConfig) {
+                        loadedConfig.tts.edgeTTSConfig = {
+                            rate: 1.0,
+                            pitch: "medium",
+                            volume: 100,
+                            preferredGender: "Female",
+                        };
+                    }
                     setConfig(loadedConfig);
                 } else {
                     // 初始化空配置
@@ -51,6 +60,13 @@ export const AISettings: React.FC<Props> = ({ language }) => {
                             type: AIProviderType.GEMINI,
                             apiKey: "",
                             model: "",
+                            useEdgeTTS: true, // 默认启用 Edge TTS
+                            edgeTTSConfig: {
+                                rate: 1.0,
+                                pitch: "medium",
+                                volume: 100,
+                                preferredGender: "Female",
+                            },
                         },
                         live: {
                             type: AIProviderType.GEMINI,
@@ -102,11 +118,6 @@ export const AISettings: React.FC<Props> = ({ language }) => {
             name: "",
             apiKey: "",
             baseUrl: "",
-            models: {
-                text: "gpt-4o",
-                tts: "gpt-4o",
-                live: "gpt-4o",
-            },
             temperature: 1.0,
         };
         setEditingCustom(newCustom);
@@ -203,15 +214,6 @@ export const AISettings: React.FC<Props> = ({ language }) => {
         }
     };
 
-    const updateCustomModel = (key: "text" | "tts" | "live", value: string) => {
-        if (editingCustom) {
-            setEditingCustom({
-                ...editingCustom,
-                models: { ...editingCustom.models, [key]: value },
-            });
-        }
-    };
-
     const toggleApiKeyVisibility = (modelType: ModelType) => {
         setShowApiKeys((prev) => ({
             ...prev,
@@ -236,17 +238,6 @@ export const AISettings: React.FC<Props> = ({ language }) => {
             <div>
                 <h3 className="text-2xl mb-4">{t.aiSettings}</h3>
 
-                {/* 自定义Provider管理区 */}
-                <div className="mb-6">
-                    <CustomProviderManager
-                        customProviders={config.customProviders}
-                        onAdd={handleAddCustomProvider}
-                        onEdit={handleEditCustomProvider}
-                        onDelete={handleDeleteCustomProvider}
-                        language={language}
-                    />
-                </div>
-
                 {/* 自定义Provider编辑表单 */}
                 {showCustomForm && editingCustom && (
                     <CustomProviderForm
@@ -254,15 +245,36 @@ export const AISettings: React.FC<Props> = ({ language }) => {
                         onSave={handleSaveCustomProvider}
                         onCancel={handleCancelCustomEdit}
                         onFieldChange={updateCustomField}
-                        onModelChange={updateCustomModel}
                         language={language}
                     />
                 )}
 
-                {/* 三个独立的模型配置区 - 使用Tabs */}
+                {/* 四个独立的配置区 - 使用Tabs */}
                 <div className="mb-6">
                     <PixelTabs
                         tabs={[
+                            {
+                                id: "custom",
+                                label: t.customProviders,
+                                content: (
+                                    <div className="py-2">
+                                        <p className="text-sm text-gray-500 mb-4">
+                                            {t.customProvidersDesc}
+                                        </p>
+                                        <CustomProviderManager
+                                            customProviders={
+                                                config.customProviders
+                                            }
+                                            onAdd={handleAddCustomProvider}
+                                            onEdit={handleEditCustomProvider}
+                                            onDelete={
+                                                handleDeleteCustomProvider
+                                            }
+                                            language={language}
+                                        />
+                                    </div>
+                                ),
+                            },
                             {
                                 id: "text",
                                 label: t.textModel,
@@ -327,7 +339,7 @@ export const AISettings: React.FC<Props> = ({ language }) => {
                                 ),
                             },
                         ]}
-                        defaultTabId="text"
+                        defaultTabId="custom"
                     />
                 </div>
 

@@ -183,12 +183,22 @@ export const jaTranslation: TranslationContent = {
     providerAnthropic: "Anthropic Claude",
     providerCustom: "カスタムAPI",
     customProviders: "カスタムプロバイダー",
-    customProvidersDesc: "カスタム API 設定を管理",
+    customProvidersDesc: "カスタム API 設定を管理（OpenAI API 互換）",
     addCustomProvider: "カスタム API を追加",
     editCustomProvider: "編集",
     deleteCustomProvider: "削除",
     customProviderName: "設定名",
-    customProviderNamePlaceholder: "例: ローカル Ollama",
+    customProviderNamePlaceholder: "例：ローカル Ollama、DeepSeek API",
+    customProviderCompatibilityTitle: "OpenAI API 互換モード",
+    customProviderCompatibilityDesc:
+        "この設定は OpenAI SDK を使用します。Ollama、vLLM、LocalAI、Together AI、DeepSeek など、OpenAI API 形式に互換性のあるすべてのサービスをサポートします。",
+    customProviderBaseUrlDesc:
+        "API のベース URL、/v1 で終わる必要があります、例：http://localhost:11434/v1",
+    customProviderModelDesc: "テキスト生成（翻訳、文法分析など）用のモデル名",
+    customProviderTTSModelDesc:
+        "音声合成用のモデル名、TTS がサポートされていない場合はテキストモデルと同じにできます",
+    customProviderLiveModelDesc:
+        "リアルタイム会話用のモデル名、サポートされていない場合はテキストモデルと同じにできます",
     selectCustomProvider: "カスタムプロバイダーを選択",
     selectCustomProviderPlaceholder: "カスタムプロバイダーを選択してください",
     noCustomProviders: "カスタムプロバイダーなし、追加してください",

@@ -1,4 +1,5 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { PixelButton, PixelInput } from "@/components/pixel";
 import { CustomProviderConfig } from "@/services/ai/providers";
 import { Language } from "@/types";
@@ -12,7 +13,6 @@ interface Props {
         key: K,
         value: CustomProviderConfig[K]
     ) => void;
-    onModelChange: (key: "text" | "tts" | "live", value: string) => void;
     language: Language;
 }
 
@@ -21,7 +21,6 @@ export const CustomProviderForm: React.FC<Props> = ({
     onSave,
     onCancel,
     onFieldChange,
-    onModelChange,
     language,
 }) => {
     const t = translations[language];
@@ -32,7 +31,7 @@ export const CustomProviderForm: React.FC<Props> = ({
         }
     };
 
-    return (
+    return createPortal(
         <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4"
             onClick={handleBackdropClick}
@@ -46,6 +45,21 @@ export const CustomProviderForm: React.FC<Props> = ({
                         ? t.editCustomProvider
                         : t.addCustomProvider}
                 </h4>
+
+                {/* OpenAI 兼容说明 */}
+                <div className="bg-blue-50 border-2 border-blue-200 p-4 mb-4 rounded">
+                    <div className="flex items-start gap-3">
+                        <span className="text-2xl">ℹ️</span>
+                        <div>
+                            <h5 className="font-bold text-base mb-1">
+                                {t.customProviderCompatibilityTitle}
+                            </h5>
+                            <p className="text-sm text-gray-700">
+                                {t.customProviderCompatibilityDesc}
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
                 <div className="space-y-4">
                     <div>
@@ -81,47 +95,11 @@ export const CustomProviderForm: React.FC<Props> = ({
                             onChange={(e) =>
                                 onFieldChange("baseUrl", e.target.value)
                             }
-                            placeholder="https://api.example.com/v1"
+                            placeholder="https://api.openai.com/v1"
                         />
-                    </div>
-
-                    <div>
-                        <label className="block text-lg mb-2">
-                            {t.textModel}
-                        </label>
-                        <PixelInput
-                            value={editingCustom.models.text}
-                            onChange={(e) =>
-                                onModelChange("text", e.target.value)
-                            }
-                            placeholder="gpt-4o"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-lg mb-2">
-                            {t.ttsModel}
-                        </label>
-                        <PixelInput
-                            value={editingCustom.models.tts}
-                            onChange={(e) =>
-                                onModelChange("tts", e.target.value)
-                            }
-                            placeholder="gpt-4o"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-lg mb-2">
-                            {t.liveModel}
-                        </label>
-                        <PixelInput
-                            value={editingCustom.models.live}
-                            onChange={(e) =>
-                                onModelChange("live", e.target.value)
-                            }
-                            placeholder="gpt-4o"
-                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                            {t.customProviderBaseUrlDesc}
+                        </p>
                     </div>
 
                     <div className="flex gap-2 justify-end">
@@ -130,6 +108,7 @@ export const CustomProviderForm: React.FC<Props> = ({
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };

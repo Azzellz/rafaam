@@ -79,6 +79,9 @@ export const ModelConfigSection: React.FC<Props> = ({
                                     onChange={(value) =>
                                         onProviderChange({
                                             edgeTTSConfig: {
+                                                rate: 1.0,
+                                                pitch: "medium",
+                                                volume: 100,
                                                 ...modelConfig.edgeTTSConfig,
                                                 preferredGender: value as
                                                     | "Male"
@@ -113,6 +116,9 @@ export const ModelConfigSection: React.FC<Props> = ({
                                     onChange={(e) =>
                                         onProviderChange({
                                             edgeTTSConfig: {
+                                                pitch: "medium",
+                                                volume: 100,
+                                                preferredGender: "Female",
                                                 ...modelConfig.edgeTTSConfig,
                                                 rate: parseFloat(
                                                     e.target.value
@@ -140,6 +146,9 @@ export const ModelConfigSection: React.FC<Props> = ({
                                     onChange={(value) =>
                                         onProviderChange({
                                             edgeTTSConfig: {
+                                                rate: 1.0,
+                                                volume: 100,
+                                                preferredGender: "Female",
                                                 ...modelConfig.edgeTTSConfig,
                                                 pitch: value,
                                             },
@@ -172,6 +181,9 @@ export const ModelConfigSection: React.FC<Props> = ({
                                     onChange={(e) =>
                                         onProviderChange({
                                             edgeTTSConfig: {
+                                                rate: 1.0,
+                                                pitch: "medium",
+                                                preferredGender: "Female",
                                                 ...modelConfig.edgeTTSConfig,
                                                 volume: parseInt(
                                                     e.target.value
@@ -198,6 +210,10 @@ export const ModelConfigSection: React.FC<Props> = ({
                                     onChange={(e) =>
                                         onProviderChange({
                                             edgeTTSConfig: {
+                                                rate: 1.0,
+                                                pitch: "medium",
+                                                volume: 100,
+                                                preferredGender: "Female",
                                                 ...modelConfig.edgeTTSConfig,
                                                 voice: e.target.value,
                                             },

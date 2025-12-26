@@ -15,11 +15,6 @@ export interface CustomProviderConfig {
     name: string; // 显示名称
     apiKey: string;
     baseUrl: string;
-    models: {
-        text: string;
-        tts: string;
-        live: string;
-    };
     temperature?: number;
     maxTokens?: number;
 }

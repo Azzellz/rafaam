@@ -179,12 +179,22 @@ export const zhCNTranslation: TranslationContent = {
     providerAnthropic: "Anthropic Claude",
     providerCustom: "自定义 API",
     customProviders: "自定义服务商",
-    customProvidersDesc: "管理你的自定义 API 配置",
+    customProvidersDesc: "管理你的自定义 API 配置（兼容 OpenAI API 格式）",
     addCustomProvider: "添加自定义 API",
     editCustomProvider: "编辑",
     deleteCustomProvider: "删除",
     customProviderName: "配置名称",
-    customProviderNamePlaceholder: "例如: 本地 Ollama",
+    customProviderNamePlaceholder: "例如: 本地 Ollama、DeepSeek API",
+    customProviderCompatibilityTitle: "OpenAI API 兼容模式",
+    customProviderCompatibilityDesc:
+        "此配置使用 OpenAI SDK 调用。支持所有兼容 OpenAI API 格式的服务，如 Ollama、vLLM、LocalAI、豆包、DeepSeek 等。",
+    customProviderBaseUrlDesc:
+        "API 的基础 URL，必须以 /v1 结尾，例如：http://localhost:11434/v1",
+    customProviderModelDesc: "用于文本生成（翻译、语法分析等）的模型名称",
+    customProviderTTSModelDesc:
+        "用于语音合成的模型名称，如服务不支持 TTS 可与文本模型保持一致",
+    customProviderLiveModelDesc:
+        "用于实时对话的模型名称，如服务不支持可与文本模型保持一致",
     selectCustomProvider: "选择自定义服务商",
     selectCustomProviderPlaceholder: "请选择一个自定义服务商",
     noCustomProviders: "暂无自定义服务商，点击添加",
