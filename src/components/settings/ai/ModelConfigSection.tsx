@@ -79,7 +79,7 @@ export const ModelConfigSection: React.FC<Props> = ({
             {modelConfig.type !== AIProviderType.CUSTOM && (
                 <div>
                     <label className="block text-lg mb-2">API Key</label>
-                    <div className="flex gap-2">
+                    <div className="relative">
                         <PixelInput
                             type={showApiKey ? "text" : "password"}
                             value={modelConfig.apiKey}
@@ -87,10 +87,15 @@ export const ModelConfigSection: React.FC<Props> = ({
                                 onProviderChange({ apiKey: e.target.value })
                             }
                             placeholder="sk-..."
+                            className="pr-20"
                         />
-                        <PixelButton onClick={onToggleApiKey}>
-                            {showApiKey ? "🙈" : "👁️"}
-                        </PixelButton>
+                        <button
+                            type="button"
+                            onClick={onToggleApiKey}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 text-sm font-bold hover:bg-gray-100 active:bg-gray-200 transition-colors rounded"
+                        >
+                            {showApiKey ? "Hide" : "Show"}
+                        </button>
                     </div>
                 </div>
             )}
