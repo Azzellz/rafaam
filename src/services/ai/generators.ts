@@ -52,8 +52,6 @@ export const generateLesson = async (
     | CustomContentData
     | ListeningExercise
 > => {
-    const aiConfig = await getAIConfig();
-    const model = aiConfig.defaultModel;
     const langName = getLanguageName(language);
     const practiceConfig: PracticeLanguageConfig =
         PRACTICE_LANGUAGES[practiceLanguage] ??
@@ -106,8 +104,7 @@ export const generateLesson = async (
         const provider = await getProviderForType("text");
         const rawData = await provider.generateStructuredData(
             prompt,
-            customSchema,
-            { model }
+            customSchema
         );
 
         return {
@@ -132,8 +129,7 @@ IMPORTANT:
         const rawLesson =
             await provider.generateStructuredData<RawGrammarLesson>(
                 prompt,
-                grammarSchema,
-                { model }
+                grammarSchema
             );
         return {
             ...rawLesson,
@@ -157,8 +153,7 @@ IMPORTANT:
         const provider = await getProviderForType("text");
         const rawQuiz = await provider.generateStructuredData<RawQuizSession>(
             prompt,
-            quizSchema,
-            { model }
+            quizSchema
         );
         return {
             ...rawQuiz,
@@ -180,8 +175,7 @@ IMPORTANT:
         const provider = await getProviderForType("text");
         const rawData = await provider.generateStructuredData(
             prompt,
-            listeningSchema,
-            { model }
+            listeningSchema
         );
         return {
             ...rawData,
@@ -201,8 +195,7 @@ IMPORTANT:
         const provider = await getProviderForType("text");
         const rawTask = await provider.generateStructuredData<RawWritingTask>(
             prompt,
-            writingTaskSchema,
-            { model }
+            writingTaskSchema
         );
         return {
             ...rawTask,
@@ -219,8 +212,6 @@ export const generateRandomTopic = async (
     practiceLanguage: PracticeLanguage,
     language: Language
 ): Promise<string> => {
-    const aiConfig = await getAIConfig();
-    const model = aiConfig.defaultModel;
     const langName = getLanguageName(language);
     const practiceConfig =
         PRACTICE_LANGUAGES[practiceLanguage] ??
@@ -230,7 +221,7 @@ export const generateRandomTopic = async (
     const prompt = `Suggest one imaginative ${langName} keyword or short phrase (max 4 words) that would be an engaging topic for practicing ${targetLanguage}. Return only the keyword without numbering, quotes, or extra text.`;
 
     const provider = await getProviderForType("text");
-    const suggestion = await provider.generateText(prompt, { model });
+    const response = await provider.generateText(prompt);
 
-    return suggestion.replace(/^['"\s]+|['"\s]+$/g, "");
+    return response.text.replace(/^['"\s]+|['"\s]+$/g, "");
 };

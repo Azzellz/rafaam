@@ -3,6 +3,7 @@
  * 支持 OpenAI API 和兼容接口（如 Azure OpenAI, 本地模型等）
  */
 
+import OpenAI from "openai";
 import { BaseAIProvider } from "./base";
 import {
     AIProviderType,
@@ -15,12 +16,14 @@ import {
 
 export class OpenAIProvider extends BaseAIProvider {
     readonly type = AIProviderType.OPENAI;
-    private baseUrl: string = "https://api.openai.com/v1";
+    private client: OpenAI | null = null;
 
     protected async onInitialize(): Promise<void> {
-        if (this.config?.baseUrl) {
-            this.baseUrl = this.config.baseUrl;
-        }
+        this.client = new OpenAI({
+            apiKey: this.config!.apiKey,
+            baseURL: this.config?.baseUrl,
+            dangerouslyAllowBrowser: true,
+        });
     }
 
     async generateText(
@@ -32,7 +35,7 @@ export class OpenAIProvider extends BaseAIProvider {
         const model = modelName || this.getModelName("text");
         const mergedOptions = this.mergeOptions(options);
 
-        const messages = [];
+        const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [];
         if (mergedOptions.systemPrompt) {
             messages.push({
                 role: "system",
@@ -41,35 +44,23 @@ export class OpenAIProvider extends BaseAIProvider {
         }
         messages.push({ role: "user", content: prompt });
 
-        const response = await fetch(`${this.baseUrl}/chat/completions`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this.config!.apiKey}`,
-            },
-            body: JSON.stringify({
-                model,
-                messages,
-                temperature: mergedOptions.temperature,
-                max_tokens: mergedOptions.maxTokens,
-            }),
+        const response = await this.client!.chat.completions.create({
+            model,
+            messages,
+            temperature: mergedOptions.temperature,
+            max_tokens: mergedOptions.maxTokens,
         });
 
-        if (!response.ok) {
-            throw new Error(`OpenAI API error: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        const choice = data.choices[0];
+        const choice = response.choices[0];
 
         return {
-            text: choice.message.content,
+            text: choice.message.content || "",
             finishReason: choice.finish_reason,
-            usage: data.usage
+            usage: response.usage
                 ? {
-                      promptTokens: data.usage.prompt_tokens,
-                      completionTokens: data.usage.completion_tokens,
-                      totalTokens: data.usage.total_tokens,
+                      promptTokens: response.usage.prompt_tokens,
+                      completionTokens: response.usage.completion_tokens,
+                      totalTokens: response.usage.total_tokens,
                   }
                 : undefined,
         };
@@ -84,7 +75,7 @@ export class OpenAIProvider extends BaseAIProvider {
         const model = modelName || this.getModelName("text");
         const mergedOptions = this.mergeOptions(options);
 
-        const messages = [];
+        const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [];
         if (mergedOptions.systemPrompt) {
             messages.push({
                 role: "system",
@@ -93,61 +84,28 @@ export class OpenAIProvider extends BaseAIProvider {
         }
         messages.push({ role: "user", content: prompt });
 
-        const response = await fetch(`${this.baseUrl}/chat/completions`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this.config!.apiKey}`,
-            },
-            body: JSON.stringify({
-                model,
-                messages,
-                temperature: mergedOptions.temperature,
-                max_tokens: mergedOptions.maxTokens,
-                stream: true,
-            }),
-            signal: options?.signal,
+        const response = await this.client!.chat.completions.create({
+            model,
+            messages,
+            temperature: mergedOptions.temperature,
+            max_tokens: mergedOptions.maxTokens,
+            stream: true,
         });
-
-        if (!response.ok) {
-            throw new Error(`OpenAI API error: ${response.statusText}`);
-        }
 
         let fullText = "";
         const stream = (async function* () {
-            const reader = response.body!.getReader();
-            const decoder = new TextDecoder();
-
             try {
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-
-                    const chunk = decoder.decode(value);
-                    const lines = chunk.split("\n");
-
-                    for (const line of lines) {
-                        if (line.startsWith("data: ")) {
-                            const data = line.slice(6);
-                            if (data === "[DONE]") continue;
-
-                            try {
-                                const json = JSON.parse(data);
-                                const content =
-                                    json.choices[0]?.delta?.content || "";
-                                if (content) {
-                                    fullText += content;
-                                    options?.onChunk?.(content);
-                                    yield content;
-                                }
-                            } catch (e) {
-                                // Skip invalid JSON
-                            }
-                        }
+                for await (const chunk of response) {
+                    const content = chunk.choices[0]?.delta?.content || "";
+                    if (content) {
+                        fullText += content;
+                        options?.onChunk?.(content);
+                        yield content;
                     }
                 }
-            } finally {
-                reader.releaseLock();
+            } catch (e) {
+                console.error("Stream error:", e);
+                throw e;
             }
         })();
 
@@ -167,7 +125,7 @@ export class OpenAIProvider extends BaseAIProvider {
         const model = modelName || this.getModelName("text");
         const mergedOptions = this.mergeOptions(options);
 
-        const messages = [];
+        const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [];
         if (mergedOptions.systemPrompt) {
             messages.push({
                 role: "system",
@@ -183,27 +141,15 @@ export class OpenAIProvider extends BaseAIProvider {
             )}`,
         });
 
-        const response = await fetch(`${this.baseUrl}/chat/completions`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this.config!.apiKey}`,
-            },
-            body: JSON.stringify({
-                model,
-                messages,
-                temperature: mergedOptions.temperature,
-                max_tokens: mergedOptions.maxTokens,
-                response_format: { type: "json_object" },
-            }),
+        const response = await this.client!.chat.completions.create({
+            model,
+            messages,
+            temperature: mergedOptions.temperature,
+            max_tokens: mergedOptions.maxTokens,
+            response_format: { type: "json_object" },
         });
 
-        if (!response.ok) {
-            throw new Error(`OpenAI API error: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        const text = data.choices[0].message.content;
+        const text = response.choices[0].message.content || "{}";
 
         return JSON.parse(text) as T;
     }

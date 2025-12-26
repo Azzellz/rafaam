@@ -70,7 +70,8 @@ export abstract class BaseAIProvider implements IAIProvider {
         if (!this.config) {
             throw new Error("Provider not initialized");
         }
-        return this.config.models[type];
+        // 直接返回 config 中的 model 字段
+        return this.config.model || this.config.models?.[type] || "";
     }
 
     /**

@@ -1,7 +1,6 @@
 import { Language, PracticeLanguage, WritingEvaluation } from "../../types";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
-import { getAIConfig } from "../storage";
 import { getProviderForType } from "./providers";
 import { writingEvaluationSchema } from "./schemas";
 
@@ -15,8 +14,6 @@ export const evaluateWriting = async (
     language: Language,
     practiceLanguage: PracticeLanguage
 ): Promise<WritingEvaluation> => {
-    const aiConfig = await getAIConfig();
-    const model = aiConfig.defaultModel;
     const langName = getLanguageName(language);
     const practiceConfig = PRACTICE_LANGUAGES[practiceLanguage];
     const targetLanguage = practiceConfig.targetLanguageName;

@@ -6,6 +6,7 @@ import { translations } from "@/i18n";
 import { showAlert, showConfirm } from "@/stores/useDialogStore";
 import {
     AIProviderConfig,
+    AIProviderType,
     CustomProviderConfig,
     ProviderModelConfig,
 } from "@/services/ai/providers";
@@ -36,7 +37,29 @@ export const AISettings: React.FC<Props> = ({ language }) => {
         const loadSettings = async () => {
             try {
                 const loadedConfig = await getAIProviderConfig();
-                setConfig(loadedConfig);
+                if (loadedConfig) {
+                    setConfig(loadedConfig);
+                } else {
+                    // 初始化空配置
+                    setConfig({
+                        text: {
+                            type: AIProviderType.GEMINI,
+                            apiKey: "",
+                            model: "",
+                        },
+                        tts: {
+                            type: AIProviderType.GEMINI,
+                            apiKey: "",
+                            model: "",
+                        },
+                        live: {
+                            type: AIProviderType.GEMINI,
+                            apiKey: "",
+                            model: "",
+                        },
+                        customProviders: [],
+                    });
+                }
             } catch (error) {
                 console.error("Failed to load settings", error);
             } finally {

@@ -60,6 +60,11 @@ export class AIProviderFactory {
         modelType: ModelType
     ): Promise<IAIProvider> {
         const config = await getAIProviderConfig();
+
+        if (!config) {
+            throw new Error(`INCOMPLETE_CONFIG:${modelType}:all`);
+        }
+
         const modelConfig = config[modelType];
 
         if (!modelConfig) {
@@ -97,16 +102,12 @@ export class AIProviderFactory {
 
         // 创建新实例
         const provider = this.createProvider(effectiveConfig.type);
-        // 将ProviderModelConfig转换为旧的AIProviderConfig格式用于初始化
+        // 将ProviderModelConfig转换为初始化配置
         const initConfig: any = {
             type: effectiveConfig.type,
             apiKey: effectiveConfig.apiKey,
             baseUrl: effectiveConfig.baseUrl,
-            models: {
-                text: effectiveConfig.model,
-                tts: effectiveConfig.model,
-                live: effectiveConfig.model,
-            },
+            model: effectiveConfig.model, // 直接使用 model 字段
             temperature: effectiveConfig.temperature,
             maxTokens: effectiveConfig.maxTokens,
         };
