@@ -34,6 +34,16 @@ export interface ProviderModelConfig {
     maxTokens?: number;
     // 当type为CUSTOM时，指定使用哪个自定义Provider
     selectedCustomId?: string;
+    // TTS专用：是否使用Edge TTS（无需配置模型）
+    useEdgeTTS?: boolean;
+    // Edge TTS配置
+    edgeTTSConfig?: {
+        rate?: number; // 语速: 0.5 到 2.0, 默认 1.0
+        pitch?: string; // 音调: x-low, low, medium, high, x-high
+        volume?: number; // 音量: 0 到 100, 默认 100
+        preferredGender?: "Male" | "Female"; // 偏好性别
+        voice?: string; // 指定语音（可选，留空则自动检测）
+    };
 }
 
 export interface AIProviderConfig {

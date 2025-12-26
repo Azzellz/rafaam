@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { generateEdgeTTS } from "@/utils/edgeTTS";
-import { playMP3Audio } from "@/utils/audio";
+import { playMP3Audio, playAudioData } from "@/utils/audio";
 import { PracticeLanguage } from "@/types";
+import { getAIProviderConfig } from "@/services/storage";
+import { generateSpeech } from "@/services/ai";
 
 interface Props {
     text: string;
@@ -22,6 +24,21 @@ export const TTSButton: React.FC<Props> = ({
 }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [shouldUseEdgeTTS, setShouldUseEdgeTTS] = useState(useEdgeTTS);
+
+    useEffect(() => {
+        const loadConfig = async () => {
+            try {
+                const config = await getAIProviderConfig();
+                if (config?.tts?.useEdgeTTS !== undefined) {
+                    setShouldUseEdgeTTS(config.tts.useEdgeTTS);
+                }
+            } catch (error) {
+                console.error("Failed to load TTS config:", error);
+            }
+        };
+        loadConfig();
+    }, []);
 
     const handleClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -29,14 +46,29 @@ export const TTSButton: React.FC<Props> = ({
 
         setIsLoading(true);
         try {
-            // 使用 Edge TTS 自动语言检测
-            const audioData = await generateEdgeTTS(text, {
-                autoDetectLanguage: true, // 启用自动语言检测
-                preferredGender: "Female", // 默认使用女声
-            });
-            setIsLoading(false);
-            setIsPlaying(true);
-            await playMP3Audio(audioData);
+            if (shouldUseEdgeTTS) {
+                // 使用 Edge TTS 自动语言检测
+                const config = await getAIProviderConfig();
+                const edgeConfig = config?.tts?.edgeTTSConfig;
+
+                const audioData = await generateEdgeTTS(text, {
+                    autoDetectLanguage: !edgeConfig?.voice, // 如果指定了语音就不自动检测
+                    preferredGender: edgeConfig?.preferredGender || "Female",
+                    voice: edgeConfig?.voice,
+                    rate: edgeConfig?.rate,
+                    pitch: edgeConfig?.pitch,
+                    volume: edgeConfig?.volume,
+                });
+                setIsLoading(false);
+                setIsPlaying(true);
+                await playMP3Audio(audioData);
+            } else {
+                // 使用 AI 模型 TTS
+                const audioData = await generateSpeech(text);
+                setIsLoading(false);
+                setIsPlaying(true);
+                await playAudioData(audioData);
+            }
         } catch (error) {
             console.error("TTS Error:", error);
         } finally {
