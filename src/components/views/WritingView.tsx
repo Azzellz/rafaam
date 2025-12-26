@@ -47,7 +47,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
             });
         } catch (error) {
             console.error(error);
-            showAlert(t.connectionError);
+            showAlert(t.connectionError, undefined, language);
         } finally {
             setLoading(false);
         }

@@ -115,44 +115,58 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
     };
 
     const clearItem = (item: StorageItem) => {
-        showConfirm(t.confirmClear, () => {
-            if (item.type === "localStorage") {
-                localStorage.removeItem(item.key);
-            } else if (item.type === "indexedDB") {
-                if (window.indexedDB) {
-                    if (item.key === "indexedDB_storage") {
-                        window.indexedDB.deleteDatabase("rafaam_storage");
-                    } else if (item.key === "indexedDB_favorites") {
-                        window.indexedDB.deleteDatabase("rafaam_client_store");
+        showConfirm(
+            t.confirmClear,
+            () => {
+                if (item.type === "localStorage") {
+                    localStorage.removeItem(item.key);
+                } else if (item.type === "indexedDB") {
+                    if (window.indexedDB) {
+                        if (item.key === "indexedDB_storage") {
+                            window.indexedDB.deleteDatabase("rafaam_storage");
+                        } else if (item.key === "indexedDB_favorites") {
+                            window.indexedDB.deleteDatabase(
+                                "rafaam_client_store"
+                            );
+                        }
                     }
                 }
-            }
-            setTimeout(calculateStorage, 500);
-        });
+                setTimeout(calculateStorage, 500);
+            },
+            undefined,
+            undefined,
+            language
+        );
     };
 
     const clearAll = async () => {
-        showConfirm(t.confirmClear, () => {
-            // Clear LocalStorage
-            const keysToRemove = [];
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key && key.startsWith("rafaam_")) {
-                    keysToRemove.push(key);
+        showConfirm(
+            t.confirmClear,
+            () => {
+                // Clear LocalStorage
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith("rafaam_")) {
+                        keysToRemove.push(key);
+                    }
                 }
-            }
-            keysToRemove.forEach((k) => localStorage.removeItem(k));
+                keysToRemove.forEach((k) => localStorage.removeItem(k));
 
-            // Clear IndexedDB - both databases
-            if (window.indexedDB) {
-                window.indexedDB.deleteDatabase("rafaam_storage");
-                window.indexedDB.deleteDatabase("rafaam_client_store");
-            }
+                // Clear IndexedDB - both databases
+                if (window.indexedDB) {
+                    window.indexedDB.deleteDatabase("rafaam_storage");
+                    window.indexedDB.deleteDatabase("rafaam_client_store");
+                }
 
-            calculateStorage();
-            showAlert(t.cleared);
-            window.location.reload(); // Reload to reset state
-        });
+                calculateStorage();
+                showAlert(t.cleared, undefined, language);
+                window.location.reload(); // Reload to reset state
+            },
+            undefined,
+            undefined,
+            language
+        );
     };
 
     return (

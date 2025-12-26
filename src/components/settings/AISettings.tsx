@@ -52,10 +52,10 @@ export const AISettings: React.FC<Props> = ({ language }) => {
                 saveApiBaseUrl(apiBaseUrl),
                 saveApiKey(apiKey),
             ]);
-            showAlert(t.saved);
+            showAlert(t.saved, undefined, language);
         } catch (error) {
             console.error("Failed to save settings", error);
-            showAlert("Failed to save settings");
+            showAlert("Failed to save settings", undefined, language);
         }
     };
 

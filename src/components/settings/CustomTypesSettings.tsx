@@ -54,10 +54,16 @@ export const CustomTypesSettings: React.FC<CustomTypesSettingsProps> = ({
     };
 
     const handleDelete = (id: string) => {
-        showConfirm(t.deleteConfirm, () => {
-            deleteCustomType(id);
-            addToast(t.deleteSuccess, "success");
-        });
+        showConfirm(
+            t.deleteConfirm,
+            () => {
+                deleteCustomType(id);
+                addToast(t.deleteSuccess, "success");
+            },
+            undefined,
+            undefined,
+            language
+        );
     };
 
     const handleAddField = () => {

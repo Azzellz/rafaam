@@ -49,7 +49,7 @@ export const FavoritesView: React.FC<Props> = ({
     const handleRemove = async (pattern: string, lang: PracticeLanguage) => {
         const success = await removeFavoriteFromStore(pattern, lang);
         if (!success) {
-            showAlert(t.connectionError);
+            showAlert(t.connectionError, undefined, language);
         }
     };
 

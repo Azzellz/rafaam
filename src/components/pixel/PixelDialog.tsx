@@ -1,17 +1,22 @@
 import React from "react";
 import { useDialogStore } from "@/stores/useDialogStore";
 import { PixelButton } from "./PixelButton";
+import { translations } from "@/i18n";
+import { Language } from "@/types";
 
 export const PixelDialog: React.FC = () => {
     const { isOpen, config, confirm, cancel } = useDialogStore();
 
     if (!isOpen || !config) return null;
 
+    const language = config.language || Language.EN;
+    const t = translations[language];
+
     const {
         title,
         message,
-        confirmText = "OK",
-        cancelText = "Cancel",
+        confirmText = t.ok,
+        cancelText = t.cancel,
         showCancel = false,
     } = config;
 

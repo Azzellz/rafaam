@@ -169,6 +169,9 @@ export interface TranslationContent {
 
     // AI Settings
     aiSettings: string;
+    apiKey: string;
+    apiKeyDesc: string;
+    apiKeyPlaceholder: string;
     defaultModel: string;
     defaultModelDesc: string;
     chatModel: string;
@@ -180,4 +183,8 @@ export interface TranslationContent {
     apiBaseUrl: string;
     apiBaseUrlDesc: string;
     apiBaseUrlPlaceholder: string;
+
+    // Dialog
+    ok: string;
+    confirm: string;
 }

@@ -145,7 +145,7 @@ const App: React.FC = () => {
             await startQuest(randomTopic);
         } catch (err) {
             console.error(err);
-            showAlert(t.connectionError);
+            showAlert(t.connectionError, undefined, language);
         } finally {
             setIsRandomizingTopic(false);
         }

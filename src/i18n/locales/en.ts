@@ -194,4 +194,8 @@ export const enTranslation: TranslationContent = {
     apiBaseUrl: "API Base URL",
     apiBaseUrlDesc: "Reverse Proxy URL for API access (Optional)",
     apiBaseUrlPlaceholder: "https://api.example.com",
+
+    // Dialog
+    ok: "OK",
+    confirm: "Confirm",
 };

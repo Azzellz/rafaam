@@ -191,4 +191,8 @@ export const jaTranslation: TranslationContent = {
     apiBaseUrl: "API Base URL",
     apiBaseUrlDesc: "APIアクセスのためのリバースプロキシURL (オプション)",
     apiBaseUrlPlaceholder: "https://api.example.com",
+
+    // Dialog
+    ok: "OK",
+    confirm: "確認",
 };

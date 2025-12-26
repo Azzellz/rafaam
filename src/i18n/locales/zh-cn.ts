@@ -187,4 +187,8 @@ export const zhCNTranslation: TranslationContent = {
     apiBaseUrl: "API Base URL",
     apiBaseUrlDesc: "用于 API 访问的反向代理 URL (可选)",
     apiBaseUrlPlaceholder: "https://api.example.com",
+
+    // Dialog
+    ok: "确定",
+    confirm: "确认",
 };

@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { translations } from "@/i18n";
+import { Language } from "@/types";
 
 export interface DialogConfig {
     title?: string;
@@ -8,6 +10,7 @@ export interface DialogConfig {
     onConfirm?: () => void;
     onCancel?: () => void;
     showCancel?: boolean;
+    language?: Language;
 }
 
 interface DialogState {
@@ -37,12 +40,19 @@ export const useDialogStore = create<DialogState>((set, get) => ({
 }));
 
 // Helper function for alert-like usage
-export const showAlert = (message: string, title?: string) => {
+export const showAlert = (
+    message: string,
+    title?: string,
+    language?: Language
+) => {
+    const lang = language || Language.EN;
+    const t = translations[lang];
     useDialogStore.getState().showDialog({
         message,
         title,
-        confirmText: "OK",
+        confirmText: t.ok,
         showCancel: false,
+        language: lang,
     });
 };
 
@@ -51,15 +61,19 @@ export const showConfirm = (
     message: string,
     onConfirm: () => void,
     onCancel?: () => void,
-    title?: string
+    title?: string,
+    language?: Language
 ) => {
+    const lang = language || Language.EN;
+    const t = translations[lang];
     useDialogStore.getState().showDialog({
         message,
         title,
-        confirmText: "Confirm",
-        cancelText: "Cancel",
+        confirmText: t.confirm,
+        cancelText: t.cancel,
         showCancel: true,
         onConfirm,
         onCancel,
+        language: lang,
     });
 };

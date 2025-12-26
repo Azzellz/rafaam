@@ -78,7 +78,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
             : await addFavoriteToStore(point);
 
         if (!success) {
-            showAlert(t.connectionError);
+            showAlert(t.connectionError, undefined, language);
         }
     };
 

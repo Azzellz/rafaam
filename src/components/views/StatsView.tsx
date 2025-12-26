@@ -238,9 +238,15 @@ export const StatsView: React.FC<Props> = ({
                     <PixelButton
                         variant="danger"
                         onClick={async () => {
-                            showConfirm(t.confirmClear, async () => {
-                                await clearRecords();
-                            });
+                            showConfirm(
+                                t.confirmClear,
+                                async () => {
+                                    await clearRecords();
+                                },
+                                undefined,
+                                undefined,
+                                language
+                            );
                         }}
                     >
                         {t.clearAll}
