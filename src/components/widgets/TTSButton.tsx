@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { generateSpeech } from "@/services/ai";
-import { playAudioData } from "@/utils/audio";
+import { generateEdgeTTS } from "@/utils/edgeTTS";
+import { playMP3Audio } from "@/utils/audio";
 import { PracticeLanguage } from "@/types";
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
     className?: string;
     label?: string;
     practiceLanguage?: PracticeLanguage;
+    useEdgeTTS?: boolean; // 是否使用 Edge TTS（默认 true）
 }
 
 export const TTSButton: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const TTSButton: React.FC<Props> = ({
     className = "",
     label,
     practiceLanguage,
+    useEdgeTTS = true,
 }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -27,10 +29,14 @@ export const TTSButton: React.FC<Props> = ({
 
         setIsLoading(true);
         try {
-            const audioData = await generateSpeech(text, practiceLanguage);
+            // 使用 Edge TTS 自动语言检测
+            const audioData = await generateEdgeTTS(text, {
+                autoDetectLanguage: true, // 启用自动语言检测
+                preferredGender: "Female", // 默认使用女声
+            });
             setIsLoading(false);
             setIsPlaying(true);
-            await playAudioData(audioData);
+            await playMP3Audio(audioData);
         } catch (error) {
             console.error("TTS Error:", error);
         } finally {

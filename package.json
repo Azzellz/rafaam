@@ -11,6 +11,7 @@
   "dependencies": {
     "@google/genai": "^1.33.0",
     "axios": "^1.7.7",
+    "edge-tts-client": "^1.0.2",
     "openai": "^4.73.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

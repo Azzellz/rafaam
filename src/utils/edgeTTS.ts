@@ -1,11 +1,10 @@
 /**
  * Edge TTS 工具
- * 封装调用 Microsoft Edge 文本转语音功能
- *
- * 使用方法：
- * 1. 部署 edge-tts API 服务（推荐）: https://github.com/rany2/edge-tts
- * 2. 或使用 Web Speech API 作为后备
+ * 基于 edge-tts-client 库封装
+ * 直接在浏览器中调用 Microsoft Edge 文本转语音功能，无需后端服务
  */
+
+import { EdgeTTSClient, ProsodyOptions, OUTPUT_FORMAT } from "edge-tts-client";
 
 export interface EdgeTTSVoice {
     name: string;
@@ -16,14 +15,14 @@ export interface EdgeTTSVoice {
 
 export interface EdgeTTSOptions {
     voice?: string;
-    rate?: string; // 语速: -50% 到 +50%, 默认 "+0%"
-    pitch?: string; // 音调: -50Hz 到 +50Hz, 默认 "+0Hz"
-    volume?: string; // 音量: 0% 到 100%, 默认 "+0%"
+    rate?: number; // 语速: 0.5 到 2.0, 默认 1.0
+    pitch?: string; // 音调: x-low, low, medium, high, x-high, 默认 medium
+    volume?: number; // 音量: 0 到 100, 默认 100
     outputFormat?:
         | "audio-24khz-48kbitrate-mono-mp3"
         | "audio-24khz-96kbitrate-mono-mp3"
         | "audio-48khz-96kbitrate-mono-mp3";
-    autoDetectLanguage?: boolean; // 是否自动检测语言并选择合适的语音，默认 false
+    autoDetectLanguage?: boolean; // 是否自动检测语言并选择合适的语音，默认 true
     preferredGender?: "Male" | "Female"; // 自动检测时偏好的性别，默认 Female
 }
 
@@ -46,6 +45,9 @@ export const EDGE_VOICES = {
     zhCN_Female_Yunxi: "zh-CN-XiaoyiNeural",
     zhCN_Male: "zh-CN-YunxiNeural",
     zhCN_Male_Yunyang: "zh-CN-YunyangNeural",
+    zhTW_Female: "zh-TW-HsiaoChenNeural",
+    zhTW_Male: "zh-TW-YunJheNeural",
+
     // 韩语
     koKR_Female: "ko-KR-SunHiNeural",
     koKR_Male: "ko-KR-InJoonNeural",
@@ -64,43 +66,19 @@ export const EDGE_VOICES = {
 } as const;
 
 /**
- * 将文本转换为 SSML 格式
+ * 将输出格式字符串转换为 edge-tts-client 的格式常量
  */
-function textToSSML(
-    text: string,
-    voice: string,
-    options: EdgeTTSOptions = {}
-): string {
-    const rate = options.rate || "+0%";
-    const pitch = options.pitch || "+0Hz";
-    const volume = options.volume || "+0%";
-
-    return `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
-        <voice name="${voice}">
-            <prosody rate="${rate}" pitch="${pitch}" volume="${volume}">
-                ${escapeXML(text)}
-            </prosody>
-        </voice>
-    </speak>`;
-}
-
-/**
- * 转义 XML 特殊字符
- */
-function escapeXML(text: string): string {
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&apos;");
-}
-
-/**
- * 生成随机边界字符串
- */
-function generateBoundary(): string {
-    return "----boundary" + Date.now() + Math.random().toString(36);
+function getOutputFormat(format?: string): OUTPUT_FORMAT {
+    switch (format) {
+        case "audio-24khz-48kbitrate-mono-mp3":
+            return OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3;
+        case "audio-24khz-96kbitrate-mono-mp3":
+            return OUTPUT_FORMAT.AUDIO_24KHZ_96KBITRATE_MONO_MP3;
+        case "audio-48khz-96kbitrate-mono-mp3":
+            return OUTPUT_FORMAT.AUDIO_24KHZ_96KBITRATE_MONO_MP3; // 使用可用的格式
+        default:
+            return OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3;
+    }
 }
 
 /**
@@ -216,8 +194,8 @@ export function selectVoiceByLanguage(
             Male: EDGE_VOICES.zhCN_Male,
         },
         "zh-TW": {
-            Female: "zh-TW-HsiaoChenNeural",
-            Male: "zh-TW-YunJheNeural",
+            Female: EDGE_VOICES.zhTW_Female,
+            Male: EDGE_VOICES.zhTW_Male,
         },
         "ko-KR": {
             Female: EDGE_VOICES.koKR_Female,
@@ -280,7 +258,7 @@ export async function generateEdgeTTS(
 
     let voice = options.voice;
 
-    // 如果启用自动语言检测且没有指定语音
+    // 如果启用自动语言检测且没有指定语音（默认启用）
     if (!voice && options.autoDetectLanguage !== false) {
         const detectedLanguage = detectLanguage(text.trim());
         const preferredGender = options.preferredGender || "Female";
@@ -295,27 +273,57 @@ export async function generateEdgeTTS(
         voice = EDGE_VOICES.enUS_Female;
     }
 
-    // 使用公开的 Edge TTS API 服务
-    // 这里使用 edge-tts-api 的公开实例或自建服务
-    const apiUrl = await getEdgeTTSApiUrl();
-
     try {
-        // 构建请求 URL
-        const url = new URL(apiUrl);
-        url.searchParams.set("text", text.trim());
-        url.searchParams.set("voice", voice);
-        if (options.rate) url.searchParams.set("rate", options.rate);
-        if (options.pitch) url.searchParams.set("pitch", options.pitch);
-        if (options.volume) url.searchParams.set("volume", options.volume);
+        // 初始化 Edge TTS 客户端
+        const ttsClient = new EdgeTTSClient();
 
-        const response = await fetch(url.toString());
+        // 设置语音和输出格式
+        const outputFormat = getOutputFormat(options.outputFormat);
+        await ttsClient.setMetadata(voice, outputFormat);
 
-        if (!response.ok) {
-            throw new Error(`Edge TTS API error: ${response.statusText}`);
-        }
+        // 设置语音参数
+        const prosodyOptions = new ProsodyOptions();
+        prosodyOptions.pitch = options.pitch || "medium";
+        prosodyOptions.rate = options.rate ?? 1.0;
+        prosodyOptions.volume = options.volume ?? 100;
 
-        const audioBlob = await response.blob();
-        return await blobToBase64(audioBlob);
+        // 生成语音流
+        const stream = ttsClient.toStream(text.trim(), prosodyOptions);
+
+        // 收集音频数据
+        const audioChunks: Uint8Array[] = [];
+
+        return new Promise((resolve, reject) => {
+            stream.on("data", (chunk: Uint8Array) => {
+                audioChunks.push(chunk);
+            });
+
+            stream.on("end", () => {
+                try {
+                    // 合并所有音频块
+                    const totalLength = audioChunks.reduce(
+                        (acc, chunk) => acc + chunk.length,
+                        0
+                    );
+                    const audioData = new Uint8Array(totalLength);
+                    let offset = 0;
+                    for (const chunk of audioChunks) {
+                        audioData.set(chunk, offset);
+                        offset += chunk.length;
+                    }
+
+                    // 转换为 base64
+                    const base64 = uint8ArrayToBase64(audioData);
+                    resolve(base64);
+                } catch (error) {
+                    reject(error);
+                }
+            });
+
+            stream.on("close", () => {
+                // 处理 close 事件（如果需要）
+            });
+        });
     } catch (error) {
         console.error("Edge TTS generation error:", error);
         throw new Error(
@@ -327,43 +335,15 @@ export async function generateEdgeTTS(
 }
 
 /**
- * 获取 Edge TTS API URL
- * 可以从配置中读取，或使用默认值
- * 支持多个后备 API 服务
+ * 将 Uint8Array 转换为 base64 字符串
  */
-async function getEdgeTTSApiUrl(): Promise<string> {
-    // 可以从 storage 中读取用户配置的 API URL
-    // 这里提供一些公开的 Edge TTS API 服务地址
-    // 注意：这些是示例地址，实际使用时需要替换为真实可用的服务
-
-    // 优先级：
-    // 1. 用户配置的 URL
-    // 2. 本地服务（如果自建）
-    // 3. 公开服务
-
-    const defaultUrls = [
-        "http://localhost:5000/api/tts", // 本地服务
-        "https://tts.example.com/api/tts", // 替换为实际可用的服务
-    ];
-
-    return defaultUrls[0];
-}
-
-/**
- * 将 Blob 转换为 base64 字符串
- */
-function blobToBase64(blob: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const result = reader.result as string;
-            // 去掉 data:audio/mpeg;base64, 前缀
-            const base64 = result.split(",")[1];
-            resolve(base64);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
+function uint8ArrayToBase64(uint8Array: Uint8Array): string {
+    let binary = "";
+    const len = uint8Array.byteLength;
+    for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(uint8Array[i]);
+    }
+    return btoa(binary);
 }
 
 /**
