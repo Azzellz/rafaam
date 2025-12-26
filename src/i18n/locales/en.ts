@@ -49,7 +49,7 @@ export const enTranslation: TranslationContent = {
     goodEffort: "GOOD EFFORT! GANBATTE!",
     playAgain: "PLAY AGAIN",
     connectionError:
-        "The connection to the Spirit Realm (API) failed. Please try again.",
+        "The connection to the API failed. Please try again.",
     storageFallbackWarning:
         "Your browser cannot use IndexedDB. Favorites will fall back to local storage and may reset when browser data is cleared.",
     myFavorites: "MY FAVORITES",
@@ -74,7 +74,7 @@ export const enTranslation: TranslationContent = {
     statusDisconnected: "DISCONNECTED",
     transcriptUser: "YOU",
     transcriptModel: "SENSEI",
-    conversationIntro: "Practice speaking Japanese in real-time!",
+    conversationIntro: "Practice speaking in real-time!",
     bgSettings: "THEME",
     uploadImage: "UPLOAD BACKGROUND",
     blur: "BLUR",

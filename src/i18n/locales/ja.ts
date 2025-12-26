@@ -48,7 +48,7 @@ export const jaTranslation: TranslationContent = {
     perfectScore: "満点！すごい！",
     goodEffort: "よく頑張った！",
     playAgain: "もう一度遊ぶ",
-    connectionError: "霊界 (API) への接続に失敗しました。再試行してください。",
+    connectionError: "API への接続に失敗しました。再試行してください。",
     storageFallbackWarning:
         "ご利用のブラウザでは IndexedDB が使えないため、お気に入りはローカルストレージに保存されます。ブラウザのデータを消去すると失われる可能性があります。",
     myFavorites: "お気に入り",
@@ -73,7 +73,7 @@ export const jaTranslation: TranslationContent = {
     statusDisconnected: "切断",
     transcriptUser: "あなた",
     transcriptModel: "先生",
-    conversationIntro: "リアルタイムで日本語会話を練習しよう！",
+    conversationIntro: "リアルタイムで会話を練習しよう！",
     bgSettings: "テーマ",
     uploadImage: "背景画像をアップロード",
     blur: "ぼかし",

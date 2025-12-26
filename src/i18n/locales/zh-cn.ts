@@ -72,7 +72,7 @@ export const zhCNTranslation: TranslationContent = {
     statusDisconnected: "已断开",
     transcriptUser: "你",
     transcriptModel: "老师",
-    conversationIntro: "实时练习日语口语！",
+    conversationIntro: "实时练习口语！",
     bgSettings: "主题",
     uploadImage: "上传背景图",
     blur: "模糊度",
