@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PixelButton } from "@/components/pixel";
+import { PixelButton, PixelTabs, PixelTab } from "@/components/pixel";
 import { getAIProviderConfig, saveAIProviderConfig } from "@/services/storage";
 import { Language } from "@/types";
 import { translations } from "@/i18n";
@@ -236,46 +236,75 @@ export const AISettings: React.FC<Props> = ({ language }) => {
                     />
                 )}
 
-                {/* 三个独立的模型配置区 */}
-                <div className="space-y-6">
-                    <ModelConfigSection
-                        modelType="text"
-                        title={t.textModel}
-                        description={t.textModelDesc}
-                        modelConfig={config.text}
-                        customProviderOptions={getCustomProviderOptions()}
-                        showApiKey={showApiKeys.text}
-                        onProviderChange={(updates) =>
-                            updateModelConfig("text", updates)
-                        }
-                        onToggleApiKey={() => toggleApiKeyVisibility("text")}
-                        language={language}
-                    />
-                    <ModelConfigSection
-                        modelType="tts"
-                        title={t.ttsModel}
-                        description={t.ttsModelDesc}
-                        modelConfig={config.tts}
-                        customProviderOptions={getCustomProviderOptions()}
-                        showApiKey={showApiKeys.tts}
-                        onProviderChange={(updates) =>
-                            updateModelConfig("tts", updates)
-                        }
-                        onToggleApiKey={() => toggleApiKeyVisibility("tts")}
-                        language={language}
-                    />
-                    <ModelConfigSection
-                        modelType="live"
-                        title={t.liveModel}
-                        description={t.liveModelDesc}
-                        modelConfig={config.live}
-                        customProviderOptions={getCustomProviderOptions()}
-                        showApiKey={showApiKeys.live}
-                        onProviderChange={(updates) =>
-                            updateModelConfig("live", updates)
-                        }
-                        onToggleApiKey={() => toggleApiKeyVisibility("live")}
-                        language={language}
+                {/* 三个独立的模型配置区 - 使用Tabs */}
+                <div className="mb-6">
+                    <PixelTabs
+                        tabs={[
+                            {
+                                id: "text",
+                                label: t.textModel,
+                                content: (
+                                    <ModelConfigSection
+                                        modelType="text"
+                                        title={t.textModel}
+                                        description={t.textModelDesc}
+                                        modelConfig={config.text}
+                                        customProviderOptions={getCustomProviderOptions()}
+                                        showApiKey={showApiKeys.text}
+                                        onProviderChange={(updates) =>
+                                            updateModelConfig("text", updates)
+                                        }
+                                        onToggleApiKey={() =>
+                                            toggleApiKeyVisibility("text")
+                                        }
+                                        language={language}
+                                    />
+                                ),
+                            },
+                            {
+                                id: "tts",
+                                label: t.ttsModel,
+                                content: (
+                                    <ModelConfigSection
+                                        modelType="tts"
+                                        title={t.ttsModel}
+                                        description={t.ttsModelDesc}
+                                        modelConfig={config.tts}
+                                        customProviderOptions={getCustomProviderOptions()}
+                                        showApiKey={showApiKeys.tts}
+                                        onProviderChange={(updates) =>
+                                            updateModelConfig("tts", updates)
+                                        }
+                                        onToggleApiKey={() =>
+                                            toggleApiKeyVisibility("tts")
+                                        }
+                                        language={language}
+                                    />
+                                ),
+                            },
+                            {
+                                id: "live",
+                                label: t.liveModel,
+                                content: (
+                                    <ModelConfigSection
+                                        modelType="live"
+                                        title={t.liveModel}
+                                        description={t.liveModelDesc}
+                                        modelConfig={config.live}
+                                        customProviderOptions={getCustomProviderOptions()}
+                                        showApiKey={showApiKeys.live}
+                                        onProviderChange={(updates) =>
+                                            updateModelConfig("live", updates)
+                                        }
+                                        onToggleApiKey={() =>
+                                            toggleApiKeyVisibility("live")
+                                        }
+                                        language={language}
+                                    />
+                                ),
+                            },
+                        ]}
+                        defaultTabId="text"
                     />
                 </div>
 

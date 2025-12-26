@@ -32,9 +32,8 @@ export const ModelConfigSection: React.FC<Props> = ({
     const t = translations[language];
 
     return (
-        <div className="border-2 border-gray-300 rounded p-4 space-y-4">
+        <div className="space-y-4 py-2">
             <div>
-                <h4 className="text-xl font-bold mb-1">{title}</h4>
                 <p className="text-sm text-gray-500">{description}</p>
             </div>
 
