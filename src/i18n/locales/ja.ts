@@ -214,4 +214,19 @@ export const jaTranslation: TranslationContent = {
     // Dialog
     ok: "OK",
     confirm: "確認",
+
+    // Common Actions
+    show: "表示",
+    hide: "非表示",
+    saveFailed: "保存に失敗しました",
+
+    // Model Type Labels
+    modelTypeText: "テキストモデル",
+    modelTypeTts: "音声モデル",
+    modelTypeLive: "リアルタイム会話モデル",
+
+    // Field Labels
+    fieldModel: "モデル名",
+    fieldApiKey: "API Key",
+    fieldCustomProvider: "カスタムプロバイダー",
 };

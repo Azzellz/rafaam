@@ -7,6 +7,7 @@ import {
     PracticeLanguage,
 } from "@/types";
 import { generateLesson, generateRandomTopic } from "@/services/ai";
+import { handleAIConfigError } from "@/services/ai/configErrorHandler";
 import { getBackgroundConfig, saveBackgroundConfig } from "@/services/storage";
 import { LoadingSprite } from "@/components/widgets/LoadingSprite";
 import { SettingsView } from "@/components/views/SettingsView";
@@ -127,7 +128,19 @@ const App: React.FC = () => {
             setContent({ type: contentType, data: result } as GeneratedContent);
         } catch (err: any) {
             console.error(err);
-            setError(t.connectionError);
+
+            // 检查是否是配置错误，如果是则显示引导dialog
+            const isConfigError = handleAIConfigError({
+                error: err,
+                language,
+                onNavigateToSettings: () => {
+                    navigate("/settings");
+                },
+            });
+
+            if (!isConfigError) {
+                setError(t.connectionError);
+            }
         } finally {
             setLoading(false);
         }
@@ -143,9 +156,21 @@ const App: React.FC = () => {
             );
             setTopic(randomTopic);
             await startQuest(randomTopic);
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
-            showAlert(t.connectionError, undefined, language);
+
+            // 检查是否是配置错误
+            const isConfigError = handleAIConfigError({
+                error: err,
+                language,
+                onNavigateToSettings: () => {
+                    navigate("/settings");
+                },
+            });
+
+            if (!isConfigError) {
+                showAlert(t.connectionError, undefined, language);
+            }
         } finally {
             setIsRandomizingTopic(false);
         }

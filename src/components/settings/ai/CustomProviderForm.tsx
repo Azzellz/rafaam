@@ -62,7 +62,7 @@ export const CustomProviderForm: React.FC<Props> = ({
                     </div>
 
                     <div>
-                        <label className="block text-lg mb-2">API Key</label>
+                        <label className="block text-lg mb-2">{t.apiKey}</label>
                         <PixelInput
                             value={editingCustom.apiKey}
                             onChange={(e) =>
@@ -73,7 +73,9 @@ export const CustomProviderForm: React.FC<Props> = ({
                     </div>
 
                     <div>
-                        <label className="block text-lg mb-2">Base URL</label>
+                        <label className="block text-lg mb-2">
+                            {t.apiBaseUrl}
+                        </label>
                         <PixelInput
                             value={editingCustom.baseUrl}
                             onChange={(e) =>

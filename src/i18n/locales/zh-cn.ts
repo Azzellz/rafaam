@@ -210,4 +210,19 @@ export const zhCNTranslation: TranslationContent = {
     // Dialog
     ok: "确定",
     confirm: "确认",
+
+    // Common Actions
+    show: "显示",
+    hide: "隐藏",
+    saveFailed: "保存失败",
+
+    // Model Type Labels
+    modelTypeText: "文本模型",
+    modelTypeTts: "语音模型",
+    modelTypeLive: "实时对话模型",
+
+    // Field Labels
+    fieldModel: "模型名称",
+    fieldApiKey: "API Key",
+    fieldCustomProvider: "自定义服务商",
 };

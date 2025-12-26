@@ -2,8 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { TTSButton } from "./TTSButton";
 import { createPortal } from "react-dom";
 import { translateText } from "@/services/ai";
+import { handleAIConfigError } from "@/services/ai/configErrorHandler";
+import { useNavigate } from "react-router-dom";
+import { useAppStore } from "@/stores/useAppStore";
 
 export const SelectionTool: React.FC = () => {
+    const navigate = useNavigate();
+    const language = useAppStore((state) => state.language);
     const [position, setPosition] = useState<{ x: number; y: number } | null>(
         null
     );
@@ -23,10 +28,23 @@ export const SelectionTool: React.FC = () => {
             setIsTranslating(true);
             translateText(selectedText, targetLang)
                 .then(setTranslation)
-                .catch(() => setTranslation("Translation failed"))
+                .catch((error) => {
+                    console.error(error);
+                    const isConfigError = handleAIConfigError({
+                        error,
+                        language,
+                        onNavigateToSettings: () => {
+                            navigate("/settings");
+                        },
+                    });
+
+                    if (!isConfigError) {
+                        setTranslation("Translation failed");
+                    }
+                })
                 .finally(() => setIsTranslating(false));
         }
-    }, [showTranslate, targetLang, selectedText]);
+    }, [showTranslate, targetLang, selectedText, language, navigate]);
 
     useEffect(() => {
         const handleSelection = (e: Event) => {

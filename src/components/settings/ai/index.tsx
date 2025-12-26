@@ -54,7 +54,7 @@ export const AISettings: React.FC<Props> = ({ language }) => {
             showAlert(t.saved, undefined, language);
         } catch (error) {
             console.error("Failed to save settings", error);
-            showAlert("Failed to save settings", undefined, language);
+            showAlert(t.saveFailed, undefined, language);
         }
     };
 

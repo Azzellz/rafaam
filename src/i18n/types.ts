@@ -207,4 +207,19 @@ export interface TranslationContent {
     // Dialog
     ok: string;
     confirm: string;
+
+    // Common Actions
+    show: string;
+    hide: string;
+    saveFailed: string;
+
+    // Model Type Labels
+    modelTypeText: string;
+    modelTypeTts: string;
+    modelTypeLive: string;
+
+    // Field Labels
+    fieldModel: string;
+    fieldApiKey: string;
+    fieldCustomProvider: string;
 }

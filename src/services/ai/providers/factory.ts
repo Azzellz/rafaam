@@ -12,6 +12,7 @@ import {
 import { GeminiProvider } from "./gemini";
 import { OpenAIProvider } from "./openai";
 import { getAIProviderConfig } from "../../storage";
+import { validateModelConfig } from "../validation";
 
 // Provider 注册表
 const PROVIDER_REGISTRY: Record<AIProviderType, new () => IAIProvider> = {
@@ -64,6 +65,16 @@ export class AIProviderFactory {
         if (!modelConfig) {
             throw new Error(
                 `No configuration found for model type: ${modelType}`
+            );
+        }
+
+        // 验证配置是否完整
+        const validation = validateModelConfig(modelConfig, modelType);
+        if (!validation.isValid) {
+            throw new Error(
+                `INCOMPLETE_CONFIG:${modelType}:${validation.missingFields.join(
+                    ","
+                )}`
             );
         }
 

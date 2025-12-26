@@ -215,4 +215,19 @@ export const enTranslation: TranslationContent = {
     // Dialog
     ok: "OK",
     confirm: "Confirm",
+
+    // Common Actions
+    show: "Show",
+    hide: "Hide",
+    saveFailed: "Failed to save",
+
+    // Model Type Labels
+    modelTypeText: "Text Model",
+    modelTypeTts: "Voice Model",
+    modelTypeLive: "Live Conversation Model",
+
+    // Field Labels
+    fieldModel: "Model Name",
+    fieldApiKey: "API Key",
+    fieldCustomProvider: "Custom Provider",
 };

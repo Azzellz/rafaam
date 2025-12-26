@@ -4,6 +4,7 @@ import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
 import { getAIClient } from "@/services/ai";
+import { handleAIConfigError } from "@/services/ai/configErrorHandler";
 import { getAIConfig } from "@/services/storage";
 import {
     PRACTICE_LANGUAGES,
@@ -11,6 +12,7 @@ import {
 } from "@/constants/practiceLanguages";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
 import { useStatsStore } from "@/stores/useStatsStore";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     data: ChatSession;
@@ -25,6 +27,7 @@ interface Message {
 
 export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
     const t = translations[language];
+    const navigate = useNavigate();
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -56,15 +59,17 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
 
     useEffect(() => {
         const initChat = async () => {
-            const ai = await getAIClient();
-            const aiConfig = await getAIConfig();
+            try {
+                const ai = await getAIClient();
+                const aiConfig = await getAIConfig();
 
-            const langName = LANGUAGE_CONFIG[language]?.aiName ?? "English";
-            const targetLanguage = practiceLanguageConfig.targetLanguageName;
-            const teacherTitle = practiceLanguageConfig.teacherTitle;
-            const levelLabel = practiceLanguageConfig.levelSystemLabel;
+                const langName = LANGUAGE_CONFIG[language]?.aiName ?? "English";
+                const targetLanguage =
+                    practiceLanguageConfig.targetLanguageName;
+                const teacherTitle = practiceLanguageConfig.teacherTitle;
+                const levelLabel = practiceLanguageConfig.levelSystemLabel;
 
-            const systemInstruction = `You are a helpful ${targetLanguage} language teacher called '${teacherTitle}'.
+                const systemInstruction = `You are a helpful ${targetLanguage} language teacher called '${teacherTitle}'.
             Your student's ${levelLabel} level is ${data.level}.
             The conversation topic is: "${data.topic}".
             
@@ -76,9 +81,8 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
             5. Start by greeting the user and asking a question about the topic.
             `;
 
-            systemInstructionRef.current = systemInstruction;
+                systemInstructionRef.current = systemInstruction;
 
-            try {
                 setIsLoading(true);
                 // Initial greeting
                 const response = await ai.models.generateContent({
@@ -102,18 +106,34 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
                 }
             } catch (error: any) {
                 console.error("Chat initialization error:", error);
-                let errorMessage =
-                    "Error connecting to Sensei. Please try again.";
-                if (error.message?.includes("429") || error.status === 429) {
-                    errorMessage =
-                        "Sensei is busy (Too Many Requests). Please wait a moment.";
-                }
-                setMessages([
-                    {
-                        role: "model",
-                        text: errorMessage,
+
+                // 检查是否是配置错误
+                const isConfigError = handleAIConfigError({
+                    error,
+                    language,
+                    onNavigateToSettings: () => {
+                        navigate("/settings");
+                        onExit(); // 退出聊天视图
                     },
-                ]);
+                });
+
+                if (!isConfigError) {
+                    let errorMessage =
+                        "Error connecting to Sensei. Please try again.";
+                    if (
+                        error.message?.includes("429") ||
+                        error.status === 429
+                    ) {
+                        errorMessage =
+                            "Sensei is busy (Too Many Requests). Please wait a moment.";
+                    }
+                    setMessages([
+                        {
+                            role: "model",
+                            text: errorMessage,
+                        },
+                    ]);
+                }
             } finally {
                 setIsLoading(false);
             }
@@ -167,14 +187,27 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
             }
         } catch (error: any) {
             console.error("Chat error:", error);
-            let errorMessage = "(Connection Error)";
-            if (error.message?.includes("429") || error.status === 429) {
-                errorMessage = "(Busy - Please wait)";
+
+            // 检查是否是配置错误
+            const isConfigError = handleAIConfigError({
+                error,
+                language,
+                onNavigateToSettings: () => {
+                    navigate("/settings");
+                    onExit(); // 退出聊天视图
+                },
+            });
+
+            if (!isConfigError) {
+                let errorMessage = "(Connection Error)";
+                if (error.message?.includes("429") || error.status === 429) {
+                    errorMessage = "(Busy - Please wait)";
+                }
+                setMessages((prev) => [
+                    ...prev,
+                    { role: "model", text: errorMessage },
+                ]);
             }
-            setMessages((prev) => [
-                ...prev,
-                { role: "model", text: errorMessage },
-            ]);
         } finally {
             setIsLoading(false);
         }

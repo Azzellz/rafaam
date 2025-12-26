@@ -36,7 +36,6 @@ Provide:
     const provider = await getProviderForType("text");
     return await provider.generateStructuredData<WritingEvaluation>(
         evaluationPrompt,
-        writingEvaluationSchema,
-        { model }
+        writingEvaluationSchema
     );
 };

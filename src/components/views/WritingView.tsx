@@ -3,9 +3,11 @@ import { Language, WritingTask, WritingEvaluation, ContentType } from "@/types";
 import { PixelButton, PixelCard } from "../pixel";
 import { translations } from "@/i18n";
 import { evaluateWriting } from "@/services/ai";
+import { handleAIConfigError } from "@/services/ai/configErrorHandler";
 import { LoadingSprite } from "../widgets/LoadingSprite";
 import { useStatsStore } from "@/stores/useStatsStore";
 import { showAlert } from "@/stores/useDialogStore";
+import { useNavigate } from "react-router-dom";
 
 type WritingViewProps = {
     data: WritingTask;
@@ -19,6 +21,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
     onExit,
 }) => {
     const t = translations[language];
+    const navigate = useNavigate();
     const [text, setText] = useState("");
     const [evaluation, setEvaluation] = useState<WritingEvaluation | null>(
         null
@@ -45,9 +48,21 @@ export const WritingView: React.FC<WritingViewProps> = ({
                 score: result.score,
                 maxScore: 100,
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            showAlert(t.connectionError, undefined, language);
+
+            // 检查是否是配置错误
+            const isConfigError = handleAIConfigError({
+                error,
+                language,
+                onNavigateToSettings: () => {
+                    navigate("/settings");
+                },
+            });
+
+            if (!isConfigError) {
+                showAlert(t.connectionError, undefined, language);
+            }
         } finally {
             setLoading(false);
         }

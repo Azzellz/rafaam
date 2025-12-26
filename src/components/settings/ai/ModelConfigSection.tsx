@@ -77,7 +77,7 @@ export const ModelConfigSection: React.FC<Props> = ({
             {/* API Key (非自定义Provider才显示) */}
             {modelConfig.type !== AIProviderType.CUSTOM && (
                 <div>
-                    <label className="block text-lg mb-2">API Key</label>
+                    <label className="block text-lg mb-2">{t.apiKey}</label>
                     <div className="relative">
                         <PixelInput
                             type={showApiKey ? "text" : "password"}
@@ -93,7 +93,7 @@ export const ModelConfigSection: React.FC<Props> = ({
                             onClick={onToggleApiKey}
                             className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 text-sm font-bold hover:bg-gray-100 active:bg-gray-200 transition-colors rounded"
                         >
-                            {showApiKey ? "Hide" : "Show"}
+                            {showApiKey ? t.hide : t.show}
                         </button>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ export const ModelConfigSection: React.FC<Props> = ({
             {modelConfig.type !== AIProviderType.GEMINI &&
                 modelConfig.type !== AIProviderType.CUSTOM && (
                     <div>
-                        <label className="block text-lg mb-2">Base URL</label>
+                        <label className="block text-lg mb-2">{t.apiBaseUrl}</label>
                         <PixelInput
                             value={modelConfig.baseUrl || ""}
                             onChange={(e) =>

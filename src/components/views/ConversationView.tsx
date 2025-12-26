@@ -15,9 +15,11 @@ import {
 import { pixelMutedParagraph } from "@/constants/style";
 import { LiveServerMessage, Modality } from "@google/genai";
 import { getAIClient } from "@/services/ai";
+import { handleAIConfigError } from "@/services/ai/configErrorHandler";
 import { getAIConfig } from "@/services/storage";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
 import { useStatsStore } from "@/stores/useStatsStore";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     data: ConversationSession;
@@ -36,6 +38,7 @@ export const ConversationView: React.FC<Props> = ({
     onExit,
 }) => {
     const t = translations[language];
+    const navigate = useNavigate();
     const practiceLanguageConfig =
         PRACTICE_LANGUAGES[data.practiceLanguage] ??
         PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE];
@@ -173,9 +176,22 @@ export const ConversationView: React.FC<Props> = ({
             });
 
             sessionRef.current = sessionPromise;
-        } catch (err) {
+        } catch (err: any) {
             console.error("Connection failed", err);
-            setStatus("error");
+
+            // 检查是否是配置错误
+            const isConfigError = handleAIConfigError({
+                error: err,
+                language,
+                onNavigateToSettings: () => {
+                    navigate("/settings");
+                    onExit(); // 退出会话视图
+                },
+            });
+
+            if (!isConfigError) {
+                setStatus("error");
+            }
         }
     };
 
