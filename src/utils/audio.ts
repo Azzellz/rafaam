@@ -1,6 +1,7 @@
 import { Blob } from "@google/genai";
 
 let audioContext: AudioContext | null = null;
+let currentAudioSource: AudioBufferSourceNode | null = null;
 
 export const getAudioContext = () => {
     if (!audioContext) {
@@ -11,10 +12,28 @@ export const getAudioContext = () => {
 };
 
 /**
+ * 停止当前正在播放的音频
+ */
+export const stopAudio = () => {
+    if (currentAudioSource) {
+        try {
+            currentAudioSource.stop();
+            currentAudioSource.disconnect();
+        } catch (error) {
+            // 如果音频已经停止，忽略错误
+        }
+        currentAudioSource = null;
+    }
+};
+
+/**
  * 播放 MP3 格式的音频数据（用于 Edge TTS）
  * @param base64String base64 编码的 MP3 音频数据
  */
 export const playMP3Audio = async (base64String: string): Promise<void> => {
+    // 停止之前的音频
+    stopAudio();
+
     const ctx = getAudioContext();
     if (ctx.state === "suspended") {
         await ctx.resume();
@@ -31,14 +50,30 @@ export const playMP3Audio = async (base64String: string): Promise<void> => {
     const source = ctx.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(ctx.destination);
-    source.start();
 
-    return new Promise<void>((resolve) => {
-        source.onended = () => resolve();
+    currentAudioSource = source;
+
+    return new Promise<void>((resolve, reject) => {
+        source.onended = () => {
+            if (currentAudioSource === source) {
+                currentAudioSource = null;
+            }
+            resolve();
+        };
+
+        try {
+            source.start();
+        } catch (error) {
+            currentAudioSource = null;
+            reject(error);
+        }
     });
 };
 
 export const playAudioData = async (base64String: string): Promise<void> => {
+    // 停止之前的音频
+    stopAudio();
+
     const ctx = getAudioContext();
     if (ctx.state === "suspended") {
         await ctx.resume();
@@ -64,10 +99,23 @@ export const playAudioData = async (base64String: string): Promise<void> => {
     const source = ctx.createBufferSource();
     source.buffer = buffer;
     source.connect(ctx.destination);
-    source.start();
 
-    return new Promise<void>((resolve) => {
-        source.onended = () => resolve();
+    currentAudioSource = source;
+
+    return new Promise<void>((resolve, reject) => {
+        source.onended = () => {
+            if (currentAudioSource === source) {
+                currentAudioSource = null;
+            }
+            resolve();
+        };
+
+        try {
+            source.start();
+        } catch (error) {
+            currentAudioSource = null;
+            reject(error);
+        }
     });
 };
 

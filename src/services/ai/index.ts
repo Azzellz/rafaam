@@ -1,18 +1,33 @@
-// 向后兼容导出
-export { getAIClient } from "./adapter";
+/**
+ * AI 服务统一导出
+ */
 
-// 新架构导出
+// ===== Provider 架构 =====
 export * from "./providers";
 
-// 其他导出
+// ===== 核心功能 =====
+// 内容生成
+export { generateLesson, generateRandomTopic } from "./generators";
+
+// 内容评估
+export { evaluateWriting } from "./evaluation";
+
+// 翻译服务
+export { translateText } from "./translation";
+
+// 语音服务
+export { generateSpeech } from "./speech";
+
+// ===== Schema 定义 =====
 export {
     grammarSchema,
     quizSchema,
     listeningSchema,
+    readingSchema,
     writingTaskSchema,
     writingEvaluationSchema,
 } from "./schemas";
-export { generateLesson, generateRandomTopic } from "./generators";
-export { generateSpeech } from "./speech";
-export { translateText } from "./translation";
-export { evaluateWriting } from "./evaluation";
+
+// ===== 工具函数 =====
+export * from "./validation";
+export * from "./configErrorHandler";

@@ -165,6 +165,48 @@ export class GeminiProvider extends BaseAIProvider {
     }
 
     /**
+     * 生成语音 (TTS)
+     * @param text 要转换的文本
+     * @param voiceName Gemini 语音名称
+     * @returns Base64 编码的音频数据
+     */
+    async generateSpeech(text: string, voiceName: string): Promise<string> {
+        this.ensureInitialized();
+        if (!this.client) throw new Error("Client not initialized");
+
+        if (!text || !text.trim()) {
+            throw new Error("Text is empty");
+        }
+
+        const response = await this.client.models.generateContent({
+            model: "gemini-2.5-flash-preview-tts",
+            contents: [{ parts: [{ text: text.trim() }] }],
+            config: {
+                // Cast string to Modality to avoid potential enum resolution issues
+                responseModalities: ["AUDIO" as any],
+                speechConfig: {
+                    voiceConfig: {
+                        prebuiltVoiceConfig: { voiceName },
+                    },
+                },
+            },
+        });
+
+        const part = response.candidates?.[0]?.content?.parts?.[0];
+
+        if (part?.inlineData?.data) {
+            return part.inlineData.data;
+        }
+
+        if (part?.text) {
+            console.warn("TTS returned text instead of audio:", part.text);
+            throw new Error(`TTS generation failed: ${part.text}`);
+        }
+
+        throw new Error("No audio data returned");
+    }
+
+    /**
      * 获取原生 Gemini 客户端（用于特殊功能）
      */
     getNativeClient(): GoogleGenAI {

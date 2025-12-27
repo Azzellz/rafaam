@@ -3,7 +3,7 @@ import { ChatSession, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { TTSButton } from "@/components/widgets/TTSButton";
-import { getAIClient } from "@/services/ai";
+import { getProviderForType } from "@/services/ai/providers";
 import { handleAIConfigError } from "@/services/ai/configErrorHandler";
 import { getAIConfig } from "@/services/storage";
 import {
@@ -60,8 +60,7 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
     useEffect(() => {
         const initChat = async () => {
             try {
-                const ai = await getAIClient();
-                const aiConfig = await getAIConfig();
+                const provider = await getProviderForType("text");
 
                 const langName = LANGUAGE_CONFIG[language]?.aiName ?? "English";
                 const targetLanguage =
@@ -85,20 +84,11 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
 
                 setIsLoading(true);
                 // Initial greeting
-                const response = await ai.models.generateContent({
-                    model: aiConfig.chatModel,
-                    config: {
-                        systemInstruction: {
-                            parts: [{ text: systemInstruction }],
-                        },
-                    },
-                    contents: [
-                        {
-                            role: "user",
-                            parts: [{ text: "Start the conversation." }],
-                        },
-                    ],
-                });
+                const response = await provider.generateText(
+                    "Start the conversation.",
+                    undefined,
+                    { systemPrompt: systemInstruction }
+                );
 
                 const text = response.text;
                 if (text) {
@@ -161,24 +151,22 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
         setIsLoading(true);
 
         try {
-            const ai = await getAIClient();
-            const aiConfig = await getAIConfig();
+            const provider = await getProviderForType("text");
 
-            // Construct history for the API
-            // Map local messages to API format
-            const contents = newMessages.map((msg) => ({
-                role: msg.role,
-                parts: [{ text: msg.text }],
-            }));
+            // 构建对话历史作为上下文
+            const conversationHistory = newMessages
+                .map(
+                    (msg) =>
+                        `${msg.role === "user" ? "User" : "Assistant"}: ${
+                            msg.text
+                        }`
+                )
+                .join("\n\n");
 
-            const response = await ai.models.generateContent({
-                model: aiConfig.chatModel,
-                config: {
-                    systemInstruction: {
-                        parts: [{ text: systemInstructionRef.current }],
-                    },
-                },
-                contents: contents,
+            const prompt = `Previous conversation:\n${conversationHistory}\n\nPlease respond as the assistant.`;
+
+            const response = await provider.generateText(prompt, undefined, {
+                systemPrompt: systemInstructionRef.current,
             });
 
             const text = response.text;

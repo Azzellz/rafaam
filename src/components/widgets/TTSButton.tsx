@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { generateEdgeTTS } from "@/utils/edgeTTS";
-import { playMP3Audio, playAudioData } from "@/utils/audio";
+import { playMP3Audio, playAudioData, stopAudio } from "@/utils/audio";
 import { PracticeLanguage } from "@/types";
 import { getAIProviderConfig } from "@/services/storage";
 import { generateSpeech } from "@/services/ai";
@@ -42,7 +42,15 @@ export const TTSButton: React.FC<Props> = ({
 
     const handleClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (isPlaying || isLoading) return;
+
+        // 如果正在播放，停止播放
+        if (isPlaying) {
+            stopAudio();
+            setIsPlaying(false);
+            return;
+        }
+
+        if (isLoading) return;
 
         setIsLoading(true);
         try {
@@ -83,24 +91,29 @@ export const TTSButton: React.FC<Props> = ({
         <button
             onMouseDown={(e) => e.preventDefault()} // Prevent focus loss/selection clearing
             onClick={handleClick}
-            disabled={isLoading || isPlaying}
+            disabled={isLoading}
             className={`inline-flex items-center justify-center border-2 border-black bg-white hover:bg-gray-100 active:translate-y-[2px] transition-all disabled:opacity-70 disabled:cursor-wait ${
                 size === "sm" ? "p-1" : "p-2"
             } ${className}`}
-            title="Read aloud"
+            title={isPlaying ? "Stop" : "Read aloud"}
         >
             {isLoading ? (
                 <div
                     className={`${iconSize} animate-spin border-2 border-gray-300 border-t-black rounded-full`}
                 ></div>
             ) : isPlaying ? (
-                <div
-                    className={`${iconSize} flex items-center justify-center space-x-[2px]`}
-                >
-                    <div className="w-1 h-2 bg-black animate-[bounce_1s_infinite]"></div>
-                    <div className="w-1 h-3 bg-black animate-[bounce_1s_infinite_0.2s]"></div>
-                    <div className="w-1 h-2 bg-black animate-[bounce_1s_infinite_0.4s]"></div>
-                </div>
+                // 停止图标
+                <svg className={`${iconSize} fill-current`} viewBox="0 0 24 24">
+                    <rect
+                        x="6"
+                        y="6"
+                        width="12"
+                        height="12"
+                        fill="black"
+                        stroke="black"
+                        strokeWidth="2"
+                    />
+                </svg>
             ) : (
                 <svg className={`${iconSize} fill-current`} viewBox="0 0 24 24">
                     <path

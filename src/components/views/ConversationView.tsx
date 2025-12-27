@@ -14,7 +14,8 @@ import {
 } from "@/constants/practiceLanguages";
 import { pixelMutedParagraph } from "@/constants/style";
 import { LiveServerMessage, Modality } from "@google/genai";
-import { getAIClient } from "@/services/ai";
+import { getProviderForType } from "@/services/ai/providers";
+import { GeminiProvider } from "@/services/ai/providers/gemini";
 import { handleAIConfigError } from "@/services/ai/configErrorHandler";
 import { getAIConfig } from "@/services/storage";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
@@ -103,8 +104,16 @@ export const ConversationView: React.FC<Props> = ({
         setStatus("connecting");
 
         try {
-            const ai = await getAIClient();
+            const provider = await getProviderForType("live");
+            if (!(provider instanceof GeminiProvider)) {
+                throw new Error("Live conversation requires Gemini provider");
+            }
+            const ai = provider.getNativeClient();
             const aiConfig = await getAIConfig();
+
+            if (!aiConfig?.conversationModel) {
+                throw new Error("Conversation model not configured");
+            }
 
             // Initialize Audio Contexts
             inputAudioContextRef.current = new (window.AudioContext ||

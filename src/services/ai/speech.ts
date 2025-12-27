@@ -1,49 +1,34 @@
-import { Modality } from "@google/genai";
+/**
+ * 语音生成服务
+ * 封装 TTS 功能，提供便捷的语音生成接口
+ */
+
 import { PracticeLanguage } from "../../types";
 import {
     PRACTICE_LANGUAGES,
     DEFAULT_PRACTICE_LANGUAGE,
 } from "@/constants/practiceLanguages";
-import { getAIClient } from "./client";
+import { getProviderForType } from "./providers";
+import { GeminiProvider } from "./providers/gemini";
 
+/**
+ * 生成语音
+ * @param text 要转换的文本
+ * @param practiceLanguage 练习语言（用于选择对应的语音）
+ * @returns Base64 编码的音频数据
+ */
 export const generateSpeech = async (
     text: string,
     practiceLanguage: PracticeLanguage = DEFAULT_PRACTICE_LANGUAGE
 ): Promise<string> => {
-    if (!text || !text.trim()) {
-        throw new Error("Text is empty");
-    }
-
     const voiceName =
         PRACTICE_LANGUAGES[practiceLanguage]?.ttsVoice ||
         PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE].ttsVoice;
 
-    const client = await getAIClient();
-    const response = await client.models.generateContent({
-        model: "gemini-2.5-flash-preview-tts",
-        contents: [{ parts: [{ text: text.trim() }] }],
-        config: {
-            // Cast string to Modality to avoid potential enum resolution issues in some environments
-            responseModalities: ["AUDIO" as Modality],
-            speechConfig: {
-                voiceConfig: {
-                    prebuiltVoiceConfig: { voiceName },
-                },
-            },
-        },
-    });
-
-    const part = response.candidates?.[0]?.content?.parts?.[0];
-
-    if (part?.inlineData?.data) {
-        return part.inlineData.data;
+    const provider = await getProviderForType("tts");
+    if (!(provider instanceof GeminiProvider)) {
+        throw new Error("TTS requires Gemini provider");
     }
 
-    if (part?.text) {
-        console.warn("TTS returned text instead of audio:", part.text);
-        // Sometimes the model returns text if it refuses the prompt or encounters an error
-        throw new Error(`TTS generation failed: ${part.text}`);
-    }
-
-    throw new Error("No audio data returned");
+    return await provider.generateSpeech(text, voiceName);
 };
