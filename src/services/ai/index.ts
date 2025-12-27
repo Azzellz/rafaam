@@ -24,6 +24,7 @@ export {
     quizSchema,
     listeningSchema,
     readingSchema,
+    clozeSchema,
     writingTaskSchema,
     writingEvaluationSchema,
 } from "./schemas";

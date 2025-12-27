@@ -68,6 +68,8 @@ export const StatsView: React.FC<Props> = ({
                 return t.listeningPractice;
             case ContentType.READING:
                 return t.readingPractice;
+            case ContentType.CLOZE:
+                return t.clozePractice;
             default:
                 return type;
         }

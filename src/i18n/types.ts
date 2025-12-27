@@ -17,6 +17,7 @@ export interface TranslationContent {
     chatPracticeDesc: string;
     listeningPracticeDesc: string;
     readingPracticeDesc: string;
+    clozePracticeDesc: string;
     writingPracticeDesc: string;
     questTopic: string;
     topicPlaceholder: string;
@@ -28,6 +29,7 @@ export interface TranslationContent {
     voicePractice: string;
     listeningPractice: string;
     readingPractice: string;
+    clozePractice: string;
     writingPractice: string;
     generating: string;
     errorTitle: string;
@@ -43,6 +45,11 @@ export interface TranslationContent {
     passage: string;
     showPassage: string;
     hidePassage: string;
+    blank: string;
+    review: string;
+    noAnswer: string;
+    yourAnswer: string;
+    correctAnswer: string;
     answerSheet: string;
     sequentialMode: string;
     freeMode: string;

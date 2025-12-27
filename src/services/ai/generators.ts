@@ -6,6 +6,7 @@ import {
     QuizSession,
     ListeningExercise,
     ReadingExercise,
+    ClozeExercise,
     WritingTask,
     Language,
     PracticeLanguage,
@@ -18,13 +19,13 @@ import {
     PracticeLanguageConfig,
     DEFAULT_PRACTICE_LANGUAGE,
 } from "@/constants/practiceLanguages";
-import { getAIConfig } from "../storage";
 import { getProviderForType } from "./providers";
 import {
     grammarSchema,
     quizSchema,
     listeningSchema,
     readingSchema,
+    clozeSchema,
     writingTaskSchema,
 } from "./schemas";
 
@@ -54,6 +55,7 @@ export const generateLesson = async (
     | CustomContentData
     | ListeningExercise
     | ReadingExercise
+    | ClozeExercise
 > => {
     const langName = getLanguageName(language);
     const practiceConfig: PracticeLanguageConfig =
@@ -228,6 +230,30 @@ IMPORTANT:
             level,
             topic,
         } as ReadingExercise;
+    } else if (contentType === ContentType.CLOZE) {
+        const prompt = `Create a ${targetLanguage} cloze test (fill-in-the-blank exercise) for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
+        1. Generate a passage (approx. 120-180 words) suitable for this level.
+        2. Replace 8-12 key words/phrases with [BLANK_0], [BLANK_1], [BLANK_2], etc. in sequential order.
+        3. For each blank, provide the correct answer and 3 distractors (4 options total).
+
+        IMPORTANT:
+        - The 'passage' must be in ${targetLanguage} with blanks marked as [BLANK_0], [BLANK_1], etc.
+        - All 'options' (including correctAnswer) must be in ${targetLanguage}.
+        - Mix the options randomly - the correct answer should not always be first.
+        - Ensure blanks are numbered sequentially starting from 0.
+        `;
+
+        const provider = await getProviderForType("text");
+        const rawData = await provider.generateStructuredData(
+            prompt,
+            clozeSchema
+        );
+        return {
+            ...rawData,
+            practiceLanguage,
+            level,
+            topic,
+        } as ClozeExercise;
     } else {
         throw new Error(`Unsupported content type: ${contentType}`);
     }

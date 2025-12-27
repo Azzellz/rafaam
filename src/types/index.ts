@@ -6,6 +6,7 @@ export enum ContentType {
     CHAT = "CHAT",
     LISTENING = "LISTENING",
     READING = "READING",
+    CLOZE = "CLOZE",
     CUSTOM = "CUSTOM",
 }
 
@@ -36,6 +37,20 @@ export interface ReadingExercise {
     title: string;
     passage: string;
     questions: ReadingQuestion[];
+    practiceLanguage: PracticeLanguage;
+    level: string;
+    topic: string;
+}
+
+export interface ClozeBlank {
+    correctAnswer: string;
+    options: string[];
+}
+
+export interface ClozeExercise {
+    title: string;
+    passage: string;
+    blanks: ClozeBlank[];
     practiceLanguage: PracticeLanguage;
     level: string;
     topic: string;
@@ -155,6 +170,7 @@ export type GeneratedContent =
     | { type: ContentType.CHAT; data: ChatSession }
     | { type: ContentType.LISTENING; data: ListeningExercise }
     | { type: ContentType.READING; data: ReadingExercise }
+    | { type: ContentType.CLOZE; data: ClozeExercise }
     | { type: ContentType.CUSTOM; data: CustomContentData };
 
 export interface PracticeRecord {

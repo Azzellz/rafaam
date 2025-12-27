@@ -204,6 +204,38 @@ export const readingSchema: Schema = {
     required: ["title", "passage", "questions"],
 };
 
+export const clozeSchema: Schema = {
+    type: Type.OBJECT,
+    properties: {
+        title: { type: Type.STRING, description: "Title of the cloze test" },
+        passage: {
+            type: Type.STRING,
+            description:
+                "The passage with blanks marked as [BLANK_0], [BLANK_1], etc.",
+        },
+        blanks: {
+            type: Type.ARRAY,
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    correctAnswer: {
+                        type: Type.STRING,
+                        description: "The correct word/phrase for this blank",
+                    },
+                    options: {
+                        type: Type.ARRAY,
+                        items: { type: Type.STRING },
+                        description: "4 options including the correct answer",
+                    },
+                },
+                required: ["correctAnswer", "options"],
+            },
+            description: "Array of blanks in order of appearance",
+        },
+    },
+    required: ["title", "passage", "blanks"],
+};
+
 export const writingEvaluationSchema: Schema = {
     type: Type.OBJECT,
     properties: {
