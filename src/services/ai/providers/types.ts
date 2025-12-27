@@ -27,6 +27,7 @@ export interface ProviderModelConfig {
     model: string; // 模型名称
     temperature?: number;
     maxTokens?: number;
+    systemPrompt?: string; // 自定义系统提示词
     // 当type为CUSTOM时，指定使用哪个自定义Provider
     selectedCustomId?: string;
     // TTS专用：是否使用Edge TTS（无需配置模型）

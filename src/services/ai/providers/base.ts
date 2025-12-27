@@ -99,7 +99,7 @@ export abstract class BaseAIProvider implements IAIProvider {
                 options?.temperature ?? this.config?.temperature ?? 1.0,
             maxTokens: options?.maxTokens ?? this.config?.maxTokens ?? 2048,
             schema: options?.schema,
-            systemPrompt: options?.systemPrompt,
+            systemPrompt: options?.systemPrompt ?? this.config?.systemPrompt,
         };
     }
 }

@@ -390,6 +390,27 @@ export const ModelConfigSection: React.FC<Props> = ({
                             {t.maxTokensDesc}
                         </p>
                     </div>
+
+                    {/* 自定义系统提示词 */}
+                    <div>
+                        <label className="block text-lg mb-2 font-bold">
+                            {t.systemPrompt}
+                        </label>
+                        <textarea
+                            value={modelConfig.systemPrompt || ""}
+                            onChange={(e) =>
+                                onProviderChange({
+                                    systemPrompt: e.target.value,
+                                })
+                            }
+                            placeholder={t.systemPromptPlaceholder}
+                            rows={4}
+                            className="w-full px-4 py-2 border-2 border-black font-mono text-sm resize-y"
+                        />
+                        <p className="text-sm text-gray-500 mt-1">
+                            {t.systemPromptDesc}
+                        </p>
+                    </div>
                 </>
             )}
         </div>

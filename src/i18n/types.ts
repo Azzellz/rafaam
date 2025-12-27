@@ -218,6 +218,9 @@ export interface TranslationContent {
     baseUrlDesc: string;
     maxTokens: string;
     maxTokensDesc: string;
+    systemPrompt: string;
+    systemPromptDesc: string;
+    systemPromptPlaceholder: string;
     textModel: string;
     textModelDesc: string;
     ttsModel: string;

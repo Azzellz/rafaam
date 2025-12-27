@@ -229,6 +229,10 @@ export const jaTranslation: TranslationContent = {
     baseUrlDesc: "オプション、空白の場合デフォルトを使用",
     maxTokens: "最大トークン数",
     maxTokensDesc: "生成テキストの最大長を制限（オプション）",
+    systemPrompt: "カスタムシステムプロンプト",
+    systemPromptDesc:
+        "システムの役割と動作をカスタマイズ、空欄でデフォルトを使用",
+    systemPromptPlaceholder: "例：あなたは専門的な言語教師です...",
     textModel: "テキストモデル",
     textModelDesc: "テキスト生成、翻訳、コンテンツ作成用",
     ttsModel: "音声モデル",

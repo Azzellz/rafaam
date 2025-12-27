@@ -234,6 +234,11 @@ export const enTranslation: TranslationContent = {
     baseUrlDesc: "Optional, leave empty to use default",
     maxTokens: "Max Tokens",
     maxTokensDesc: "Limit the maximum length of generated text (optional)",
+    systemPrompt: "Custom System Prompt",
+    systemPromptDesc:
+        "Customize system role and behavior, leave empty for defaults",
+    systemPromptPlaceholder:
+        "e.g. You are a professional language teacher specializing in...",
     textModel: "Text Model",
     textModelDesc: "For text generation, translation, and content creation",
     ttsModel: "Voice Model",
