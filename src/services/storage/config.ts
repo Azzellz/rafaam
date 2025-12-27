@@ -1,159 +1,180 @@
-import { AIConfig } from "../../types";
+/**
+ * Storage Configuration
+ * AI 和应用配置的存储管理
+ */
+
+import { AIConfig } from "@/types";
 import { storageManager } from "./manager";
 import { AIProviderType, AIProviderConfig } from "../ai/providers";
 
-const AI_CONFIG_KEY = "rafaam_ai_config";
-const API_BASE_URL_KEY = "rafaam_api_base_url";
-const API_KEY = "rafaam_api_key";
-const AI_PROVIDER_CONFIG_KEY = "rafaam_ai_provider_config";
+// ==================== Storage Keys ====================
+
+const KEYS = {
+    AI_CONFIG: "rafaam_ai_config",
+    API_BASE_URL: "rafaam_api_base_url",
+    API_KEY: "rafaam_api_key",
+    AI_PROVIDER_CONFIG: "rafaam_ai_provider_config",
+} as const;
+
+// ==================== Legacy Config Helpers ====================
 
 export const getApiBaseUrl = async (): Promise<string> => {
-    const url = await storageManager.get<string>(API_BASE_URL_KEY);
-    return url || "";
+    return (await storageManager.get<string>(KEYS.API_BASE_URL)) || "";
 };
 
 export const saveApiBaseUrl = async (url: string): Promise<void> => {
-    await storageManager.set(API_BASE_URL_KEY, url);
+    await storageManager.set(KEYS.API_BASE_URL, url);
 };
 
 export const getApiKey = async (): Promise<string> => {
-    const key = await storageManager.get<string>(API_KEY);
-    return key || "";
+    return (await storageManager.get<string>(KEYS.API_KEY)) || "";
 };
 
 export const saveApiKey = async (key: string): Promise<void> => {
-    await storageManager.set(API_KEY, key);
+    await storageManager.set(KEYS.API_KEY, key);
 };
 
 export const getAIConfig = async (): Promise<AIConfig | null> => {
     try {
-        const stored = await storageManager.get<AIConfig>(AI_CONFIG_KEY);
-        return stored || null;
+        return await storageManager.get<AIConfig>(KEYS.AI_CONFIG);
     } catch (error) {
-        console.error("Failed to load AI config", error);
+        console.error("[Config] Failed to load AI config", error);
         return null;
     }
 };
 
 export const saveAIConfig = async (config: AIConfig): Promise<void> => {
-    await storageManager.set(AI_CONFIG_KEY, config);
+    await storageManager.set(KEYS.AI_CONFIG, config);
 };
 
-// AI Provider Configuration
+// ==================== AI Provider Config ====================
+
+/**
+ * 迁移旧的单一 provider 配置到新的三模型配置
+ */
+const migrateOldProviderConfig = (oldConfig: any): AIProviderConfig => {
+    return {
+        text: {
+            type: oldConfig.type,
+            apiKey: oldConfig.apiKey,
+            baseUrl: oldConfig.baseUrl,
+            model: oldConfig.models?.text || "",
+            temperature: oldConfig.temperature,
+            maxTokens: oldConfig.maxTokens,
+            selectedCustomId: oldConfig.selectedCustomId,
+        },
+        tts: {
+            type: oldConfig.type,
+            apiKey: oldConfig.apiKey,
+            baseUrl: oldConfig.baseUrl,
+            model: oldConfig.models?.tts || "",
+            temperature: oldConfig.temperature,
+            maxTokens: oldConfig.maxTokens,
+            selectedCustomId: oldConfig.selectedCustomId,
+        },
+        live: {
+            type: oldConfig.type,
+            apiKey: oldConfig.apiKey,
+            baseUrl: oldConfig.baseUrl,
+            model: oldConfig.models?.live || "",
+            temperature: oldConfig.temperature,
+            maxTokens: oldConfig.maxTokens,
+            selectedCustomId: oldConfig.selectedCustomId,
+        },
+        customProviders: oldConfig.customProviders || [],
+    };
+};
+
+/**
+ * 从最旧的配置格式迁移（AIConfig + apiKey + baseUrl）
+ */
+const migrateFromLegacyConfig = async (): Promise<AIProviderConfig | null> => {
+    const [oldConfig, apiKey, baseUrl] = await Promise.all([
+        getAIConfig(),
+        getApiKey(),
+        getApiBaseUrl(),
+    ]);
+
+    if (!oldConfig) return null;
+
+    return {
+        text: {
+            type: AIProviderType.GEMINI,
+            apiKey,
+            baseUrl: baseUrl || undefined,
+            model: oldConfig.defaultModel,
+            temperature: oldConfig.temperature,
+        },
+        tts: {
+            type: AIProviderType.GEMINI,
+            apiKey,
+            baseUrl: baseUrl || undefined,
+            model: oldConfig.chatModel,
+            temperature: oldConfig.temperature,
+        },
+        live: {
+            type: AIProviderType.GEMINI,
+            apiKey,
+            baseUrl: baseUrl || undefined,
+            model: oldConfig.conversationModel,
+            temperature: oldConfig.temperature,
+        },
+        customProviders: [],
+    };
+};
+
+/**
+ * 检查是否是新格式的配置
+ */
+const isNewFormatConfig = (config: any): config is AIProviderConfig => {
+    return config && config.text && config.tts && config.live;
+};
+
+/**
+ * 获取 AI Provider 配置
+ * 自动处理配置迁移
+ */
 export const getAIProviderConfig =
     async (): Promise<AIProviderConfig | null> => {
         try {
             const stored = await storageManager.get<any>(
-                AI_PROVIDER_CONFIG_KEY
+                KEYS.AI_PROVIDER_CONFIG
             );
+
             if (stored) {
-                // 检查是否是新格式（有text/tts/live三个配置）
-                if (stored.text && stored.tts && stored.live) {
+                // 新格式配置
+                if (isNewFormatConfig(stored)) {
                     return {
-                        text: stored.text,
-                        tts: stored.tts,
-                        live: stored.live,
+                        ...stored,
                         customProviders: stored.customProviders || [],
                     };
                 }
 
-                // 迁移旧格式（单一provider配置）到新格式
-                const oldConfig = stored as {
-                    type: AIProviderType;
-                    apiKey: string;
-                    baseUrl?: string;
-                    models: { text: string; tts: string; live: string };
-                    temperature?: number;
-                    maxTokens?: number;
-                    customProviders?: any[];
-                    selectedCustomId?: string;
-                };
-
-                const migratedConfig: AIProviderConfig = {
-                    text: {
-                        type: oldConfig.type,
-                        apiKey: oldConfig.apiKey,
-                        baseUrl: oldConfig.baseUrl,
-                        model: oldConfig.models.text,
-                        temperature: oldConfig.temperature,
-                        maxTokens: oldConfig.maxTokens,
-                        selectedCustomId: oldConfig.selectedCustomId,
-                    },
-                    tts: {
-                        type: oldConfig.type,
-                        apiKey: oldConfig.apiKey,
-                        baseUrl: oldConfig.baseUrl,
-                        model: oldConfig.models.tts,
-                        temperature: oldConfig.temperature,
-                        maxTokens: oldConfig.maxTokens,
-                        selectedCustomId: oldConfig.selectedCustomId,
-                    },
-                    live: {
-                        type: oldConfig.type,
-                        apiKey: oldConfig.apiKey,
-                        baseUrl: oldConfig.baseUrl,
-                        model: oldConfig.models.live,
-                        temperature: oldConfig.temperature,
-                        maxTokens: oldConfig.maxTokens,
-                        selectedCustomId: oldConfig.selectedCustomId,
-                    },
-                    customProviders: oldConfig.customProviders || [],
-                };
-
-                // 保存迁移后的配置
-                await saveAIProviderConfig(migratedConfig);
-                return migratedConfig;
+                // 旧格式配置 - 迁移
+                const migrated = migrateOldProviderConfig(stored);
+                await saveAIProviderConfig(migrated);
+                return migrated;
             }
 
-            // 从更旧的配置迁移
-            const [oldConfig, apiKey, baseUrl] = await Promise.all([
-                getAIConfig(),
-                getApiKey(),
-                getApiBaseUrl(),
-            ]);
-
-            // 如果没有旧配置，返回 null
-            if (!oldConfig) {
-                return null;
+            // 尝试从最旧的配置迁移
+            const legacyMigrated = await migrateFromLegacyConfig();
+            if (legacyMigrated) {
+                await saveAIProviderConfig(legacyMigrated);
+                return legacyMigrated;
             }
 
-            const migratedConfig: AIProviderConfig = {
-                text: {
-                    type: AIProviderType.GEMINI,
-                    apiKey: apiKey,
-                    baseUrl: baseUrl || undefined,
-                    model: oldConfig.defaultModel,
-                    temperature: oldConfig.temperature,
-                },
-                tts: {
-                    type: AIProviderType.GEMINI,
-                    apiKey: apiKey,
-                    baseUrl: baseUrl || undefined,
-                    model: oldConfig.chatModel,
-                    temperature: oldConfig.temperature,
-                },
-                live: {
-                    type: AIProviderType.GEMINI,
-                    apiKey: apiKey,
-                    baseUrl: baseUrl || undefined,
-                    model: oldConfig.conversationModel,
-                    temperature: oldConfig.temperature,
-                },
-                customProviders: [],
-            };
-
-            // 保存迁移后的配置
-            await saveAIProviderConfig(migratedConfig);
-
-            return migratedConfig;
+            return null;
         } catch (error) {
-            console.error("Failed to load AI provider config", error);
+            console.error("[Config] Failed to load AI provider config", error);
             return null;
         }
     };
 
+/**
+ * 保存 AI Provider 配置
+ */
 export const saveAIProviderConfig = async (
     config: AIProviderConfig
 ): Promise<void> => {
-    await storageManager.set(AI_PROVIDER_CONFIG_KEY, config);
+    await storageManager.set(KEYS.AI_PROVIDER_CONFIG, config);
 };

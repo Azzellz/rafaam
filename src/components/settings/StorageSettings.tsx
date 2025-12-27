@@ -3,6 +3,7 @@ import { Language } from "@/types";
 import { translations } from "@/i18n";
 import { PixelButton } from "@/components/pixel";
 import { showAlert, showConfirm } from "@/stores/useDialogStore";
+import { storageManager } from "@/services/storage";
 
 interface Props {
     language: Language;
@@ -21,6 +22,8 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
     const [totalUsage, setTotalUsage] = useState<number>(0);
     const [quota, setQuota] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
+    const [currentStorage, setCurrentStorage] =
+        useState<string>("localStorage");
 
     useEffect(() => {
         calculateStorage();
@@ -41,6 +44,12 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
         setLoading(true);
         let items: StorageItem[] = [];
         let total = 0;
+
+        // 获取当前使用的存储策略
+        const currentStrategy = storageManager.strategy;
+        setCurrentStorage(
+            currentStrategy === "indexedDB" ? "IndexedDB" : "LocalStorage"
+        );
 
         // LocalStorage
         if (typeof window !== "undefined" && window.localStorage) {
@@ -80,7 +89,10 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                     });
                 }
             }
-            total += lsTotal;
+            // 如果当前策略是 localStorage，则 total 使用 localStorage 的总量
+            if (currentStrategy === "localStorage") {
+                total = lsTotal;
+            }
         }
 
         // IndexedDB Estimate
@@ -89,6 +101,11 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                 const estimate = await navigator.storage.estimate();
                 if (estimate.usage) {
                     setQuota(estimate.quota || null);
+
+                    // 如果当前策略是 indexedDB，则 total 使用 IndexedDB 的估算值
+                    if (currentStrategy === "indexedDB") {
+                        total = estimate.usage;
+                    }
 
                     items.push({
                         key: "indexedDB_storage",
@@ -180,7 +197,7 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
                         <div className="p-4 bg-gray-50 border-2 border-black">
                             <div className="flex justify-between items-end mb-2">
                                 <span className="text-xl font-bold">
-                                    {t.total} (LocalStorage)
+                                    {t.total} ({currentStorage})
                                 </span>
                                 <span className="text-xl text-theme">
                                     {formatBytes(totalUsage)}
