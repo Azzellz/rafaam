@@ -5,6 +5,7 @@ import {
     GrammarPoint,
     QuizSession,
     ListeningExercise,
+    ReadingExercise,
     WritingTask,
     Language,
     PracticeLanguage,
@@ -23,6 +24,7 @@ import {
     grammarSchema,
     quizSchema,
     listeningSchema,
+    readingSchema,
     writingTaskSchema,
 } from "./schemas";
 
@@ -51,6 +53,7 @@ export const generateLesson = async (
     | WritingTask
     | CustomContentData
     | ListeningExercise
+    | ReadingExercise
 > => {
     const langName = getLanguageName(language);
     const practiceConfig: PracticeLanguageConfig =
@@ -203,6 +206,28 @@ IMPORTANT:
             level,
             topic,
         } as WritingTask;
+    } else if (contentType === ContentType.READING) {
+        const prompt = `Create a ${targetLanguage} reading comprehension exercise for ${levelLabel} level ${level} learners focused on the topic: "${topic}".
+        1. Generate an engaging reading passage (approx. 150-250 words) suitable for this level.
+        2. Create 4 comprehension questions based on the passage.
+
+        IMPORTANT:
+        - The 'passage' must be in ${targetLanguage}.
+        - The 'questions' and 'options' must be in ${targetLanguage}.
+        - The 'explanation' for the correct answer must be in ${langName}.
+        `;
+
+        const provider = await getProviderForType("text");
+        const rawData = await provider.generateStructuredData(
+            prompt,
+            readingSchema
+        );
+        return {
+            ...rawData,
+            practiceLanguage,
+            level,
+            topic,
+        } as ReadingExercise;
     } else {
         throw new Error(`Unsupported content type: ${contentType}`);
     }

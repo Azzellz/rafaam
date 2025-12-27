@@ -160,6 +160,50 @@ export const writingTaskSchema: Schema = {
     required: ["prompt"],
 };
 
+export const readingSchema: Schema = {
+    type: Type.OBJECT,
+    properties: {
+        title: { type: Type.STRING },
+        passage: {
+            type: Type.STRING,
+            description:
+                "The reading passage/article. Should be appropriate for the learner's level.",
+        },
+        questions: {
+            type: Type.ARRAY,
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    question: {
+                        type: Type.STRING,
+                        description: "Comprehension question about the passage",
+                    },
+                    options: {
+                        type: Type.ARRAY,
+                        items: { type: Type.STRING },
+                        description: "4 multiple choice options",
+                    },
+                    correctIndex: {
+                        type: Type.INTEGER,
+                        description: "Index of correct answer (0-3)",
+                    },
+                    explanation: {
+                        type: Type.STRING,
+                        description: "Explanation of the answer",
+                    },
+                },
+                required: [
+                    "question",
+                    "options",
+                    "correctIndex",
+                    "explanation",
+                ],
+            },
+        },
+    },
+    required: ["title", "passage", "questions"],
+};
+
 export const writingEvaluationSchema: Schema = {
     type: Type.OBJECT,
     properties: {

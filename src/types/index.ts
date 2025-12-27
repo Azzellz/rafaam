@@ -5,6 +5,7 @@ export enum ContentType {
     WRITING = "WRITING",
     CHAT = "CHAT",
     LISTENING = "LISTENING",
+    READING = "READING",
     CUSTOM = "CUSTOM",
 }
 
@@ -19,6 +20,22 @@ export interface ListeningExercise {
     title: string;
     transcript: string;
     questions: ListeningQuestion[];
+    practiceLanguage: PracticeLanguage;
+    level: string;
+    topic: string;
+}
+
+export interface ReadingQuestion {
+    question: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
+}
+
+export interface ReadingExercise {
+    title: string;
+    passage: string;
+    questions: ReadingQuestion[];
     practiceLanguage: PracticeLanguage;
     level: string;
     topic: string;
@@ -137,6 +154,7 @@ export type GeneratedContent =
     | { type: ContentType.WRITING; data: WritingTask }
     | { type: ContentType.CHAT; data: ChatSession }
     | { type: ContentType.LISTENING; data: ListeningExercise }
+    | { type: ContentType.READING; data: ReadingExercise }
     | { type: ContentType.CUSTOM; data: CustomContentData };
 
 export interface PracticeRecord {

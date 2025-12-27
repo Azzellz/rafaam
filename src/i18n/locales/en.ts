@@ -19,6 +19,8 @@ export const enTranslation: TranslationContent = {
     chatPracticeDesc: "Chat freely with AI to improve conversation skills.",
     listeningPracticeDesc:
         "Listen to a story or dialogue and answer questions.",
+    readingPracticeDesc:
+        "Read a passage and answer reading comprehension questions.",
     writingPracticeDesc: "Practice writing essays or short texts.",
     questTopic: "QUEST TOPIC",
     topicPlaceholder: "e.g. Travel, Ordering at a restaurant, Anime tropes...",
@@ -29,6 +31,7 @@ export const enTranslation: TranslationContent = {
     battleQuiz: "Battle Quiz",
     voicePractice: "Voice Practice",
     listeningPractice: "Listening Practice",
+    readingPractice: "Reading Practice",
     writingPractice: "Writing Practice",
     generating: "GENERATING QUEST...",
     errorTitle: "ERROR ENCOUNTERED",
@@ -42,14 +45,26 @@ export const enTranslation: TranslationContent = {
     transcript: "TRANSCRIPT",
     showTranscript: "Show Transcript",
     hideTranscript: "Hide Transcript",
+    passage: "PASSAGE",
+    showPassage: "Show Passage",
+    hidePassage: "Hide Passage",
+    answerSheet: "ANSWER SHEET",
+    sequentialMode: "Sequential",
+    freeMode: "Free Mode",
+    sequentialModeDesc:
+        "Answer questions in order, automatically proceed to the next question",
+    freeModeDesc:
+        "Freely select any question to answer, jump between questions anytime",
+    answered: "Done",
+    unanswered: "Todo",
+    submitAnswers: "SUBMIT",
     next: "NEXT >>",
     finish: "FINISH",
     questComplete: "QUEST COMPLETE!",
     perfectScore: "PERFECT SCORE! SUGOI!",
     goodEffort: "GOOD EFFORT! GANBATTE!",
     playAgain: "PLAY AGAIN",
-    connectionError:
-        "The connection to the API failed. Please try again.",
+    connectionError: "The connection to the API failed. Please try again.",
     storageFallbackWarning:
         "Your browser cannot use IndexedDB. Favorites will fall back to local storage and may reset when browser data is cleared.",
     myFavorites: "MY FAVORITES",

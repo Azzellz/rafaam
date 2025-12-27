@@ -122,6 +122,11 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                                 desc: t.listeningPracticeDesc,
                             },
                             {
+                                label: t.readingPractice,
+                                value: ContentType.READING,
+                                desc: t.readingPracticeDesc,
+                            },
+                            {
                                 label: t.chatPractice,
                                 value: ContentType.CHAT,
                                 desc: t.chatPracticeDesc,

@@ -64,6 +64,10 @@ export const StatsView: React.FC<Props> = ({
                 return t.chatPractice;
             case ContentType.WRITING:
                 return t.writingPractice;
+            case ContentType.LISTENING:
+                return t.listeningPractice;
+            case ContentType.READING:
+                return t.readingPractice;
             default:
                 return type;
         }

@@ -16,6 +16,7 @@ export interface TranslationContent {
     voicePracticeDesc: string;
     chatPracticeDesc: string;
     listeningPracticeDesc: string;
+    readingPracticeDesc: string;
     writingPracticeDesc: string;
     questTopic: string;
     topicPlaceholder: string;
@@ -26,6 +27,7 @@ export interface TranslationContent {
     battleQuiz: string;
     voicePractice: string;
     listeningPractice: string;
+    readingPractice: string;
     writingPractice: string;
     generating: string;
     errorTitle: string;
@@ -38,6 +40,17 @@ export interface TranslationContent {
     transcript: string;
     showTranscript: string;
     hideTranscript: string;
+    passage: string;
+    showPassage: string;
+    hidePassage: string;
+    answerSheet: string;
+    sequentialMode: string;
+    freeMode: string;
+    sequentialModeDesc: string;
+    freeModeDesc: string;
+    answered: string;
+    unanswered: string;
+    submitAnswers: string;
     explanation: string;
     next: string;
     finish: string;

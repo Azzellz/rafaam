@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { ListeningExercise, Language, ContentType } from "@/types";
+import { ReadingExercise, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton, PixelTooltip } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 import { useStatsStore } from "@/stores/useStatsStore";
-import { TTSButton } from "@/components/widgets/TTSButton";
 
 interface Props {
-    data: ListeningExercise;
+    data: ReadingExercise;
     language: Language;
     onRestart: () => void;
 }
@@ -17,11 +16,7 @@ type AnswerState = {
     isCorrect: boolean | null;
 };
 
-export const ListeningView: React.FC<Props> = ({
-    data,
-    language,
-    onRestart,
-}) => {
+export const ReadingView: React.FC<Props> = ({ data, language, onRestart }) => {
     const t = translations[language];
     const practiceConfig = PRACTICE_LANGUAGES[data.practiceLanguage];
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -29,7 +24,7 @@ export const ListeningView: React.FC<Props> = ({
         data.questions.map(() => ({ selectedOption: null, isCorrect: null }))
     );
     const [showResults, setShowResults] = useState(false);
-    const [showTranscript, setShowTranscript] = useState(false);
+    const [showPassage, setShowPassage] = useState(true);
     const [isFreeMode, setIsFreeMode] = useState(false);
     const [showExplanation, setShowExplanation] = useState(false);
     const addRecord = useStatsStore((state) => state.addRecord);
@@ -49,7 +44,7 @@ export const ListeningView: React.FC<Props> = ({
     useEffect(() => {
         if (showResults) {
             addRecord({
-                type: ContentType.LISTENING,
+                type: ContentType.READING,
                 language: data.practiceLanguage,
                 topic: data.topic,
                 score: score,
@@ -136,25 +131,16 @@ export const ListeningView: React.FC<Props> = ({
 
             <PixelCard className="mb-8">
                 <div className="flex flex-col items-center gap-4">
-                    <div className="w-full flex justify-center py-8 bg-gray-50 border-2 border-dashed border-gray-300 rounded">
-                        <TTSButton
-                            text={data.transcript}
-                            practiceLanguage={data.practiceLanguage}
-                            size="md"
-                            className="scale-150"
-                        />
-                    </div>
-
                     <button
-                        onClick={() => setShowTranscript(!showTranscript)}
+                        onClick={() => setShowPassage(!showPassage)}
                         className="text-blue-600 hover:underline font-bold text-sm"
                     >
-                        {showTranscript ? t.hideTranscript : t.showTranscript}
+                        {showPassage ? t.hidePassage : t.showPassage}
                     </button>
 
-                    {showTranscript && (
+                    {showPassage && (
                         <div className="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded text-lg leading-relaxed whitespace-pre-wrap">
-                            {data.transcript}
+                            {data.passage}
                         </div>
                     )}
                 </div>
@@ -230,7 +216,7 @@ export const ListeningView: React.FC<Props> = ({
                 )}
             </PixelCard>
 
-            {/* Answer Sheet / Mode Toggle */}
+            {/* Answer Sheet / Mode Toggle - Moved below question card */}
             <PixelCard className="mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                     <h3 className="text-lg font-bold">{t.answerSheet}</h3>

@@ -8,6 +8,7 @@ import { WritingView } from "./WritingView";
 import { ChatView } from "./ChatView";
 import { CustomView } from "./CustomView";
 import { ListeningView } from "./ListeningView";
+import { ReadingView } from "./ReadingView";
 
 type QuestResultsProps = {
     content: GeneratedContent;
@@ -62,6 +63,12 @@ export const QuestResults: React.FC<QuestResultsProps> = ({
             />
         ) : content.type === ContentType.LISTENING ? (
             <ListeningView
+                data={content.data}
+                language={language}
+                onRestart={onClearContent}
+            />
+        ) : content.type === ContentType.READING ? (
+            <ReadingView
                 data={content.data}
                 language={language}
                 onRestart={onClearContent}
