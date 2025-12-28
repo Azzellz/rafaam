@@ -9,6 +9,9 @@ export * from "./providers";
 // 内容生成
 export { generateLesson, generateRandomTopic } from "./generators";
 
+// 沙盒内容生成
+export { generateSandboxContent } from "./sandboxGenerator";
+
 // 内容评估
 export { evaluateWriting } from "./evaluation";
 

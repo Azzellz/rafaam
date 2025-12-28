@@ -12,6 +12,7 @@ interface PixelSelectProps {
     className?: string;
     placeholder?: string;
     size?: "sm" | "md" | "lg";
+    disabled?: boolean;
 }
 
 export const PixelSelect: React.FC<PixelSelectProps> = ({
@@ -21,6 +22,7 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
     className = "",
     placeholder = "Select...",
     size = "md",
+    disabled = false,
 }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -56,16 +58,23 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
     const selectedOption = options.find((opt) => opt.value === value);
 
     return (
-        <div className={`relative ${className}`} ref={containerRef}>
+        <div
+            className={`relative ${className} ${
+                disabled ? "opacity-50 pointer-events-none" : ""
+            }`}
+            ref={containerRef}
+        >
             <div
                 className={`${
                     sizeClasses[size]
-                } w-full bg-white border-2 border-black cursor-pointer flex items-center justify-between select-none transition-all ${
-                    isOpen
-                        ? "translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0_0_#000]"
-                        : "shadow-[4px_4px_0_0_#000] hover:shadow-[4px_4px_0_0_var(--theme-color)]"
+                } w-full bg-white border-2 border-black flex items-center justify-between select-none transition-all ${
+                    disabled
+                        ? "cursor-not-allowed bg-gray-100"
+                        : isOpen
+                        ? "cursor-pointer translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0_0_#000]"
+                        : "cursor-pointer shadow-[4px_4px_0_0_#000] hover:shadow-[4px_4px_0_0_var(--theme-color)]"
                 }`}
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => !disabled && setIsOpen(!isOpen)}
             >
                 <span className="truncate">
                     {selectedOption ? selectedOption.label : placeholder}

@@ -19,6 +19,7 @@ import {
 import { StudyPlan } from "@/components/widgets/StudyPlan";
 import { FavoritesView } from "./FavoritesView";
 import { StatsView } from "./StatsView";
+import { SandboxView } from "./SandboxView";
 
 type GeneratorIntroProps = {
     language: Language;
@@ -267,6 +268,11 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
                             id: "generator",
                             label: t.configureQuest,
                             content: generatorForm,
+                        },
+                        {
+                            id: "sandbox",
+                            label: t.sandboxMode,
+                            content: <SandboxView language={language} />,
                         },
                         {
                             id: "studyPlan",
