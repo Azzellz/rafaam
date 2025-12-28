@@ -1,7 +1,0 @@
-{
-  "name": "Rafaam",
-  "description": "A pixel-art styled AI Japanese learning platform that generates grammar lessons and interactive quizzes based on your JLPT level and interests.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
-}

@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 import { PracticeRecord } from "@/types";
 import {
@@ -43,3 +45,4 @@ export const useStatsStore = create<StatsState>((set) => ({
         set({ records });
     },
 }));
+

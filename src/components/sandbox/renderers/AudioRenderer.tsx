@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Audio Renderer
  * 音频组件渲染器
@@ -55,3 +57,4 @@ export const AudioRenderer: React.FC<AudioRendererProps> = ({
         </div>
     );
 };
+

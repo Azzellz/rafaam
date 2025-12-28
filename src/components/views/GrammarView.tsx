@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useMemo, useRef } from "react";
 import { GrammarLesson, Language, GrammarPoint, ContentType } from "@/types";
 import { PixelCard } from "@/components/pixel";
@@ -33,7 +35,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
     const favoritesMutating = useFavoritesStore((state) => state.isMutating);
     const storageStrategy = useFavoritesStore((state) => state.storageStrategy);
     const addRecord = useStatsStore((state) => state.addRecord);
-    const startTimeRef = useRef<number>(Date.now());
+    const startTimeRef = useRef<number>(0);
 
     useEffect(() => {
         initFavoritesStore();
@@ -51,7 +53,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                 });
             }
         };
-    }, [initFavoritesStore]);
+    }, [initFavoritesStore, addRecord, data.practiceLanguage, data.topic]);
 
     const favoritePatterns = useMemo(
         () => new Set(favorites.map((p: GrammarPoint) => p.pattern)),
@@ -157,8 +159,8 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                    `}
                                 >
                                     {isFavorite
-                                        ? `★ ${t.saved}`
-                                        : `☆ ${t.addToFavorites}`}
+                                        ? `⭐${t.saved}`
+                                        : `⭐${t.addToFavorites}`}
                                 </button>
                             </div>
                         </div>
@@ -198,7 +200,7 @@ export const GrammarView: React.FC<Props> = ({ data, language }) => {
                                             </span>
                                         )}
                                         <span className="text-sm md:text-md text-gray-600 italic">
-                                            "{ex.translation}"
+                                            {ex.translation}
                                         </span>
                                     </li>
                                 ))}

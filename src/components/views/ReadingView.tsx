@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useMemo } from "react";
 import { ReadingExercise, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton, PixelTooltip } from "@/components/pixel";
@@ -290,3 +292,4 @@ export const ReadingView: React.FC<Props> = ({ data, language, onRestart }) => {
         </div>
     );
 };
+

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import { ChatSession, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton } from "@/components/pixel";
@@ -12,7 +14,7 @@ import {
 } from "@/constants/practiceLanguages";
 import { LANGUAGE_CONFIG } from "@/constants/languages";
 import { useStatsStore } from "@/stores/useStatsStore";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 interface Props {
     data: ChatSession;
@@ -27,7 +29,7 @@ interface Message {
 
 export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
     const t = translations[language];
-    const navigate = useNavigate();
+    const router = useRouter();
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -102,7 +104,7 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
                     error,
                     language,
                     onNavigateToSettings: () => {
-                        navigate("/settings");
+                        router.push("/settings");
                         onExit(); // 退出聊天视图
                     },
                 });
@@ -181,8 +183,8 @@ export const ChatView: React.FC<Props> = ({ data, language, onExit }) => {
                 error,
                 language,
                 onNavigateToSettings: () => {
-                    navigate("/settings");
-                    onExit(); // 退出聊天视图
+                    router.push("/settings");
+                    onExit(); // 退出聊天?
                 },
             });
 

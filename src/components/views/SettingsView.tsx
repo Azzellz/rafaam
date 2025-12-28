@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Language } from "@/types";
 import { PixelButton, PixelCard } from "@/components/pixel";
@@ -75,3 +77,4 @@ export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
         </div>
     );
 };
+

@@ -1,9 +1,11 @@
+"use client";
+
 /**
  * Matching Renderer
  * 配对题组件渲染器
  */
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { MatchingComponentConfig } from "@/types/sandbox";
 import { Language } from "@/types";
 import { translations } from "@/i18n";
@@ -17,6 +19,16 @@ interface MatchingRendererProps {
     language: Language;
 }
 
+// Helper function to shuffle array (Fisher-Yates shuffle)
+const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+};
+
 export const MatchingRenderer: React.FC<MatchingRendererProps> = ({
     config,
     matches = {},
@@ -28,9 +40,12 @@ export const MatchingRenderer: React.FC<MatchingRendererProps> = ({
     const t = translations[language];
     const [selectedLeft, setSelectedLeft] = useState<string | null>(null);
 
-    const rightItems = config.shuffleRight
-        ? [...config.pairs].sort(() => Math.random() - 0.5)
-        : config.pairs;
+    const rightItems = useMemo(() => {
+        if (config.shuffleRight) {
+            return shuffleArray(config.pairs);
+        }
+        return config.pairs;
+    }, [config.pairs, config.shuffleRight]);
 
     const handleLeftClick = (id: string) => {
         if (isPreview || showAnswer) return;

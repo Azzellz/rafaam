@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import React, { useEffect, useState, useCallback } from "react";
 import { Language } from "@/types";
 import { translations } from "@/i18n";
 import { PixelButton } from "@/components/pixel";
@@ -25,10 +27,6 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
     const [currentStorage, setCurrentStorage] =
         useState<string>("localStorage");
 
-    useEffect(() => {
-        calculateStorage();
-    }, []);
-
     const formatBytes = (bytes: number) => {
         if (bytes === 0) return `0 ${t.bytes}`;
         const k = 1024;
@@ -40,9 +38,9 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
     };
 
-    const calculateStorage = async () => {
+    const calculateStorage = useCallback(async () => {
         setLoading(true);
-        let items: StorageItem[] = [];
+        const items: StorageItem[] = [];
         let total = 0;
 
         // 获取当前使用的存储策略
@@ -129,7 +127,12 @@ export const StorageSettings: React.FC<Props> = ({ language }) => {
         setUsage(items);
         setTotalUsage(total);
         setLoading(false);
-    };
+    }, [t.bgSettings, t.myFavorites]);
+
+    useEffect(() => {
+        calculateStorage();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const clearItem = (item: StorageItem) => {
         showConfirm(

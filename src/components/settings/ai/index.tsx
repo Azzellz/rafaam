@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { PixelButton, PixelTabs, PixelTab } from "@/components/pixel";
 import { getAIProviderConfig, saveAIProviderConfig } from "@/services/storage";

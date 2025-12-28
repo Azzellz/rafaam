@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useMemo, useEffect } from "react";
 import { ContentType, Language } from "@/types";
 import {
@@ -276,3 +278,4 @@ export const StatsView: React.FC<Props> = ({
         </PixelModal>
     );
 };
+

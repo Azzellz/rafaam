@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 export interface PixelSelectOption {
@@ -122,3 +124,4 @@ export const PixelSelect: React.FC<PixelSelectProps> = ({
         </div>
     );
 };
+

@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { usePathname, useRouter } from "next/navigation";
 import { Language, PracticeLanguage } from "@/types";
 import { TranslationContent } from "@/i18n";
 import { LANGUAGE_OPTIONS } from "@/constants/languages";
@@ -23,9 +23,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     onLanguageChange,
     t,
 }) => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const showBackButton = location.pathname !== "/";
+    const pathname = usePathname();
+    const router = useRouter();
+    const showBackButton = pathname !== "/";
 
     const handleLanguageChange = (value: string) => {
         onLanguageChange(value as Language);
@@ -37,7 +37,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
                     {showBackButton && (
                         <button
-                            onClick={() => navigate("/")}
+                            onClick={() => router.push("/")}
                             className="h-8 w-8 md:h-10 md:w-10 bg-white border-2 border-black hover:bg-gray-100 shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none flex items-center justify-center text-black flex-shrink-0 p-0"
                             title="Back"
                         >

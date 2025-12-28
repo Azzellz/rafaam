@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 import {
     BackgroundConfig,
@@ -67,3 +69,4 @@ export const useAppStore = create<AppState>((set) => ({
     setBgConfig: (config) => set({ bgConfig: config }),
     resetQuestState: () => set({ content: null, topic: "", error: null }),
 }));
+

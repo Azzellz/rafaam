@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo } from "react";
 import { ContentType, PracticeLanguage, Language } from "@/types";
 import { TranslationContent } from "@/i18n";
@@ -251,3 +253,4 @@ export const GeneratorIntro: React.FC<GeneratorIntroProps> = ({
         </div>
     );
 };
+

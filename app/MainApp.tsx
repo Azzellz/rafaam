@@ -1,14 +1,10 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import {
-    ContentType,
-    GeneratedContent,
-    Language,
-    BackgroundConfig,
-    PracticeLanguage,
-} from "@/types";
+import { ContentType, GeneratedContent, Language } from "@/types";
 import { generateLesson, generateRandomTopic } from "@/services/ai";
 import { handleAIConfigError } from "@/services/ai/configErrorHandler";
-import { getBackgroundConfig, saveBackgroundConfig } from "@/services/storage";
+import { getBackgroundConfig } from "@/services/storage";
 import { LoadingSprite } from "@/components/widgets/LoadingSprite";
 import { SettingsView } from "@/components/views/SettingsView";
 import { SelectionTool } from "@/components/widgets/SelectionTool";
@@ -20,20 +16,22 @@ import { AppHeader } from "@/components/layout/AppHeader";
 import { GeneratorIntro } from "@/components/views/GeneratorIntro";
 import { QuestResults } from "@/components/views/QuestResults";
 import { ErrorBanner } from "@/components/widgets/ErrorBanner";
-import { ScrollToTop } from "@/components/widgets/ScrollToTop";
+import dynamic from "next/dynamic";
 import { PixelToastContainer, PixelDialog } from "@/components/pixel";
 import { showAlert } from "@/stores/useDialogStore";
-import {
-    Navigate,
-    Route,
-    Routes,
-    useLocation,
-    useNavigate,
-} from "react-router-dom";
-
 import { mixColorWithBlack } from "@/utils/color";
 
-const App: React.FC = () => {
+const ScrollToTop = dynamic(
+    () =>
+        import("@/components/widgets/ScrollToTop").then(
+            (mod) => mod.ScrollToTop
+        ),
+    { ssr: false }
+);
+
+type View = "home" | "settings";
+
+const MainApp: React.FC = () => {
     const {
         topic,
         setTopic,
@@ -57,9 +55,7 @@ const App: React.FC = () => {
     } = useAppStore();
 
     const [isRandomizingTopic, setIsRandomizingTopic] = useState(false);
-
-    const location = useLocation();
-    const navigate = useNavigate();
+    const [currentView, setCurrentView] = useState<View>("home");
 
     useEffect(() => {
         const loadBgConfig = async () => {
@@ -122,7 +118,7 @@ const App: React.FC = () => {
                 error: err,
                 language,
                 onNavigateToSettings: () => {
-                    navigate("/settings");
+                    setCurrentView("settings");
                 },
             });
 
@@ -152,7 +148,7 @@ const App: React.FC = () => {
                 error: err,
                 language,
                 onNavigateToSettings: () => {
-                    navigate("/settings");
+                    setCurrentView("settings");
                 },
             });
 
@@ -174,7 +170,7 @@ const App: React.FC = () => {
     };
 
     const handleLogoClick = () => {
-        navigate("/");
+        setCurrentView("home");
     };
 
     const handleLanguageChange = (nextLanguage: Language) => {
@@ -243,25 +239,19 @@ const App: React.FC = () => {
                 language={language}
                 practiceLanguage={practiceLanguage}
                 onLogoClick={handleLogoClick}
-                onOpenSettings={() => navigate("/settings")}
+                onOpenSettings={() => setCurrentView("settings")}
                 onLanguageChange={handleLanguageChange}
                 t={t}
             />
 
             <main className="max-w-4xl mx-auto px-3 md:px-4">
-                <Routes>
-                    <Route path="/" element={generatorView} />
-                    <Route
-                        path="/settings"
-                        element={
-                            <SettingsView
-                                language={language}
-                                onBack={() => navigate("/")}
-                            />
-                        }
+                {currentView === "home" && generatorView}
+                {currentView === "settings" && (
+                    <SettingsView
+                        language={language}
+                        onBack={() => setCurrentView("home")}
                     />
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
+                )}
             </main>
             <ScrollToTop />
             <PixelToastContainer />
@@ -270,4 +260,4 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
+export default MainApp;

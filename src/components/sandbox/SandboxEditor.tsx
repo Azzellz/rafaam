@@ -1,9 +1,11 @@
+"use client";
+
 /**
  * Sandbox Template Editor
  * 沙盒模板可视化编辑器
  */
 
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import {
     SandboxTemplate,
     SandboxComponent,
@@ -18,7 +20,6 @@ import {
     PixelButton,
     PixelCard,
     PixelInput,
-    PixelModal,
     PixelSelect,
 } from "@/components/pixel";
 import { Language, PracticeLanguage } from "@/types";
@@ -128,7 +129,7 @@ const ComponentPalette: React.FC<ComponentPaletteProps> = ({
     );
 };
 
-// ==================== 组件编辑器 ====================
+// ==================== 组件编辑====================
 
 interface ComponentEditorProps {
     component: SandboxComponent;

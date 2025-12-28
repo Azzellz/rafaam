@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef } from "react";
 import { BackgroundConfig, Language } from "@/types";
 import { PixelButton } from "@/components/pixel";
@@ -113,7 +115,7 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
                         />
                         <div className="border-2 border-black border-dashed bg-gray-50 hover:bg-gray-100 p-3 text-center text-gray-600 truncate">
                             {bgConfig.imageData
-                                ? "🖼️ Image Selected"
+                                ? "Image Selected"
                                 : t.noImage}
                         </div>
                     </label>
@@ -178,3 +180,4 @@ export const AppearanceSettings: React.FC<Props> = ({ language }) => {
         </div>
     );
 };
+

@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Sandbox View
  * 沙盒模式主视图 - 模板管理、编辑和内容生成
@@ -13,21 +15,13 @@ import {
 import { useSandboxTemplateStore } from "@/stores/useSandboxTemplateStore";
 import { SandboxEditor } from "@/components/sandbox/SandboxEditor";
 import { SandboxComponentRenderer } from "@/components/sandbox/renderers";
-import {
-    PixelButton,
-    PixelCard,
-    PixelInput,
-    PixelSelect,
-} from "@/components/pixel";
+import { PixelButton, PixelCard, PixelInput } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { showConfirm, showAlert } from "@/stores/useDialogStore";
 import { useToastStore } from "@/stores/useToastStore";
 import { generateSandboxContent } from "@/services/ai";
 import { useAppStore } from "@/stores/useAppStore";
-import {
-    PRACTICE_LANGUAGES,
-    getDefaultLevel,
-} from "@/constants/practiceLanguages";
+import { PRACTICE_LANGUAGES } from "@/constants/practiceLanguages";
 
 interface SandboxViewProps {
     language: Language;
@@ -75,11 +69,11 @@ export const SandboxView: React.FC<SandboxViewProps> = ({
 
     // Preview state
     const [showAnswers, setShowAnswers] = useState(false);
-    const [answerState, setAnswerState] = useState<Record<string, any>>({});
+    const [answerState, setAnswerState] = useState<Record<string, unknown>>({});
 
     // 处理答案变化
     const handleAnswerChange = useCallback(
-        (componentId: string, value: any) => {
+        (componentId: string, value: unknown) => {
             setAnswerState((prev) => ({
                 ...prev,
                 [componentId]: value,
@@ -159,7 +153,7 @@ export const SandboxView: React.FC<SandboxViewProps> = ({
 
                 importTemplate(template);
                 addToast(t.templateImported, "success");
-            } catch (error) {
+            } catch {
                 showAlert(t.importFailed, undefined, language);
             }
         };
@@ -271,7 +265,7 @@ export const SandboxView: React.FC<SandboxViewProps> = ({
                             }}
                             variant="secondary"
                         >
-                            ← {t.backToTemplates}
+                            ⬅ {t.backToTemplates}
                         </PixelButton>
                         <div>
                             <h2 className="text-3xl font-bold">
@@ -312,9 +306,9 @@ export const SandboxView: React.FC<SandboxViewProps> = ({
                             disabled={isGenerating || !topic.trim()}
                         >
                             {isGenerating ? (
-                                <>⏳ {t.generatingContent}</>
+                                <>⏳{t.generatingContent}</>
                             ) : (
-                                <>✨ {t.generateContent}</>
+                                <>▶{t.generateContent}</>
                             )}
                         </PixelButton>
                         <PixelButton
@@ -436,7 +430,7 @@ export const SandboxView: React.FC<SandboxViewProps> = ({
                             }}
                             variant="secondary"
                         >
-                            ← {t.back}
+                            ⬅ {t.back}
                         </PixelButton>
                         <div>
                             <h2 className="text-3xl font-bold">
@@ -453,7 +447,7 @@ export const SandboxView: React.FC<SandboxViewProps> = ({
                                 variant={showAnswers ? "primary" : "secondary"}
                                 onClick={() => setShowAnswers(!showAnswers)}
                             >
-                                {showAnswers ? "👁️ " : "👁️‍🗨️ "}
+                                {showAnswers ? "👁️" : "👁️‍🗨️ "}
                                 {t.showAnswer}
                             </PixelButton>
                         )}
@@ -515,7 +509,7 @@ export const SandboxView: React.FC<SandboxViewProps> = ({
                 <div className="flex items-center gap-4">
                     {onBack && (
                         <PixelButton onClick={onBack} variant="secondary">
-                            ← {t.back}
+                            ⬅ {t.back}
                         </PixelButton>
                     )}
                     <div>

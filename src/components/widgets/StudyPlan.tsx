@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
-import { Language, StudyPlan as StudyPlanType, DailyGoalType } from "@/types";
+import { Language, StudyPlan as StudyPlanType } from "@/types";
 import { translations } from "@/i18n";
 import { usePlanStore } from "@/stores/usePlanStore";
 import { PixelButton, PixelInput } from "@/components/pixel";

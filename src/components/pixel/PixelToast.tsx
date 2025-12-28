@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+"use client";
+
+import React from "react";
 import { useToastStore, Toast, ToastType } from "@/stores/useToastStore";
 
 const ToastItem: React.FC<{ toast: Toast; onRemove: (id: string) => void }> = ({

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Language, WritingTask, WritingEvaluation, ContentType } from "@/types";
 import { PixelButton, PixelCard } from "../pixel";
@@ -7,7 +9,7 @@ import { handleAIConfigError } from "@/services/ai/configErrorHandler";
 import { LoadingSprite } from "../widgets/LoadingSprite";
 import { useStatsStore } from "@/stores/useStatsStore";
 import { showAlert } from "@/stores/useDialogStore";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 type WritingViewProps = {
     data: WritingTask;
@@ -21,7 +23,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
     onExit,
 }) => {
     const t = translations[language];
-    const navigate = useNavigate();
+    const router = useRouter();
     const [text, setText] = useState("");
     const [evaluation, setEvaluation] = useState<WritingEvaluation | null>(
         null
@@ -56,7 +58,7 @@ export const WritingView: React.FC<WritingViewProps> = ({
                 error,
                 language,
                 onNavigateToSettings: () => {
-                    navigate("/settings");
+                    router.push("/settings");
                 },
             });
 

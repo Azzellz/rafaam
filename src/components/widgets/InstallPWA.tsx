@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { PixelButton } from "@/components/pixel";
 
@@ -56,3 +58,4 @@ export const InstallPWA: React.FC = () => {
         </div>
     );
 };
+

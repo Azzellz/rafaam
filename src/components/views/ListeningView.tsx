@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useMemo } from "react";
 import { ListeningExercise, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton, PixelTooltip } from "@/components/pixel";
@@ -304,3 +306,4 @@ export const ListeningView: React.FC<Props> = ({
         </div>
     );
 };
+

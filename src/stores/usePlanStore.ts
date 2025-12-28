@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 import { StudyPlan, DailyProgress } from "@/types";
 import {
@@ -61,3 +63,4 @@ export const usePlanStore = create<PlanState>((set, get) => ({
         set({ plan, progress });
     },
 }));
+

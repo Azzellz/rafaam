@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { generateEdgeTTS } from "@/utils/edgeTTS";
 import { playMP3Audio, playAudioData, stopAudio } from "@/utils/audio";
@@ -11,9 +13,8 @@ interface Props {
     className?: string;
     label?: string;
     practiceLanguage?: PracticeLanguage;
-    useEdgeTTS?: boolean; // 是否使用 Edge TTS（默认 true）
+    useEdgeTTS?: boolean; // 是否使用 Edge TTS（默认为 true）
 }
-
 export const TTSButton: React.FC<Props> = ({
     text,
     size = "md",

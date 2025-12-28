@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { QuizSession, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton } from "@/components/pixel";
@@ -185,3 +187,4 @@ export const QuizView: React.FC<Props> = ({ data, language, onRestart }) => {
         </div>
     );
 };
+

@@ -1,13 +1,15 @@
+"use client";
+
 import React, { useEffect, useState, useRef } from "react";
 import { TTSButton } from "./TTSButton";
 import { createPortal } from "react-dom";
 import { translateText } from "@/services/ai";
 import { handleAIConfigError } from "@/services/ai/configErrorHandler";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useAppStore } from "@/stores/useAppStore";
 
 export const SelectionTool: React.FC = () => {
-    const navigate = useNavigate();
+    const router = useRouter();
     const language = useAppStore((state) => state.language);
     const [position, setPosition] = useState<{ x: number; y: number } | null>(
         null
@@ -22,29 +24,41 @@ export const SelectionTool: React.FC = () => {
 
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const popupRef = useRef<HTMLDivElement>(null);
+    const translationRequestRef = useRef(0);
 
+    // Trigger translation when showTranslate becomes true or targetLang changes
     useEffect(() => {
-        if (showTranslate && selectedText) {
-            setIsTranslating(true);
-            translateText(selectedText, targetLang)
-                .then(setTranslation)
-                .catch((error) => {
-                    console.error(error);
-                    const isConfigError = handleAIConfigError({
-                        error,
-                        language,
-                        onNavigateToSettings: () => {
-                            navigate("/settings");
-                        },
-                    });
-
-                    if (!isConfigError) {
-                        setTranslation("Translation failed");
-                    }
-                })
-                .finally(() => setIsTranslating(false));
+        if (!showTranslate || !selectedText) {
+            return;
         }
-    }, [showTranslate, targetLang, selectedText, language, navigate]);
+
+        const requestId = ++translationRequestRef.current;
+
+        translateText(selectedText, targetLang)
+            .then((result) => {
+                if (requestId === translationRequestRef.current) {
+                    setTranslation(result);
+                    setIsTranslating(false);
+                }
+            })
+            .catch((error) => {
+                if (requestId !== translationRequestRef.current) return;
+
+                console.error(error);
+                const isConfigError = handleAIConfigError({
+                    error,
+                    language,
+                    onNavigateToSettings: () => {
+                        router.push("/settings");
+                    },
+                });
+
+                if (!isConfigError) {
+                    setTranslation("Translation failed");
+                }
+                setIsTranslating(false);
+            });
+    }, [showTranslate, selectedText, targetLang, language, router]);
 
     useEffect(() => {
         const handleSelection = (e: Event) => {
@@ -129,7 +143,13 @@ export const SelectionTool: React.FC = () => {
                 <div className="flex items-center gap-2">
                     <TTSButton text={selectedText} size="sm" label="READ" />
                     <button
-                        onClick={() => setShowTranslate(!showTranslate)}
+                        onClick={() => {
+                            if (!showTranslate) {
+                                setIsTranslating(true);
+                                setTranslation("");
+                            }
+                            setShowTranslate(!showTranslate);
+                        }}
                         className="inline-flex items-center justify-center border-2 border-black bg-white hover:bg-gray-100 active:translate-y-[2px] transition-all p-1"
                     >
                         <svg
@@ -159,7 +179,13 @@ export const SelectionTool: React.FC = () => {
                                 (lang) => (
                                     <button
                                         key={lang}
-                                        onClick={() => setTargetLang(lang)}
+                                        onClick={() => {
+                                            if (lang !== targetLang) {
+                                                setIsTranslating(true);
+                                                setTranslation("");
+                                            }
+                                            setTargetLang(lang);
+                                        }}
                                         className={`px-2 py-1 text-[10px] border-2 border-black transition-colors ${
                                             targetLang === lang
                                                 ? "bg-theme text-white"

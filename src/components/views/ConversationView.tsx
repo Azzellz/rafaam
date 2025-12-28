@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import {
     ConversationSession,
@@ -20,7 +22,7 @@ import { handleAIConfigError } from "@/services/ai/configErrorHandler";
 import { getAIConfig } from "@/services/storage";
 import { createPcmBlob, decodeBase64, decodeAudioData } from "@/utils/audio";
 import { useStatsStore } from "@/stores/useStatsStore";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 interface Props {
     data: ConversationSession;
@@ -39,7 +41,7 @@ export const ConversationView: React.FC<Props> = ({
     onExit,
 }) => {
     const t = translations[language];
-    const navigate = useNavigate();
+    const router = useRouter();
     const practiceLanguageConfig =
         PRACTICE_LANGUAGES[data.practiceLanguage] ??
         PRACTICE_LANGUAGES[DEFAULT_PRACTICE_LANGUAGE];
@@ -193,7 +195,7 @@ export const ConversationView: React.FC<Props> = ({
                 error: err,
                 language,
                 onNavigateToSettings: () => {
-                    navigate("/settings");
+                    router.push("/settings");
                     onExit(); // 退出会话视图
                 },
             });

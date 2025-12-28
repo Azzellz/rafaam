@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useMemo } from "react";
 import { ClozeExercise, Language, ContentType } from "@/types";
 import { PixelCard, PixelButton } from "@/components/pixel";
@@ -49,11 +51,18 @@ export const ClozeView: React.FC<Props> = ({ data, language, onRestart }) => {
                 maxScore: data.blanks.length,
             });
         }
-    }, [showResults]);
+    }, [
+        showResults,
+        addRecord,
+        data.practiceLanguage,
+        data.topic,
+        data.blanks.length,
+        score,
+    ]);
 
-    // 渲染带有空白的文章
+    // 渲染带有空白的文本
     const renderPassage = () => {
-        let passageText = data.passage;
+        const passageText = data.passage;
         const parts: React.ReactNode[] = [];
         let lastIndex = 0;
 
@@ -133,7 +142,7 @@ export const ClozeView: React.FC<Props> = ({ data, language, onRestart }) => {
         setAnswers(newAnswers);
         setShowExplanation(true);
 
-        // 自动移动到下一个空白
+        // 自动移动到下一个空格
         setTimeout(() => {
             setShowExplanation(false);
             const nextUnanswered = newAnswers.findIndex(
@@ -295,7 +304,7 @@ export const ClozeView: React.FC<Props> = ({ data, language, onRestart }) => {
                         }`}
                     >
                         <div className="text-xl font-bold mb-2">
-                            {currentAnswer.isCorrect ? "✓" : "✗"}
+                            {currentAnswer.isCorrect ? "✅" : "❌"}
                         </div>
                         {!currentAnswer.isCorrect && (
                             <div className="text-lg">

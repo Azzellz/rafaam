@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { GrammarPoint, Language, PracticeLanguage } from "@/types";
 import { PixelCard, PixelButton, PixelSelect } from "@/components/pixel";
@@ -187,7 +189,7 @@ export const FavoritesView: React.FC<Props> = ({
                                                     </span>
                                                 )}
                                                 <span className="text-xs text-gray-500 italic">
-                                                    "{ex.translation}"
+                                                    {ex.translation}
                                                 </span>
                                             </li>
                                         ))}
@@ -201,3 +203,4 @@ export const FavoritesView: React.FC<Props> = ({
         </div>
     );
 };
+

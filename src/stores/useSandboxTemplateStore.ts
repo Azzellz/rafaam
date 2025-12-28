@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Sandbox Template Store
  * 沙盒模板状态管理
@@ -109,3 +111,4 @@ export const useSandboxTemplateStore = create<SandboxTemplateState>()(
         }
     )
 );
+

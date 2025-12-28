@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 import { GrammarPoint, PracticeLanguage } from "@/types";
 import {
@@ -127,3 +129,4 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
         }
     },
 }));
+

@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 
 export type ToastType = "info" | "success" | "warning" | "error";
@@ -36,3 +38,4 @@ export const useToastStore = create<ToastState>((set) => ({
             toasts: state.toasts.filter((t) => t.id !== id),
         })),
 }));
+

@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 import { translations } from "@/i18n";
 import { Language } from "@/types";
@@ -77,3 +79,4 @@ export const showConfirm = (
         language: lang,
     });
 };
+

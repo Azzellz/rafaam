@@ -4,7 +4,23 @@
 
 @font-face {
     font-family: "zpix";
-    src: url("./font/zpix.ttf") format("truetype");
+    src: url("/fonts/zpix.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "VT323";
+    src: url("/fonts/VT323.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "DotGothic16";
+    src: url("/fonts/DotGothic16.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -17,6 +33,11 @@
         --theme-color: #4f46e5;
         --theme-hover: #473fce;
         --theme-shadow: #2f2a89;
+    }
+
+    @theme inline {
+        --font-vt323: "VT323", "zpix", "DotGothic16", "NSimSun", monospace;
+        --font-dot: "DotGothic16", "zpix", "NSimSun", sans-serif;
     }
 
     html,
@@ -48,9 +69,7 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #1e293b;
     }
-}
 
-@layer utilities {
     /* 隐藏滚动条但保持滚动功能 */
     .scrollbar-hide {
         -ms-overflow-style: none;
@@ -58,5 +77,13 @@
     }
     .scrollbar-hide::-webkit-scrollbar {
         display: none;
+    }
+
+    /* Fix for Firefox losing border-radius on inputs */
+    input[type="text"],
+    input[type="number"],
+    select {
+        appearance: textfield;
+        -moz-appearance: textfield;
     }
 }
