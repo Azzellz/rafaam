@@ -31,8 +31,6 @@ import {
     useNavigate,
 } from "react-router-dom";
 
-import { CustomView } from "@/components/views/CustomView";
-import { useCustomTypesStore } from "@/stores/useCustomTypesStore";
 import { mixColorWithBlack } from "@/utils/color";
 
 const App: React.FC = () => {
@@ -45,8 +43,6 @@ const App: React.FC = () => {
         setPracticeLanguage,
         contentType,
         setContentType,
-        customTypeId,
-        setCustomTypeId,
         language,
         setLanguage,
         loading,
@@ -90,8 +86,6 @@ const App: React.FC = () => {
 
     const t = translations[language as keyof typeof translations];
 
-    const { getCustomType } = useCustomTypesStore();
-
     const startQuest = async (questTopic: string) => {
         if (!questTopic.trim()) return;
 
@@ -112,18 +106,12 @@ const App: React.FC = () => {
         setContent(null);
 
         try {
-            const customTypeDefinition =
-                contentType === ContentType.CUSTOM && customTypeId
-                    ? getCustomType(customTypeId)
-                    : undefined;
-
             const result = await generateLesson(
                 level,
                 questTopic,
                 contentType,
                 language,
-                practiceLanguage,
-                customTypeDefinition
+                practiceLanguage
             );
             setContent({ type: contentType, data: result } as GeneratedContent);
         } catch (err: any) {

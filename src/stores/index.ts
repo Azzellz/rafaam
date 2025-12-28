@@ -3,7 +3,6 @@
  */
 
 export { useAppStore } from "./useAppStore";
-export { useCustomTypesStore } from "./useCustomTypesStore";
 export { useDialogStore, showAlert, showConfirm } from "./useDialogStore";
 export type { DialogConfig } from "./useDialogStore";
 export { useFavoritesStore } from "./useFavoritesStore";

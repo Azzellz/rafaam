@@ -137,18 +137,10 @@ export interface TranslationContent {
     page: string;
     of: string;
 
-    // Custom Types
-    customTypes: string;
-    customTypesDesc: string;
-    customTypesManagement: string;
-    savedCustomTypes: string;
-    createCustomType: string;
-    noCustomTypes: string;
+    // Edit/Delete actions
     edit: string;
     delete: string;
     deleteConfirm: string;
-    editCustomType: string;
-    newCustomType: string;
     name: string;
     namePlaceholder: string;
     description: string;

@@ -140,18 +140,10 @@ export const zhCNTranslation: TranslationContent = {
     page: "页",
     of: "/",
 
-    // Custom Types
-    customTypes: "自定义题型",
-    customTypesDesc: "创建和管理自定义的学习内容生成模板",
-    customTypesManagement: "自定义题型管理",
-    savedCustomTypes: "已保存的题型",
-    createCustomType: "新建题型",
-    noCustomTypes: "暂无自定义题型，点击上方按钮创建",
+    // Edit/Delete actions
     edit: "编辑",
     delete: "删除",
-    deleteConfirm: "确定要删除这个自定义题型吗？",
-    editCustomType: "编辑题型",
-    newCustomType: "新建题型",
+    deleteConfirm: "确定要删除吗？",
     name: "名称",
     namePlaceholder: "例如：单词列表、情景对话...",
     description: "描述",

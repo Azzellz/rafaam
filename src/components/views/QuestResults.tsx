@@ -6,7 +6,6 @@ import { QuizView } from "./QuizView";
 import { ConversationView } from "./ConversationView";
 import { WritingView } from "./WritingView";
 import { ChatView } from "./ChatView";
-import { CustomView } from "./CustomView";
 import { ListeningView } from "./ListeningView";
 import { ReadingView } from "./ReadingView";
 import { ClozeView } from "./ClozeView";
@@ -79,12 +78,6 @@ export const QuestResults: React.FC<QuestResultsProps> = ({
                 data={content.data}
                 language={language}
                 onRestart={onClearContent}
-            />
-        ) : content.type === ContentType.CUSTOM ? (
-            <CustomView
-                data={content.data}
-                onBack={onReset}
-                language={language}
             />
         ) : null}
     </div>

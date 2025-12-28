@@ -144,18 +144,10 @@ export const enTranslation: TranslationContent = {
     page: "Page",
     of: "of",
 
-    // Custom Types
-    customTypes: "CUSTOM TYPES",
-    customTypesDesc: "Create and manage custom content generation templates",
-    customTypesManagement: "Custom Types Management",
-    savedCustomTypes: "SAVED TYPES",
-    createCustomType: "CREATE TYPE",
-    noCustomTypes: "No custom types yet. Click above to create one.",
+    // Edit/Delete actions
     edit: "Edit",
     delete: "Delete",
-    deleteConfirm: "Are you sure you want to delete this custom type?",
-    editCustomType: "Edit Type",
-    newCustomType: "New Type",
+    deleteConfirm: "Are you sure you want to delete this?",
     name: "Name",
     namePlaceholder: "e.g. Word List, Scenario Dialogue...",
     description: "Description",

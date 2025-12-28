@@ -142,19 +142,10 @@ export const jaTranslation: TranslationContent = {
     page: "ページ",
     of: "/",
 
-    // Custom Types
-    customTypes: "カスタム問題",
-    customTypesDesc: "カスタム学習コンテンツ生成テンプレートの作成と管理",
-    customTypesManagement: "カスタム問題管理",
-    savedCustomTypes: "保存された問題タイプ",
-    createCustomType: "新規作成",
-    noCustomTypes:
-        "カスタム問題タイプはまだありません。上のボタンから作成してください。",
+    // Edit/Delete actions
     edit: "編集",
     delete: "削除",
-    deleteConfirm: "このカスタム問題タイプを削除してもよろしいですか？",
-    editCustomType: "問題タイプを編集",
-    newCustomType: "新しい問題タイプ",
+    deleteConfirm: "削除してもよろしいですか？",
     name: "名前",
     namePlaceholder: "例：単語リスト、シチュエーション会話...",
     description: "説明",

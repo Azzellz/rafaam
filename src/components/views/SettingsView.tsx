@@ -4,7 +4,6 @@ import { PixelButton, PixelCard } from "@/components/pixel";
 import { translations } from "@/i18n";
 import { AppearanceSettings } from "@/components/settings/AppearanceSettings";
 import { StorageSettings } from "@/components/settings/StorageSettings";
-import { CustomTypesSettings } from "@/components/settings/CustomTypesSettings";
 import { AISettings } from "@/components/settings/ai";
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
     onBack: () => void;
 }
 
-type SettingsTab = "appearance" | "storage" | "customTypes" | "ai";
+type SettingsTab = "appearance" | "storage" | "ai";
 
 export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
     const t = translations[language];
@@ -21,7 +20,6 @@ export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
     const tabs: { id: SettingsTab; label: string; icon: string }[] = [
         { id: "appearance", label: t.bgSettings, icon: "🎨" },
         { id: "storage", label: t.storageSettings, icon: "💾" },
-        { id: "customTypes", label: t.customTypes, icon: "🛠️" },
         { id: "ai", label: t.aiSettings, icon: "🤖" },
     ];
 
@@ -67,12 +65,6 @@ export const SettingsView: React.FC<Props> = ({ language, onBack }) => {
                         )}
                         {activeTab === "storage" && (
                             <StorageSettings language={language} />
-                        )}
-                        {activeTab === "customTypes" && (
-                            <CustomTypesSettings
-                                onBack={() => setActiveTab("appearance")}
-                                language={language}
-                            />
                         )}
                         {activeTab === "ai" && (
                             <AISettings language={language} />

@@ -23,12 +23,10 @@ type AppState = {
     content: GeneratedContent | null;
     error: string | null;
     bgConfig: BackgroundConfig;
-    customTypeId: string | null;
     setTopic: (topic: string) => void;
     setLevel: (level: string) => void;
     setPracticeLanguage: (practiceLanguage: PracticeLanguage) => void;
     setContentType: (contentType: ContentType) => void;
-    setCustomTypeId: (id: string | null) => void;
     setLanguage: (language: Language) => void;
     setLoading: (loading: boolean) => void;
     setContent: (content: GeneratedContent | null) => void;
@@ -42,7 +40,7 @@ export const useAppStore = create<AppState>((set) => ({
     practiceLanguage: defaultPracticeLanguage,
     level: getDefaultLevel(defaultPracticeLanguage),
     contentType: ContentType.GRAMMAR,
-    customTypeId: null,
+
     language: Language.EN,
     loading: false,
     content: null,
@@ -62,7 +60,6 @@ export const useAppStore = create<AppState>((set) => ({
             content: null,
         })),
     setContentType: (contentType) => set({ contentType }),
-    setCustomTypeId: (customTypeId) => set({ customTypeId }),
     setLanguage: (language) => set({ language }),
     setLoading: (loading) => set({ loading }),
     setContent: (content) => set({ content }),
